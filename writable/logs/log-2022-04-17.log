@@ -1,0 +1,109 @@
+CRITICAL - 2022-04-17 05:40:05 --> Undefined index: receipt_sum
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Models/FinanceModel.php(76): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 76, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php(23): App\Models\FinanceModel->get_all_accounts()
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Dashboard->index()
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#4 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#5 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#6 {main}
+CRITICAL - 2022-04-17 05:59:04 --> Too few arguments to function App\Models\FinanceModel::get_agreements(), 2 passed in /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php on line 156 and exactly 3 expected
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php(156): App\Models\FinanceModel->get_agreements('1', 'receipt')
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+ERROR - 2022-04-17 06:03:45 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '? AND executer = ?
+              UNION ALL
+              SELECT
+                ' at line 10
+CRITICAL - 2022-04-17 06:03:45 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '? AND executer = ?
+              UNION ALL
+              SELECT
+                ' at line 10
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Database/MySQLi/Connection.php(292): mysqli->query('SELECT\n        ...', 0)
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Database/BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('SELECT\n        ...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Database/BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT\n        ...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Models/FinanceModel.php(244): CodeIgniter\Database\BaseConnection->query('SELECT\n        ...', Array)
+#4 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php(156): App\Models\FinanceModel->get_agreements('1', 'receipt')
+#5 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#6 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#7 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2022-04-17 06:06:27 --> Undefined variable: condition
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Models/FinanceModel.php(243): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/Applications/M...', 243, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php(156): App\Models\FinanceModel->get_agreements('1', 'receipt')
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#4 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#5 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#6 {main}
+ERROR - 2022-04-17 06:06:42 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ALL
+              SELECT
+                id,
+                company,
+          ' at line 10
+CRITICAL - 2022-04-17 06:06:42 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ALL
+              SELECT
+                id,
+                company,
+          ' at line 10
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Database/MySQLi/Connection.php(292): mysqli->query('SELECT\n        ...', 0)
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Database/BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('SELECT\n        ...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Database/BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT\n        ...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Models/FinanceModel.php(252): CodeIgniter\Database\BaseConnection->query('SELECT\n        ...', Array)
+#4 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php(156): App\Models\FinanceModel->get_agreements('1', 'receipt')
+#5 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#6 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#7 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#9 {main}
+ERROR - 2022-04-17 06:12:35 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ALL
+              SELECT
+                id,
+                company,
+          ' at line 10
+CRITICAL - 2022-04-17 06:12:35 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ALL
+              SELECT
+                id,
+                company,
+          ' at line 10
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Database/MySQLi/Connection.php(292): mysqli->query('SELECT\n        ...', 0)
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Database/BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('SELECT\n        ...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Database/BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT\n        ...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Models/FinanceModel.php(253): CodeIgniter\Database\BaseConnection->query('SELECT\n        ...', Array)
+#4 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php(156): App\Models\FinanceModel->get_agreements('1', 'receipt')
+#5 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#6 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#7 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2022-04-17 07:31:15 --> Illegal string offset 'company_account'
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Views/dashboard/sub/expense_table.php(20): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Illegal string ...', '/Applications/M...', 20, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/View/View.php(210): include('/Applications/M...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/View/View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Common.php(1089): CodeIgniter\View\View->render('dashboard/sub/e...', Array, true)
+#4 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Views/dashboard/sub/account_title.php(35): view('dashboard/sub/e...', Array)
+#5 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/View/View.php(210): include('/Applications/M...')
+#6 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/View/View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#7 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Common.php(1089): CodeIgniter\View\View->render('dashboard/sub/a...', Array, true)
+#8 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Views/dashboard/finance_report.php(76): view('dashboard/sub/a...', Array)
+#9 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/View/View.php(210): include('/Applications/M...')
+#10 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/View/View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#11 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Common.php(1089): CodeIgniter\View\View->render('dashboard/finan...', Array, true)
+#12 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php(35): view('dashboard/finan...', Array)
+#13 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Dashboard->index()
+#14 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#15 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#16 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#17 {main}
+CRITICAL - 2022-04-17 23:49:31 --> syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ')'
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/View/View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Common.php(1089): CodeIgniter\View\View->render('dashboard/finan...', Array, true)
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php(35): view('dashboard/finan...', Array)
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Dashboard->index()
+#4 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#5 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#7 {main}

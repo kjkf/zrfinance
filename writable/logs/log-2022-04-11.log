@@ -1,0 +1,56 @@
+CRITICAL - 2022-04-11 14:50:40 --> Undefined variable: status
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Models/FinanceModel.php(296): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/Applications/M...', 296, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php(485): App\Models\FinanceModel->change_parentStatus('receipt', '111', Array)
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Dashboard->edit_item()
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#4 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#5 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#6 {main}
+CRITICAL - 2022-04-11 15:36:15 --> syntax error, unexpected ''approve_validation'' (T_CONSTANT_ENCAPSED_STRING), expecting ']'
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/Applications/M...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers...')
+#3 [internal function]: spl_autoload_call('App\\Controllers...')
+#4 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(790): class_exists('\\App\\Controller...', true)
+#5 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->startController()
+#6 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+ERROR - 2022-04-11 15:36:48 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM receipt as item
+              LEFT JOIN users ON users.id = item.author
+   ' at line 19
+CRITICAL - 2022-04-11 15:36:48 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM receipt as item
+              LEFT JOIN users ON users.id = item.author
+   ' at line 19
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Database/MySQLi/Connection.php(292): mysqli->query('SELECT\n        ...', 0)
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Database/BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('SELECT\n        ...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Database/BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT\n        ...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Models/FinanceModel.php(376): CodeIgniter\Database\BaseConnection->query('SELECT\n        ...', Array)
+#4 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php(526): App\Models\FinanceModel->get_history_edition('receipt', '111')
+#5 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Dashboard->get_history()
+#6 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#7 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2022-04-11 15:44:31 --> Undefined variable: changed_data
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php(625): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/Applications/M...', 625, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Dashboard->approve_edition()
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-04-11 15:44:53 --> Undefined variable: loggedUserID
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php(625): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/Applications/M...', 625, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Dashboard->approve_edition()
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-04-11 15:45:41 --> Undefined variable: record_id
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Models/FinanceModel.php(454): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/Applications/M...', 454, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Dashboard.php(626): App\Models\FinanceModel->approve_edition('receipt', '1', Array, '4')
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Dashboard->approve_edition()
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#4 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#5 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#6 {main}

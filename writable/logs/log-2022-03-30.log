@@ -1,0 +1,136 @@
+CRITICAL - 2022-03-30 04:41:39 --> Cannot use isset() on the result of an expression (you can use "null !== expression" instead)
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2022-03-30 04:45:51 --> syntax error, unexpected '('
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/Applications/M...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Models\\Fina...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Models\\Fina...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(15): spl_autoload_call('App\\Models\\Fina...')
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->index()
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-03-30 04:47:05 --> Undefined index: statis
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Views/dashboard/sub/receipt_table.php(19): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 19, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/View/View.php(210): include('/Applications/M...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/View/View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/Common.php(1089): CodeIgniter\View\View->render('dashboard/sub/r...', Array, true)
+#4 /Applications/MAMP/htdocs/zlatar_finance/app/Views/dashboard/sub/account_title.php(9): view('dashboard/sub/r...', Array)
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/View/View.php(210): include('/Applications/M...')
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/View/View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#7 /Applications/MAMP/htdocs/zlatar_finance/system/Common.php(1089): CodeIgniter\View\View->render('dashboard/sub/a...', Array, true)
+#8 /Applications/MAMP/htdocs/zlatar_finance/app/Views/dashboard/finance_report.php(74): view('dashboard/sub/a...', Array)
+#9 /Applications/MAMP/htdocs/zlatar_finance/system/View/View.php(210): include('/Applications/M...')
+#10 /Applications/MAMP/htdocs/zlatar_finance/system/View/View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#11 /Applications/MAMP/htdocs/zlatar_finance/system/Common.php(1089): CodeIgniter\View\View->render('dashboard/finan...', Array, true)
+#12 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(35): view('dashboard/finan...', Array)
+#13 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->index()
+#14 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#15 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#16 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#17 {main}
+CRITICAL - 2022-03-30 05:15:52 --> syntax error, unexpected 'if' (T_IF)
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/Applications/M...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers...')
+#3 [internal function]: spl_autoload_call('App\\Controllers...')
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(790): class_exists('\\App\\Controller...', true)
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->startController()
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-03-30 05:16:56 --> syntax error, unexpected '(', expecting identifier (T_STRING) or variable (T_VARIABLE) or '{' or '$'
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/Applications/M...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers...')
+#3 [internal function]: spl_autoload_call('App\\Controllers...')
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(790): class_exists('\\App\\Controller...', true)
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->startController()
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-03-30 05:24:48 --> Undefined index: delete_item_type
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(286): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 286, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->delete_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-30 05:25:07 --> Undefined index: record_id
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(289): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 289, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->delete_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-30 05:59:47 --> syntax error, unexpected '$del_status' (T_VARIABLE), expecting ';' or ','
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/Applications/M...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers...')
+#3 [internal function]: spl_autoload_call('App\\Controllers...')
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(790): class_exists('\\App\\Controller...', true)
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->startController()
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-03-30 06:08:54 --> syntax error, unexpected 'return' (T_RETURN), expecting ';'
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/Applications/M...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers...')
+#3 [internal function]: spl_autoload_call('App\\Controllers...')
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(790): class_exists('\\App\\Controller...', true)
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->startController()
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-03-30 06:09:07 --> syntax error, unexpected 'else' (T_ELSE)
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/Applications/M...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers...')
+#3 [internal function]: spl_autoload_call('App\\Controllers...')
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(790): class_exists('\\App\\Controller...', true)
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->startController()
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+ERROR - 2022-03-30 06:36:19 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''receipt' as item
+              LEFT JOIN users ON users.id = item.author
+      ' at line 7
+CRITICAL - 2022-03-30 06:36:19 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''receipt' as item
+              LEFT JOIN users ON users.id = item.author
+      ' at line 7
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Database/MySQLi/Connection.php(292): mysqli->query('SELECT\n        ...', 0)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('SELECT\n        ...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT\n        ...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/app/Models/FinanceModel.php(271): CodeIgniter\Database\BaseConnection->query('SELECT\n        ...', Array)
+#4 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(536): App\Models\FinanceModel->get_history_deletion('receipt', '84')
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->get_history_deletion()
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#7 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#9 {main}
+ERROR - 2022-03-30 06:38:35 --> Column 'id' in field list is ambiguous
+CRITICAL - 2022-03-30 06:38:35 --> Column 'id' in field list is ambiguous
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Database/MySQLi/Connection.php(292): mysqli->query('SELECT\n        ...', 0)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('SELECT\n        ...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT\n        ...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/app/Models/FinanceModel.php(271): CodeIgniter\Database\BaseConnection->query('SELECT\n        ...', Array)
+#4 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(536): App\Models\FinanceModel->get_history_deletion('receipt', '84')
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->get_history_deletion()
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#7 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#9 {main}
+ERROR - 2022-03-30 06:39:03 --> Column 'id' in where clause is ambiguous
+CRITICAL - 2022-03-30 06:39:03 --> Column 'id' in where clause is ambiguous
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Database/MySQLi/Connection.php(292): mysqli->query('SELECT\n        ...', 0)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('SELECT\n        ...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT\n        ...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/app/Models/FinanceModel.php(271): CodeIgniter\Database\BaseConnection->query('SELECT\n        ...', Array)
+#4 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(536): App\Models\FinanceModel->get_history_deletion('receipt', '84')
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->get_history_deletion()
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#7 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#9 {main}

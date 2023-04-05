@@ -1,0 +1,19 @@
+ERROR - 2023-04-05 00:12:12 --> Unknown column 'receipt_item.name1' in 'field list'
+CRITICAL - 2023-04-05 00:12:12 --> Unknown column 'receipt_item.name1' in 'field list'
+#0 C:\distr\OpenServer\domains\zrfinance\system\Database\MySQLi\Connection.php(292): mysqli->query()
+#1 C:\distr\OpenServer\domains\zrfinance\system\Database\BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute()
+#2 C:\distr\OpenServer\domains\zrfinance\system\Database\BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery()
+#3 C:\distr\OpenServer\domains\zrfinance\app\Models\FinanceModel.php(94): CodeIgniter\Database\BaseConnection->query()
+#4 C:\distr\OpenServer\domains\zrfinance\app\Controllers\Dashboard.php(25): App\Models\FinanceModel->get_all_receipts_today()
+#5 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(825): App\Controllers\Dashboard->index()
+#6 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController()
+#7 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest()
+#8 C:\distr\OpenServer\domains\zrfinance\index.php(37): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2023-04-05 00:13:58 --> Call to undefined method CodeIgniter\Database\MySQLi\Connection::last_query()
+#0 C:\distr\OpenServer\domains\zrfinance\app\Controllers\Dashboard.php(25): App\Models\FinanceModel->get_all_receipts_today()
+#1 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(825): App\Controllers\Dashboard->index()
+#2 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController()
+#3 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest()
+#4 C:\distr\OpenServer\domains\zrfinance\index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}

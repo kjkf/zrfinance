@@ -1,0 +1,24 @@
+CRITICAL - 2023-04-03 00:21:24 --> Undefined index: role
+#0 C:\distr\OpenServer\domains\zrfinance\app\Controllers\Classificators.php(24): CodeIgniter\Debug\Exceptions->errorHandler()
+#1 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(825): App\Controllers\Classificators->index()
+#2 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController()
+#3 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest()
+#4 C:\distr\OpenServer\domains\zrfinance\index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2023-04-03 04:38:33 --> Call to undefined function App\Controllers\validation_errors()
+#0 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#1 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController()
+#2 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest()
+#3 C:\distr\OpenServer\domains\zrfinance\index.php(37): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2023-04-03 04:55:59 --> Undefined variable: contractor
+#0 C:\distr\OpenServer\domains\zrfinance\app\Views\classificators\classificators_page.php(19): CodeIgniter\Debug\Exceptions->errorHandler()
+#1 C:\distr\OpenServer\domains\zrfinance\system\View\View.php(210): include('C:\\distr\\OpenSe...')
+#2 C:\distr\OpenServer\domains\zrfinance\system\View\View.php(213): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 C:\distr\OpenServer\domains\zrfinance\system\Common.php(1089): CodeIgniter\View\View->render()
+#4 C:\distr\OpenServer\domains\zrfinance\app\Controllers\Classificators.php(33): view()
+#5 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(825): App\Controllers\Classificators->index()
+#6 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController()
+#7 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest()
+#8 C:\distr\OpenServer\domains\zrfinance\index.php(37): CodeIgniter\CodeIgniter->run()
+#9 {main}

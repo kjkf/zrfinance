@@ -1,0 +1,84 @@
+CRITICAL - 2022-03-16 00:02:09 --> Undefined variable: status
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(212): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/Applications/M...', 212, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-16 00:09:03 --> Undefined variable: status
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(212): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/Applications/M...', 212, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-16 00:09:33 --> Undefined variable: status
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(203): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/Applications/M...', 203, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-16 00:10:06 --> Undefined variable: message
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(259): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/Applications/M...', 259, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-16 00:29:58 --> Undefined index: item_type
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(271): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 271, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->delete_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-16 00:30:22 --> Undefined index: item_type
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(271): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 271, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->delete_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-16 00:31:28 --> Undefined index: item_id
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(272): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 272, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->delete_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-16 00:31:50 --> Undefined variable: financeModel
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(280): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/Applications/M...', 280, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->delete_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-16 00:32:16 --> Too few arguments to function App\Models\FinanceModel::delete_item(), 0 passed in /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php on line 282 and exactly 2 expected
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(282): App\Models\FinanceModel->delete_item()
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->delete_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-03-16 00:32:43 --> Undefined variable: id
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Models/FinanceModel.php(183): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/Applications/M...', 183, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(282): App\Models\FinanceModel->delete_item('receipt', '60')
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->delete_item()
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#5 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#6 {main}
+ERROR - 2022-03-16 02:17:20 --> Cannot add or update a child row: a foreign key constraint fails (`zlatar_finance`.`receipt`, CONSTRAINT `receipt_related_company` FOREIGN KEY (`company_account`) REFERENCES `account` (`id`))
+CRITICAL - 2022-03-16 02:17:20 --> Cannot add or update a child row: a foreign key constraint fails (`zlatar_finance`.`receipt`, CONSTRAINT `receipt_related_company` FOREIGN KEY (`company_account`) REFERENCES `account` (`id`))
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Database/MySQLi/Connection.php(292): mysqli->query('INSERT INTO `re...', 0)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `re...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `re...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseBuilder.php(1771): CodeIgniter\Database\BaseConnection->query('INSERT INTO `re...', Array, false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/app/Models/FinanceModel.php(173): CodeIgniter\Database\BaseBuilder->insert(Array)
+#5 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(231): App\Models\FinanceModel->save_item('receipt', Array)
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#7 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#8 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#10 {main}

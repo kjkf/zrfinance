@@ -1,0 +1,17 @@
+CRITICAL - 2022-09-04 03:52:23 --> syntax error, unexpected 'ru_RU' (T_STRING)
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/Applications/M...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Models\\Fina...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Models\\Fina...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Report.php(33): spl_autoload_call('App\\Models\\Fina...')
+#4 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Report->get_report()
+#5 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Report))
+#6 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-09-04 08:22:05 --> Undefined index: role
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Report.php(24): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 24, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Report->index()
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Report))
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}

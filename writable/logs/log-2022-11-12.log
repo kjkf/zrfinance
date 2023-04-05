@@ -1,0 +1,7 @@
+CRITICAL - 2022-11-12 01:54:39 --> Undefined index: role
+#0 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/app/Controllers/Classificators.php(24): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 24, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(825): App\Controllers\Classificators->index()
+#2 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Classificators))
+#3 /Applications/MAMP/htdocs/zlatar_finance/codeigniter/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}

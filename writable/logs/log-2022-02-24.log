@@ -1,0 +1,615 @@
+CRITICAL - 2022-02-24 05:46:47 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(109): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 109, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:01:32 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(132): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 132, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:01:35 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(102): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 102, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+ERROR - 2022-02-24 08:07:12 --> Cannot add or update a child row: a foreign key constraint fails (`zlatar_finance`.`receipt`, CONSTRAINT `receipt_related_user` FOREIGN KEY (`author`) REFERENCES `users` (`id`))
+CRITICAL - 2022-02-24 08:07:12 --> Cannot add or update a child row: a foreign key constraint fails (`zlatar_finance`.`receipt`, CONSTRAINT `receipt_related_user` FOREIGN KEY (`author`) REFERENCES `users` (`id`))
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Database/MySQLi/Connection.php(292): mysqli->query('INSERT INTO `re...', 0)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `re...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `re...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseBuilder.php(1771): CodeIgniter\Database\BaseConnection->query('INSERT INTO `re...', Array, false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/app/Models/FinanceModel.php(152): CodeIgniter\Database\BaseBuilder->insert(Array)
+#5 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(91): App\Models\FinanceModel->save_item('receipt', Array)
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#7 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#8 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#10 {main}
+ERROR - 2022-02-24 08:08:28 --> Cannot add or update a child row: a foreign key constraint fails (`zlatar_finance`.`receipt`, CONSTRAINT `receipt_related_user` FOREIGN KEY (`author`) REFERENCES `users` (`id`))
+CRITICAL - 2022-02-24 08:08:28 --> Cannot add or update a child row: a foreign key constraint fails (`zlatar_finance`.`receipt`, CONSTRAINT `receipt_related_user` FOREIGN KEY (`author`) REFERENCES `users` (`id`))
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Database/MySQLi/Connection.php(292): mysqli->query('INSERT INTO `re...', 0)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `re...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `re...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseBuilder.php(1771): CodeIgniter\Database\BaseConnection->query('INSERT INTO `re...', Array, false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/app/Models/FinanceModel.php(152): CodeIgniter\Database\BaseBuilder->insert(Array)
+#5 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(91): App\Models\FinanceModel->save_item('receipt', Array)
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#7 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#8 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2022-02-24 08:10:58 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(133): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 133, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:11:00 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(103): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 103, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:13:18 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(133): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 133, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:13:20 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(103): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 103, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:14:20 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(103): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 103, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:14:31 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(103): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 103, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:18:16 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(147): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 147, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:18:17 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(103): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 103, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:19:06 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(103): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 103, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:29:56 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(147): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 147, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:29:58 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(103): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 103, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:32:48 --> Class 'App\Controllers\CI_Controller' not found
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Router/Router.php(518): include_once()
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Router/Router.php(175): CodeIgniter\Router\Router->autoRoute('dashboard/save_...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(719): CodeIgniter\Router\Router->handle('dashboard/save_...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(361): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#5 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#6 {main}
+CRITICAL - 2022-02-24 08:38:28 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(141): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 141, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 08:38:30 --> Invalid file: upload_form.php
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/View/View.php(198): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('upload_form.php')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Common.php(1089): CodeIgniter\View\View->render('upload_form', Array, true)
+#2 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(108): view('upload_form', Array)
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2022-02-24 08:39:16 --> Invalid file: upload_form.php
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/View/View.php(198): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('upload_form.php')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Common.php(1089): CodeIgniter\View\View->render('upload_form', Array, true)
+#2 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(108): view('upload_form', Array)
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2022-02-24 08:40:58 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(141): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 141, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:16:44 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(141): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 141, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:18:01 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(141): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 141, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:19:39 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(141): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 141, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:21:19 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(141): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 141, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:27:54 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(143): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 143, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:31:10 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(143): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 143, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:34:02 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(143): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 143, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:37:28 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(143): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 143, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:38:30 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(143): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 143, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:40:09 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(142): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 142, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:41:01 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(141): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 141, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:41:57 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(141): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 141, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+ERROR - 2022-02-24 12:41:59 --> Cannot add or update a child row: a foreign key constraint fails (`zlatar_finance`.`expense`, CONSTRAINT `expense_related_agreement_forzr` FOREIGN KEY (`agreement_forzr`) REFERENCES `agreement_forZR` (`id`))
+CRITICAL - 2022-02-24 12:41:59 --> Cannot add or update a child row: a foreign key constraint fails (`zlatar_finance`.`expense`, CONSTRAINT `expense_related_agreement_forzr` FOREIGN KEY (`agreement_forzr`) REFERENCES `agreement_forZR` (`id`))
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Database/MySQLi/Connection.php(292): mysqli->query('INSERT INTO `ex...', 0)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(670): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `ex...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseConnection.php(598): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `ex...')
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/Database/BaseBuilder.php(1771): CodeIgniter\Database\BaseConnection->query('INSERT INTO `ex...', Array, false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/app/Models/FinanceModel.php(152): CodeIgniter\Database\BaseBuilder->insert(Array)
+#5 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(93): App\Models\FinanceModel->save_item('expense', Array)
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#7 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#8 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#10 {main}
+CRITICAL - 2022-02-24 12:42:31 --> Array to string conversion
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(108): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Array to string...', '/Applications/M...', 108, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:47:20 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(147): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 147, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:47:22 --> Argument 2 passed to CodeIgniter\Validation\FileRules::uploaded() must be of the type string, null given, called in /Applications/MAMP/htdocs/zlatar_finance/system/Validation/Validation.php on line 291
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Validation/Validation.php(291): CodeIgniter\Validation\FileRules->uploaded(NULL, NULL)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Validation/Validation.php(157): CodeIgniter\Validation\Validation->processRules('document', 'Image File', NULL, Array, Array)
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/Controller.php(160): CodeIgniter\Validation\Validation->run()
+#3 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(112): CodeIgniter\Controller->validate(Array)
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-02-24 12:52:15 --> syntax error, unexpected '$data' (T_VARIABLE)
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Router/Router.php(175): CodeIgniter\Router\Router->autoRoute('dashboard/get_r...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(719): CodeIgniter\Router\Router->handle('dashboard/get_r...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(361): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:52:18 --> syntax error, unexpected '$data' (T_VARIABLE)
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Router/Router.php(175): CodeIgniter\Router\Router->autoRoute('dashboard/get_a...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(719): CodeIgniter\Router\Router->handle('dashboard/get_a...')
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(361): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:52:37 --> syntax error, unexpected ')', expecting ';'
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/Applications/M...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers...')
+#3 [internal function]: spl_autoload_call('App\\Controllers...')
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(790): class_exists('\\App\\Controller...', true)
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->startController()
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-02-24 12:53:37 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(148): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 148, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:53:39 --> Call to a member function hasError() on array
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(115): display_error(Array, 'document')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 12:57:59 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(147): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 147, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:00:41 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(147): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 147, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:05:52 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(149): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 149, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:05:54 --> Image File is not a valid rule.
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Validation/Validation.php(300): CodeIgniter\Validation\Exceptions\ValidationException::forRuleNotFound('Image File')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Validation/Validation.php(157): CodeIgniter\Validation\Validation->processRules('document', 'Image File', NULL, Array, Array)
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/Controller.php(160): CodeIgniter\Validation\Validation->run()
+#3 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(111): CodeIgniter\Controller->validate(Array)
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-02-24 13:09:39 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(152): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 152, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:20:09 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(151): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 151, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:20:48 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(150): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 150, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:20:50 -->  is not a valid rule.
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Validation/Validation.php(300): CodeIgniter\Validation\Exceptions\ValidationException::forRuleNotFound('')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Validation/Validation.php(157): CodeIgniter\Validation\Validation->processRules('document', 'document', NULL, Array, Array)
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/Controller.php(160): CodeIgniter\Validation\Validation->run()
+#3 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(112): CodeIgniter\Controller->validate(Array)
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-02-24 13:23:07 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(150): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 150, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:23:35 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(150): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 150, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->upload_document()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:24:45 --> Undefined variable: file
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(119): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/Applications/M...', 119, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:25:10 --> Call to a member function hasMoved() on null
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2022-02-24 13:28:28 --> Call to a member function store() on null
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2022-02-24 13:30:48 --> Undefined index: sup_document
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(100): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 100, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:31:17 --> Undefined index: sup_document
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(100): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 100, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:32:52 --> Undefined index: sup_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(100): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 100, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:33:34 --> Undefined index: sup_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:36:11 --> Undefined index: sup_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:39:02 --> Undefined index: sup_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:40:09 --> Undefined index: sup_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:41:25 --> Undefined index: sup_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:42:48 --> Undefined index: sup_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:44:48 --> Undefined index: sup_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:46:06 --> Undefined index: sup_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:48:33 --> Undefined index: sup_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:49:50 --> syntax error, unexpected ';', expecting ']'
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/Applications/M...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers...')
+#3 [internal function]: spl_autoload_call('App\\Controllers...')
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(790): class_exists('\\App\\Controller...', true)
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->startController()
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-02-24 13:50:25 --> Undefined index: user_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:52:20 --> Undefined index: user_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:53:45 --> Undefined index: user_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:55:12 --> Undefined index: user_doc
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:56:30 --> Undefined index: document
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 13:58:32 --> Undefined index: document
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/Applications/M...', 71, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 14:02:04 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(106): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 106, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 14:08:01 --> Undefined property: App\Controllers\Dashboard::$upload
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(108): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 108, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 14:09:04 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(106): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 106, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 22:55:25 --> Undefined property: App\Controllers\Dashboard::$upload
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(105): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 105, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 23:02:40 --> Undefined property: App\Controllers\Dashboard::$load
+#0 /Applications/MAMP/htdocs/zlatar_finance/app/Controllers/Dashboard.php(106): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/Applications/M...', 106, Array)
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#3 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2022-02-24 23:29:41 --> syntax error, unexpected ';', expecting ')'
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/Applications/M...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers...')
+#3 [internal function]: spl_autoload_call('App\\Controllers...')
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(790): class_exists('\\App\\Controller...', true)
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->startController()
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-02-24 23:29:43 --> syntax error, unexpected ';', expecting ')'
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/Applications/M...')
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers...')
+#3 [internal function]: spl_autoload_call('App\\Controllers...')
+#4 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(790): class_exists('\\App\\Controller...', true)
+#5 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->startController()
+#6 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2022-02-24 23:30:10 --> Call to a member function move() on null
+#0 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(825): App\Controllers\Dashboard->save_item()
+#1 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Dashboard))
+#2 /Applications/MAMP/htdocs/zlatar_finance/system/CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /Applications/MAMP/htdocs/zlatar_finance/public/index.php(37): CodeIgniter\CodeIgniter->run()
+#4 {main}
