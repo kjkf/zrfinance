@@ -1,7 +1,6 @@
 $(document).ready(function () {
-  openCurrentTab();
-    openCurrentAccordionTab();
   rememberTab();
+  restoreTabs();
 
   $('#account_').DataTable();
   // =============================================================================
@@ -446,8 +445,8 @@ modal_addItem.addEventListener('show.bs.modal', function (event) {
 // =============================================================================
 // при закрытии модального окна перегружаем страницу - новая запис
 modal_addItem.addEventListener('hide.bs.modal', function (event) {
+  localStorage.setItem("savetab", 1);
   window.location.href = base_url + '/dashboard';
-  localStorage.setItem("savetab", true);
 });
 // при закрытии модального окна перегружаем страницу - редактирование записи
 var modal_editItem = document.getElementById('modal_editItem');
@@ -657,10 +656,12 @@ function openCurrentAccordionTab() {
 }
 
 function restoreTabs() {
-  const isTabSaved = true; //localStorage.getItem("savetab");
-  if (isTabSaved) {
+  const isTabSaved = localStorage.getItem("savetab");
+  console.log(isTabSaved, typeof isTabSaved, parseInt(isTabSaved));
+  if (parseInt(isTabSaved)) {
     openCurrentTab();
     openCurrentAccordionTab();
+    localStorage.setItem("savetab", 0);
   }
 }
 
