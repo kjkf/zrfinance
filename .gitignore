@@ -15,5 +15,7 @@ temp.html
 gulpfile.js
 package.json
 debug*
-log*
+*log*
 ci_session*
+uploads
+writable

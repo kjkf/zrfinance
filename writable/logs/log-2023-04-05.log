@@ -17,3 +17,24 @@ CRITICAL - 2023-04-05 00:13:58 --> Call to undefined method CodeIgniter\Database
 #3 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest()
 #4 C:\distr\OpenServer\domains\zrfinance\index.php(37): CodeIgniter\CodeIgniter->run()
 #5 {main}
+CRITICAL - 2023-04-05 06:29:54 --> Call to undefined method CodeIgniter\Database\MySQLi\Connection::last_query()
+#0 C:\distr\OpenServer\domains\zrfinance\app\Controllers\Dashboard.php(24): App\Models\FinanceModel->get_all_accounts()
+#1 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(825): App\Controllers\Dashboard->index()
+#2 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController()
+#3 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest()
+#4 C:\distr\OpenServer\domains\zrfinance\index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2023-04-05 06:30:39 --> Call to undefined method CodeIgniter\Database\MySQLi\Connection::last_query()
+#0 C:\distr\OpenServer\domains\zrfinance\app\Controllers\Dashboard.php(24): App\Models\FinanceModel->get_all_accounts()
+#1 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(825): App\Controllers\Dashboard->index()
+#2 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController()
+#3 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest()
+#4 C:\distr\OpenServer\domains\zrfinance\index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2023-04-05 23:45:45 --> Undefined index: company_id
+#0 C:\distr\OpenServer\domains\zrfinance\app\Controllers\Dashboard.php(319): CodeIgniter\Debug\Exceptions->errorHandler()
+#1 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(825): App\Controllers\Dashboard->delete_item()
+#2 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(412): CodeIgniter\CodeIgniter->runController()
+#3 C:\distr\OpenServer\domains\zrfinance\system\CodeIgniter.php(320): CodeIgniter\CodeIgniter->handleRequest()
+#4 C:\distr\OpenServer\domains\zrfinance\index.php(37): CodeIgniter\CodeIgniter->run()
+#5 {main}

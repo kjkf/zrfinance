@@ -459,7 +459,7 @@ class Dashboard extends BaseController
 
         $restrict_time_from = 8;
         $restrict_time_till = 18;
-        d(($now->getHour() <= $restrict_time_from || $now->getHour() >= $restrict_time_till) && $now->getMinute() > 0);
+        //d(($now->getHour() <= $restrict_time_from || $now->getHour() >= $restrict_time_till) && $now->getMinute() > 0);
         if(($now->getHour() <= $restrict_time_from || $now->getHour() >= $restrict_time_till) && $now->getMinute() > 0){
           $status = 6;
           $message = "Документ сохранен, но изменения вступят в силу только после одобрения директора.";

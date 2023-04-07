@@ -131,3 +131,11 @@ td {
   padding: 10px;
   margin-left: 85%;
 }
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.ml10 {
+  margin-left: 10px;
+}

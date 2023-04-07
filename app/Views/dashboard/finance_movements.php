@@ -64,7 +64,7 @@
               foreach ($companies as $item) {
             ?>
             <div class="tab-pane fade <?php echo ($ind == 0) ? 'show active':''?> " id="tab_id_<?php echo $item['id']?>" role="tabpanel" aria-labelledby="tab_<?php echo $item['id']?>">
-              <div class="accordion accordion-warning" id="accordionAccounts">
+              <div class="accordion accordion-warning" id="accordionAccounts<?php echo $item['id']?>">
               <?php
                   if(isset($accounts) && !empty($accounts)){
                     foreach ($accounts as $account_item) {
@@ -74,11 +74,11 @@
 
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="heading_<?php echo $account_item['id']?>">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_<?php echo $account_item['id']?>" aria-expanded="true" aria-controls="collapse_<?php echo $account_item['id']?>">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_<?php echo $account_item['id']?>" aria-expanded="true" aria-controls="collapse_<?php echo $account_item['id']?>">
                       <?php echo $account_item['name']?>
                     </button>
                   </h2>
-                  <div id="collapse_<?php echo $account_item['id']?>" class="accordion-collapse collapse <?php echo $show ?>" aria-labelledby="heading_<?php echo $account_item['id']?>" data-bs-parent="#accordionAccounts">
+                  <div id="collapse_<?php echo $account_item['id']?>" class="accordion-collapse collapse <?php echo $show ?>" aria-labelledby="heading_<?php echo $account_item['id']?>" data-bs-parent="#accordionAccounts<?php echo $item['id']?>">
                     <div class="accordion-body">
                       <?php echo view('dashboard/sub/account_title', ['account' => $account_item, 'receipts_all' => $receipts_all, 'expense_all' => $expense_all]); ?>
                     </div>

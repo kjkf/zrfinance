@@ -30,13 +30,13 @@ class FinanceModel extends Model
               LEFT JOIN
                 (
                   SELECT expense.company_account, sum(expense.sum) as sum
-                  FROM expense WHERE DATE(expense.date_time) = ?
+                  FROM expense WHERE DATE(expense.date_time) <= ?
                   GROUP BY expense.company_account
                 ) as row_expense ON row_expense.company_account = account.id
               LEFT JOIN
                 (
                   SELECT receipt.company_account, sum(receipt.sum) as sum
-                  FROM receipt WHERE DATE(receipt.date_time) = ?
+                  FROM receipt WHERE DATE(receipt.date_time) <= ?
                   GROUP BY receipt.company_account
                 ) as row_receipt ON row_receipt.company_account = account.id";
       $time = new \CodeIgniter\I18n\Time;
@@ -68,6 +68,7 @@ class FinanceModel extends Model
         if ($dif >=15)
           break;
       }
+      
       return $result;
     }
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -143,7 +144,7 @@ class FinanceModel extends Model
               LEFT JOIN employee ON employee.id = expense.employee
               LEFT JOIN (SELECT * FROM expense_change WHERE expense_change.new_status in (3,6)) as expense_change ON expense_change.record_id = expense.id
               WHERE DATE(expense.date_time) = ? AND status <> 5
-              ORDER BY expense.id DESC";//AND status <> 5
+              ORDER BY `company_account` asc, expense.id DESC";//AND status <> 5
 
       $time = new \CodeIgniter\I18n\Time;
       $stat_date = $time::now('Asia/Almaty');
