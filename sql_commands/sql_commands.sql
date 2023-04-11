@@ -217,6 +217,13 @@ CREATE TABLE `agreement_fromZR_goods` (
  CONSTRAINT `related_agreement` FOREIGN KEY (`agreement`) REFERENCES `agreement_fromZR` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
  CONSTRAINT `related_good` FOREIGN KEY (`good`) REFERENCES `goods` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `expense_category` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `category` varchar(250) NOT NULL,
+ 
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -- ======================================= INSERTS ======================================= --
 INSERT INTO `roles`(`id`, `role`) VALUES
 (1,'admin'),
@@ -397,13 +404,26 @@ UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 39;
 UPDATE `employee` SET `company` = '' WHERE `employee`.`id` = 40;
 
 
-INSERT INTO `expense_item`(`name`, `need_agreement`, `need_employee`) VALUES
-('Покупка товаров/услуг для реализации Договора', 1, null),
-('Оплата товаров/услуг поставленных для ZR', 1, null),
-('Выдача аванса сотруднику', null, 1),
-('Выдача денежных средств в подотчет сотруднику', null, 1),
-('Оплата ГСМ', null, 1),
-('Прочие', null, null);
+alter table `expense_item` add column `need_contractor` int(6) DEFAULT null; -- в значении указывается айдишник категории, к которой относится контрагент
+alter table `expense_item` add column `descr` varchar(250) DEFAULT '';
+INSERT INTO `expense_item`(`name`, `descr`, `need_agreement`, `need_employee`, `need_contractor`) VALUES
+('Покупка товаров/услуг для реализации Договора', '', 1, null, null),
+('Оплата товаров/услуг поставленных для ZR', '', 1, null, null),
+('Выдача аванса сотруднику', '', null, 1, null),
+('Выдача денежных средств в подотчет сотруднику', '', null, 1, null),
+('Материалы металл', '', null, null, null),
+('Материалы фурнитура', 'крепеж, сварочная проволка, обтирочная ткань и т.д.', null, null, 1),
+('Материалы краска', 'полимерная краска, краска в балончиках и другая краска', null, null, 1),
+('Материалы прочие', '', null, null,  1),
+('Канцтовары', 'картриджи, бумага, ручки и т.д.', null, null, 1),
+('Мыломойка', '', null, null, 1),
+('Продукты', 'чай, сахар, кофе, молоко и т.д.', null, null, 1),
+('Интернет', '', null, null, 1),
+('Транспортные услуги', 'доставка, такси, авиабилеты', null, null, 1),
+('Налоги', '', null, null, null),
+('Банк', '', null, null, null),
+('Оплата ГСМ', '', null, 1, null),
+('Прочие', '', null, null, null);
 
 INSERT INTO `receipt_item`(`name`, `need_agreement`, `need_goods`) VALUES
 ('Оплата товаров/услуг ZR(т.е. ZR - исполнитель)', 1, null),
