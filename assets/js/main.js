@@ -14,6 +14,7 @@ $(document).ready(function () {
       $('option:selected', this).attr('need_agreement') === 'true';
     let need_employee =
       $('option:selected', this).attr('need_employee') === 'true';
+    let need_contractor = $('option:selected', this).attr('need_contractor');
     let need_goods = $('option:selected', this).attr('need_goods') === 'true';
     let companyID = $('#company_id').val();
 
@@ -41,14 +42,13 @@ $(document).ready(function () {
             let contractor_name = value.contractor_name;
 
             select_str +=
-              "<option value='" +
-              contractor_id +
+              "<option value='" + contractor_id + "'" + "need_agreement='1'" +
               "'>" +
-              contractor_name +
+              contractor_name + 
               '</option>';
           });
           $('#contractor').html(select_str);
-          $('#contractor').change();
+          //$('#contractor').change();
         },
       });
     }
@@ -122,6 +122,40 @@ $(document).ready(function () {
       });
     }
 
+    //если нужно укзаать контрагента
+    if (need_contractor && !need_agreement) {
+      $('#contractor').removeAttr('disabled');
+      $('#block_contractor').toggle();
+      $('#agreement').prop('disabled', true);
+      url_path = base_url + '/dashboard/get_contractors_by_category';
+      var data = {
+        category_id: need_contractor,
+      };
+      $.ajax({
+        url: url_path,
+        data: data,
+        method: 'GET',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (result) {
+          let select_str = '<option selected>Выберите</option>';
+          $.each(result, function (key, value) {
+            let contr_id = value.id;
+            let name = value.contractor_name;
+            select_str +=
+              "<option value='" + contr_id + "'>" + name + '</option>';
+          });
+          $('#contractor').html(select_str);
+          //$('#contractor').change();
+
+          //$('#block_official').toggle();
+          //$('#block_description').toggle();
+          //$('#block_sum').toggle();
+          //$('#block_document').toggle();
+        },
+      });
+    }
+
     //если выбран пункт - Прочие
     if (
       (itemType == 'receipt' && parseInt(itemName) == 3) ||
@@ -140,9 +174,10 @@ $(document).ready(function () {
     //let itemType = $('option:selected', this).attr('item_type');
     let companyID = $('#company_id').val();
     let contractor = $('option:selected', this).attr('value');
+    let need_agreement = $('option:selected', this).attr('need_agreement');
 
     // console.log("contractor = "+contractor);
-    if (contractor && contractor.length > 0) {
+    if (contractor && contractor.length > 0 && need_agreement) {
       url_path = base_url + '/dashboard/get_agreements';
       $('#agreement').removeAttr('disabled');
       $('#block_agreement').toggle();
@@ -185,6 +220,11 @@ $(document).ready(function () {
           $('#agreement').change();
         },
       });
+    } else {
+      $('#block_official').toggle();
+      $('#block_description').toggle();
+      $('#block_sum').toggle();
+      $('#block_document').toggle();
     }
   });
 
@@ -280,7 +320,7 @@ $(document).ready(function () {
 
     $('#modal_editItem_Employee').text($('#emp_name_' + record_id).val());
     $('#edit_itemEmployee').val($('#emp_name_' + record_id).val());
-    console.log('qqqqq', $('#emp_name_' + record_id).val());
+    //console.log('qqqqq', $('#emp_name_' + record_id).val());
 
     $('#modal_editItem_Description').text($('#descr_' + record_id).val());
     $('#edit_itemDescription').val($('#descr_' + record_id).val());
@@ -424,6 +464,8 @@ modal_addItem.addEventListener('show.bs.modal', function (event) {
         $.each(result, function (key, value) {
           let need_agreement = value.need_agreement == 1 ? 'true' : 'false'; //((typeof value.need_agreement !== 'undefined') || (value.need_agreement == null)) ? 'false' : ''
           let need_employee = value.need_employee == 1 ? 'true' : 'false';
+          let need_contractor = value.need_contractor ? value.need_contractor : 0;
+          let title = value.descr ? value.descr : '';
           select_str +=
             "<option value='" +
             value.id +
@@ -431,8 +473,11 @@ modal_addItem.addEventListener('show.bs.modal', function (event) {
             need_agreement +
             "' need_employee = '" +
             need_employee +
+            "' need_contractor = '" +
+            need_contractor + 
+            "' title='" + title +
             "'>" +
-            value.name +
+            value.name + 
             '</option>';
         });
         $('#item_name').html(select_str);
@@ -657,7 +702,7 @@ function openCurrentAccordionTab() {
 
 function restoreTabs() {
   const isTabSaved = localStorage.getItem("savetab");
-  console.log(isTabSaved, typeof isTabSaved, parseInt(isTabSaved));
+  //console.log(isTabSaved, typeof isTabSaved, parseInt(isTabSaved));
   if (parseInt(isTabSaved)) {
     openCurrentTab();
     openCurrentAccordionTab();

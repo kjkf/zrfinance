@@ -61,6 +61,15 @@ class Dashboard extends BaseController
       echo json_encode($contractors);
     }
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------//
+    //get contractors by company_id and item_type
+    public function get_contractors_by_category(){
+      $financeModel = new \App\Models\FinanceModel();
+      $catId = $_GET['category_id'];
+
+      $contractors = $financeModel->get_contractors_by_category($catId);
+      echo json_encode($contractors);
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------//
     //get agreements by company_id and item_type
     public function get_agreements(){
       $financeModel = new \App\Models\FinanceModel();

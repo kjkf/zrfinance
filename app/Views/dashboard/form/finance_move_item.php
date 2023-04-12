@@ -80,12 +80,13 @@
                 if(isset($items)){
                   echo "<option>Выберите</option>";
                   foreach ($items as $item) {
-                    $need_agreement = (isset($item['need_employee']) && $item['need_agreement'] == 1)?true:false;
+                    $need_agreement = (isset($item['need_agreement']) && $item['need_agreement'] == 1)?true:false;
                     $need_employee = (isset($item['need_employee']) && $item['need_employee'] == 1)?true:false;
+                    $need_contractor = (isset($item['need_contractor']) && $item['need_contractor'] == 1)?true:false;
                     if($item['id'] == $old_itemName){
-                      $option = "<option selected value='".$item['id']."' item_type='".$item_type."' need_agreement = '".$need_agreement."' need_employee = '".$need_employee."'>".$item['name']."</option>";
+                      $option = "<option selected value='".$item['id']."' item_type='".$item_type."' need_agreement = '".$need_agreement."' need_employee = '".$need_employee."' need_contractor = '".$need_contractor."'>".$item['name']."</option>";
                     }else{
-                      $option = "<option value='".$item['id']."' item_type='".$item_type."' need_agreement = '".$need_agreement."' need_employee = '".$need_employee."'>".$item['name']."</option>";
+                      $option = "<option value='".$item['id']."' item_type='".$item_type."' need_agreement = '".$need_agreement."' need_employee = '".$need_employee."' need_contractor = '".$need_contractor."'>".$item['name']."</option>";
                     }
                     echo $option;
                   }

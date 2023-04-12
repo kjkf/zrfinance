@@ -187,6 +187,7 @@ class FinanceModel extends Model
     public function get_all_expense_items(){
       $sql = "SELECT *
               FROM expense_item
+              order by name asc
              ";
       $query = $this->db->query($sql);
       return $query->getResultArray();
@@ -223,6 +224,24 @@ class FinanceModel extends Model
               WHERE company = ?
               GROUP BY contractor_id";
       $query = $this->db->query($sql, [intval($company_id),intval($company_id)]);
+
+      if (!empty($sql)){
+        return $query->getResultArray();
+      }else{
+        return false;
+      }
+    }
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------//
+    //gets contractors
+    public function get_contractors_by_category($catId){
+
+      if ($catId == '4') {
+        $sql = "SELECT id, `short_name` contractor_name FROM contractor order by short_name asc";
+        $query = $this->db->query($sql);
+      } else {
+        $sql = "SELECT id, `short_name` contractor_name FROM contractor where category = ?  order by short_name asc";
+        $query = $this->db->query($sql, [intval($catId)]);
+      }
 
       if (!empty($sql)){
         return $query->getResultArray();

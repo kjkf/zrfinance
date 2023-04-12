@@ -75,13 +75,14 @@
                   echo "<option>Выберите</option>";
                   // echo print_r($item_names);
                   foreach ($item_names as $item) {
-                    $need_agreement = (isset($item['need_employee']) && $item['need_agreement'] == 1)?true:false;
+                    $need_agreement = (isset($item['need_agreement']) && $item['need_agreement'] == 1)?true:false;
                     $need_employee = (isset($item['need_employee']) && $item['need_employee'] == 1)?true:false;
+                    $need_contractor = (isset($item['need_contractor']) && $item['need_contractor'] == 1)?true:false;
                     $need_goods = (isset($item['need_goods']) && $item['need_goods'] == 1)?true:false;
                     if($item['id'] == $old_itemName){
-                      $option = "<option selected value='".$item['id']."' item_type='".$item_type."' need_agreement = '".$need_agreement."' need_employee = '".$need_employee."' need_goods = '".$need_goods."'>".$item['name']."</option>";
+                      $option = "<option selected value='".$item['id']."' item_type='".$item_type."' need_agreement = '".$need_agreement."' need_employee = '".$need_employee."' need_goods = '".$need_goods."' need_contractor = '".$need_contractor."'>".$item['name']."</option>";
                     }else{
-                      $option = "<option value='".$item['id']."' item_type='".$item_type."' need_agreement = '".$need_agreement."' need_employee = '".$need_employee."' need_goods = '".$need_goods."'>".$item['name']."</option>";
+                      $option = "<option value='".$item['id']."' item_type='".$item_type."' need_agreement = '".$need_agreement."' need_employee = '".$need_employee."' need_goods = '".$need_goods."' need_contractor = '".$need_contractor."'>".$item['name']."</option>";
                     }
                     echo $option;
                   }
@@ -150,7 +151,7 @@
             </div>
             <div class="mb-4" id="block_goods">
               <label for="goods" class="col-form-label" >Товары:</label>
-              <select class="mdb-select form-select" aria-label="Default select example" id = "goods" name = "goods" disabled>
+              <select class="mdb-select form-select" aria-label="" id = "goods" name = "goods" disabled>
                 <option selected>Выберите</option>
                 <option >Что-то пошло не так</option>
               </select>
