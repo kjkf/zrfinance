@@ -183,7 +183,7 @@
             </div>
             <div class="mb-4" id="block_document">
               <label class="document" for="user_doc">Подтверждающий документ:</label>
-              <input type="file" required class="form-control" id="user_doc" name="user_doc" single value="<?php echo (isset($old_userDoc) && !empty($old_userDoc))?$old_userDoc:''?>"/>
+              <input type="file"  class="form-control" id="user_doc" name="user_doc" single value="<?php echo (isset($old_userDoc) && !empty($old_userDoc))?$old_userDoc:''?>"/>
               <span class="text-danger"> <?= isset($validation) ? display_error($validation, 'user_doc'):''?> </span>
             </div>
         </div>
