@@ -1,4 +1,3 @@
-
 -- ==================================== CREATE TABLE ==================================== --
 
 CREATE TABLE `account` (
@@ -69,6 +68,7 @@ CREATE TABLE `receipt` (
  `agreement_forzr` int(11) DEFAULT NULL,
  `agreement_fromzr` int(11) DEFAULT NULL,
  `employee` int(11) DEFAULT NULL,
+ `goods` int(11) DEFAULT NULL,
  `description` varchar(500) DEFAULT NULL,
  `document` varchar(255) NOT NULL,
  `author` int(11) NOT NULL,
@@ -79,6 +79,7 @@ CREATE TABLE `receipt` (
  PRIMARY KEY (`id`),
  KEY `agreement` (`agreement_forzr`),
  KEY `employee` (`employee`),
+ KEY `goods` (`goods`),
  KEY `author` (`author`),
  KEY `company` (`company_account`),
  KEY `item` (`item`),
@@ -89,6 +90,7 @@ CREATE TABLE `receipt` (
  CONSTRAINT `receipt_related_agreemnt` FOREIGN KEY (`agreement_forzr`) REFERENCES `agreement_forZR` (`id`),
  CONSTRAINT `receipt_related_company` FOREIGN KEY (`company_account`) REFERENCES `account` (`id`),
  CONSTRAINT `receipt_related_employee` FOREIGN KEY (`employee`) REFERENCES `employee` (`id`),
+ CONSTRAINT `receipt_related_goods` FOREIGN KEY (`goods`) REFERENCES `goods` (`id`),
  CONSTRAINT `receipt_related_item` FOREIGN KEY (`item`) REFERENCES `receipt_item` (`id`),
  CONSTRAINT `receipt_related_status` FOREIGN KEY (`status`) REFERENCES `status` (`id`),
  CONSTRAINT `receipt_related_user` FOREIGN KEY (`author`) REFERENCES `users` (`id`)
@@ -430,6 +432,9 @@ INSERT INTO `receipt_item`(`name`, `need_agreement`, `need_goods`) VALUES
 ('Возврат денежных средств по договору', 1, null),
 ('Прочие', null, null),
 ('Остаток на начало периода внедрения', null, null),
+('Приход по проекту', 1, null),
+('Приход по люлькам', 1, null),
+('Приход по ГП', null, null),
 ('Оплата товаров (оптово-розничная продажа, аренда)', null, 1);
 
 
