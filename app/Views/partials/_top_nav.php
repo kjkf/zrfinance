@@ -17,6 +17,7 @@
         <?php if ($is_admin || $is_chief) :?>
         <li><a class="dropdown-item" href="<?php echo base_url('dashboard')?>">Движение</a></li>
         <li><a class="dropdown-item" href="<?php echo base_url('report')?>">Отчёты</a></li>
+        <li><a class="dropdown-item" href="<?php echo base_url('salary')?>">Заработная плата</a></li>
         <li><a class="dropdown-item" href="<?php echo base_url('classificators')?>">Классификаторы</a></li>
         <?php endif; ?>
         <li><a href="<?php echo  site_url('auth/logout')?>" class="dropdown-item">Выйти</a></li>

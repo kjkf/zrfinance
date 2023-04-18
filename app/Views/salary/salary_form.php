@@ -1,0 +1,1 @@
+<?php echo view('partials/_top_nav.php'); ?>
