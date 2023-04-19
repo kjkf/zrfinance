@@ -1,3 +1,52 @@
+:root {
+  --code-color: darkred;
+  --code-bg-color: #aaaaaa;
+  --code-font-size: 14px;
+  --code-line-height: 1.4;
+  /*--scroll-bar-color: #c5c5c5;
+  --scroll-bar-bg-color: #f6f6f6;*/
+  --scroll-bar-color: #c5c5c5;
+  --scroll-bar-bg-color: transparent;
+}
+
+pre {
+  color: var(--code-color);
+  font-size: var(--code-font-size);
+  line-height: var(--code-line-height);
+  background-color: var(--code-bg-color);
+}
+
+.code-block {
+  max-height: 100px;
+  overflow: auto;
+  padding: 8px 7px 5px 15px;
+  margin: 0px 0px 0px 0px;
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-corner { background: rgba(0,0,0,0); }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-bar-color) var(--scroll-bar-bg-color);
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scroll-bar-bg-color);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-bar-color);
+  border-radius: 20px;
+  border: 1px solid var(--scroll-bar-bg-color);
+}
+
 .fa-trash-can{
   color: #A50000;
 }
@@ -139,3 +188,76 @@ td {
 .ml10 {
   margin-left: 10px;
 }
+/*==================================================================================================================================================================================================================================*/
+.content {
+  margin-top: 50px;
+}
+
+.department:not(:first-child) {
+  margin-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #757575;
+}
+
+.employee_salary {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.employee_salary td, .employee_salary th {
+  border-collapse: collapse;
+  border: 1px solid #757575;
+  padding: 5px;
+}
+
+.employee_salary th {
+  text-align: center;
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+  text-transform: capitalize;
+}
+
+.employee_salary thead tr {
+  background-color: #ccffcc;
+}
+
+.employee_salary tr:nth-child(even) {
+  background-color: rgba(220, 220, 220, .3)
+}
+
+.td_text {
+  text-align: left;
+}
+
+.td_col {
+  text-align: center;
+}
+
+.td_money, .td_num {
+  text-align: right;
+}
+
+.employee_salary th.th_money {
+  /*padding-right: 30px !important;
+  padding-left: 30px !important;*/
+  min-width: 120px;
+}
+
+.clip {
+  max-width: 50px;
+  white-space: nowrap; /* Запрещаем перенос строк */
+  overflow: hidden; /* Обрезаем все, что не помещается в область */
+  padding: 5px; /* Поля вокруг текста */
+  text-overflow: ellipsis; /* Добавляем многоточие */
+ }
+
+ .employee_salary tr.trow.active {
+  background-color: green;
+}
+
+.fld {
+  width: 100%;
+  max-width: 100%;
+  text-align: right;
+}
+

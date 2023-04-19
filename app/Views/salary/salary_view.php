@@ -6,7 +6,7 @@
   if (isset($validation)) : ?>
   <div class="have-errors">
     <?= $validation->listErrors() ?>
-    <a href="<?= base_url('dashboard') ?>" class="goto">Вернуться</a>
+    <a href="<?= base_url('salary') ?>" class="goto">Вернуться</a>
   </div>
   <?php endif; ?>
   <div class="row" style="">
