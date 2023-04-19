@@ -20,6 +20,18 @@ class UsersModel extends Model
     //   return $query->getResultArray();
     // }
 
+    function get_time_balance() {
+      $sql = "select * from working_time_balance where year = YEAR(now())";
+
+      $query = $this->db->query($sql);
+
+      if (!empty($sql)) {
+        return $query->getResultArray();
+      } else {
+        return false;
+      }
+    }
+
 }
 
 ?>

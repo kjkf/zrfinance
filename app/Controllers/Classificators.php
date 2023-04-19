@@ -17,6 +17,8 @@ class Classificators extends BaseController
       $loggedUserID = session()->get('loggedUser');
       $userInfo = $usersModel->find($loggedUserID);
 
+      $time_balance = $this->get_time_balance();
+
       $data=[
         'title' => 'Классификаторы',
         'user'=> $userInfo,
@@ -27,6 +29,7 @@ class Classificators extends BaseController
         'companies' => $financeModel->get_all_companies(),
         'agreements' => $this->getAgreements(),
         //'contractors' => $this->(),
+        'balance_for_current_year' => $time_balance
       ];
 
       echo view('partials/_header', $data);
@@ -47,6 +50,12 @@ class Classificators extends BaseController
       return $agreements;
     }
 
+    public function get_time_balance() {
+      $usersModel = new \App\Models\UsersModel();
 
+      $balance = $usersModel->get_time_balance();
+
+      return $balance;
+    }
     
 }

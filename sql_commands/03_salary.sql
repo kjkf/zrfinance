@@ -68,6 +68,11 @@ CREATE TABLE `working_time_balance` (
  `working_calendar_days` int(11) not null, -- календарные дни без праздников
  `working_5_days` int(11) not null, -- рабочие дни - пятидневка
  `working_6_days` int(11) not null, -- рабочие дни - шестидневка
+
+ `w40_5d_hours` int(11) not null, -- рабочие часы - пятидневка 40часовая рабочая неделя
+ `w40_6d_hours` int(11) not null, -- рабочие часы - шестидневка 40часовая рабочая неделя
+ `w36_5d_hours` int(11) not null, -- рабочие часы - пятидневка 36часовая рабочая неделя
+ `w36_6d_hours` int(11) not null, -- рабочие часы - шестидневка 36часовая рабочая неделя
  
 
  PRIMARY KEY (`id`)
@@ -88,19 +93,22 @@ CREATE TABLE `working_time_balance` (
 --ALTER TABLE employee ADD CONSTRAINT `user_company` FOREIGN KEY (`company`) REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ================================ INSERTS ================================
-insert into `working_time_balance`(`year`, `month`,`calendar_days`, `working_calendar_days`, `working_5_days`, `working_6_days`) VALUES
-(2023, 0, 31, 29, 20, 23),
-(2023, 1, 28, 28, 20, 24),
-(2023, 2, 31, 27, 19, 23),
-(2023, 3, 30, 30, 20, 25),
-(2023, 4, 31, 28, 20, 24),
-(2023, 5, 30, 30, 21, 25),
-(2023, 6, 31, 30, 20, 25),
-(2023, 7, 31, 30, 22, 26),
-(2023, 8, 30, 30, 21, 26),
-(2023, 9, 31, 30, 21, 25),
-(2023, 10, 30, 30, 22, 26),
-(2023, 11, 31, 30, 20, 25);
+insert into `working_time_balance`(`year`, `month`,`calendar_days`, `working_calendar_days`, `working_5_days`, `working_6_days`, `w40_5d_hours`, `w40_6d_hours`, `w36_5d_hours`, `w36_6d_hours`) VALUES
+(2023, 0, 31, 29, 20, 23, 160, 155, 144, 138),
+(2023, 1, 28, 28, 20, 24, 160, 160, 144, 144),
+(2023, 2, 31, 27, 19, 23, 152, 153, 136.8, 138),
+(2023, 3, 30, 30, 20, 25, 160, 165, 144, 150),
+(2023, 4, 31, 28, 20, 24, 160, 160, 144, 144),
+(2023, 5, 30, 30, 21, 25, 168, 167, 151.2, 150),
+(2023, 6, 31, 30, 20, 25, 160, 165, 144, 150),
+(2023, 7, 31, 30, 22, 26, 176, 174, 158.4, 156),
+(2023, 8, 30, 30, 21, 26, 168, 172, 151.2, 156),
+(2023, 9, 31, 30, 21, 25, 168, 167, 151.2, 150),
+(2023, 10, 30, 30, 22, 26, 176, 174, 158.4, 156),
+(2023, 11, 31, 30, 20, 25, 160, 167, 144, 150);
+
+
+
 
 
 insert into `department`(`id`, `name`) VALUES

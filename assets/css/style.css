@@ -261,3 +261,37 @@ td {
   text-align: right;
 }
 
+/*=====================================*/
+table.time_balance {
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+table.time_balance td, table.time_balance th {
+  border: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+
+
+tr.empty td {
+  text-align: center;
+}
+
+table.time_balance td {
+  background-color: white;
+  text-transform: capitalize;
+}
+
+table.time_balance td:first-child {
+  font-weight: bold;
+}
+
+.wrapper {
+  padding-bottom: 20px;
+}
+
+.classif_title {
+  padding: 25px 0;
+  text-align: center;
+}
