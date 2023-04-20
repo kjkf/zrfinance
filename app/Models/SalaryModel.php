@@ -29,6 +29,19 @@ class SalaryModel extends Model
     }
   }
 
+  public function getMonthFZP_by_id($id)
+  {
+    $sql = "select * from salary_fzp where id = ?";
+
+    $query = $this->db->query($sql, array($id));
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return false;
+    }
+  }
+
   public function create_month_fzp($user) {
       $builder = $this->db->table($this->table);
       $data = [
@@ -47,18 +60,22 @@ class SalaryModel extends Model
     
   }
 
-  public function getEmployeesInfo($company_id)
+  public function getEmployeesInfo($company_id, $fzp_id, $date)
   {
-    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company
-    from employee 
+    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`, `increase_payments`, `increase_explanation`, `decrease_payments`, `decrease_explanation`, CASE
+    WHEN direction.name = 'Цех' THEN (select `w40_6d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
+    ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
+END AS working_hours
+    from salary_month 
+    left JOIN employee on employee.id = salary_month.`employee_id`
     left join position on position.id = employee.position
     left join department on department.id = employee.`department`
     left join direction on direction.id = employee.direction
     left join company on company.id = employee.company
-    where `fire_date` is null and employee.company in (2,3,4) and employee.company = ?
+    where `salary_fzp`=? and employee.company in (2,3,4) and employee.company = ?
     ORDER by employee.company asc,  `surname` ASC";
 
-    $query = $this->db->query($sql, array(intval($company_id)));
+    $query = $this->db->query($sql, array($date, $date, $date, $date, intval($fzp_id), intval($company_id)));
 
     if (!empty($sql)) {
       return $query->getResultArray();

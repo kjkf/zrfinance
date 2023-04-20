@@ -102,6 +102,13 @@ function createField(id, type) {
   fld.className = "fld";
   if(type == 'number') {
     fld.min = 0;
+    if (id = "working_days_fact") {
+      fld.step = 10;
+      fld.max = 300;
+    } else {
+      fld.step = 1000;
+    }
+    
   }
 
   return fld;

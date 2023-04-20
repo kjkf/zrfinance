@@ -72,13 +72,15 @@ if (isset($validation)) : ?>
             <td><span><?=$employee['surname']?> <?=$employee['name']?></span></td>
             <td><span><?=$employee['position']?></span></td>
             <td><span><?=$employee['company']?></span></td>
-            <td><span>11</span></td>
-            <td><span>12</span></td>
-            <td><span><?=number_format($employee['salary'], 2, '.', ' ')?></span></td>
-            <td><span></span></td>
-            <td><span></span></td>
-            <td><span></span></td>
-            <td><span></span></td>
+            <td><span><?=$employee['working_hours_per_month']?></span></td>
+            <td><span><?=$employee['worked_hours_per_month']?></span></td>
+            <td><span><?=number_format($employee['employee_salary'], 2, '.', ' ')?></span></td>
+            <?php $workedSalary = $employee['employee_salary']/$employee['working_hours_per_month']*$employee['worked_hours_per_month']?>
+            <td><span><?=number_format($workedSalary, 2, '.', ' ')?></span></td>
+            <td><span><?=$employee['increase_payments']?></span></td>
+            <td><span><?=$employee['decrease_payments']?></span></td>
+            <?php $resultSalary = $workedSalary + $employee['increase_payments'] - $employee['decrease_payments'];?>
+            <td><span><?=number_format($resultSalary, 2, '.', ' ')?></span></td>
           </tr>
           <?php endforeach;?>
         </tbody>

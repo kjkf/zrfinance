@@ -49,7 +49,7 @@
     <tbody>
     <?php foreach ($balance_for_current_year as $item) : ?>
       <tr>
-        <td><?=getMonthByNum($item['month'])?></td>
+        <td><?=getMonthByNum($item['month'] - 1)?></td> <!---1 потому что в БД месяца начинаются с 1-->
         <td><?=$item['calendar_days']?></td>
         <td><?=$item['working_calendar_days']?></td>
         <td><?=$item['working_5_days']?></td>

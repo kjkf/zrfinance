@@ -41,10 +41,12 @@ class Salary extends BaseController
       $this->create_month_salary();
     } else {
       $fzp_id = $fzp[0]['id'];
+      return  redirect()->to('salary/fzp/'.$fzp_id);
     }
 
     $companies = $this->salaryModel->getCompaniesInfo();
-    $employeesArr = $this->prepareEmployeesInfo($companies, $fzp_id);
+    $date = $now = time();
+    $employeesArr = $this->prepareEmployeesInfo($companies, $fzp_id, $date);
     $employees = $employeesArr['employees'];
     //print_r($employeesArr['json']);
     $json = json_encode($employeesArr['json']);
@@ -67,15 +69,31 @@ class Salary extends BaseController
   }
 
   public function update_fzp($id) {
+    
     $usersModel = new \App\Models\UsersModel();
     $loggedUserID = session()->get('loggedUser');
     $userInfo = $usersModel->find($loggedUserID);
 
-
+    $companies = $this->salaryModel->getCompaniesInfo();
+    $fzp = $this->salaryModel->getMonthFZP_by_id($id);
+    $fzp_date = $fzp[0]['date_time'];
+    $timestamp = strtotime($fzp_date);
+    
+    $employeesArr = $this->prepareEmployeesInfo($companies, $id, $fzp_date);
+    $employees = $employeesArr['employees'];
+    //print_r($employeesArr['json']);
+    $json = json_encode($employeesArr['json']);
+    
     $data = [
-      'title' => 'ОБНОВИТЬ Фонд заработной платы',
+      'title' => 'СОЗДАТЬ Фонд заработной платы',
       'page_name' => 'salary_fond',
-      'user' => $userInfo
+      'user' => $userInfo, 
+      'employees' => $employees,
+      'employees_count' => $this->getEmployeesCount($employees),
+      'month' => getMonthByNum(date("n", $timestamp) - 1),
+      'year' => date('Y', $timestamp),
+      'json' => $json,
+      'fzp_id' => $id
     ];
 
     echo view('partials/_header', $data);
@@ -83,11 +101,11 @@ class Salary extends BaseController
     echo view('partials/_footer', $data);
   }
 
-  private function prepareEmployeesInfo($companies, $fzp_id) {
+  private function prepareEmployeesInfo($companies, $fzp_id, $date) {
     $employees = array();
     $json = array();
     foreach($companies as $company) {
-      $employeesInfo = $this->salaryModel->getEmployeesInfo($company['id']);
+      $employeesInfo = $this->salaryModel->getEmployeesInfo($company['id'], $fzp_id, $date);
       $key = $company['id']."|".$company['name'];
       $employees[$key] = $employeesInfo;
 
