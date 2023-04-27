@@ -17,6 +17,7 @@
     <?php if(isset($page_name) && ($page_name == 'salary_fond' )){ ?>
       <link rel="stylesheet" href="<?= base_url('assets/vendors/jquery/jquery-ui.min.css')?>">
       <link rel="stylesheet" href="<?= base_url('assets/vendors/datatables/datatables.min.css')?>">
+      <link rel="stylesheet" href="<?= base_url('assets/vendors/fixedColumns.dataTables.min.css')?>">
     <?php } ?>
     <script>
     var base_url = "<?php echo base_url();?>";

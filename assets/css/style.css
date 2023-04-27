@@ -210,19 +210,40 @@ td {
   padding: 5px;
 }
 
-.employee_salary th {
+.employee_salary  th {
   text-align: center;
   padding-right: 15px !important;
   padding-left: 15px !important;
   text-transform: capitalize;
 }
 
-.employee_salary thead tr {
+.employee_salary thead tr th{
   background-color: #ccffcc;
 }
 
-.employee_salary tr:nth-child(even) {
+.employee_salary tr:nth-child(even)  td{
   background-color: rgba(220, 220, 220, .3)
+}
+
+.employee_salary tr:nth-child(even)  td.dtfc-fixed-left{
+  background-color: #eee; /*rgba(220, 220, 220, .3);*/
+  z-index: 1;
+}
+
+.employee_salary tr:nth-child(odd)  td.dtfc-fixed-left{
+  background-color: #fff; /*rgba(220, 220, 220, .3);*/
+  z-index: 1;
+}
+
+.employee_salary tfoot th {
+text-align: right;
+}
+.employee_salary tfoot tr th{
+  background-color: #ffc000;
+}
+
+.dtfc-fixed-left {
+  z-index: 1;
 }
 
 .td_text {
@@ -241,6 +262,10 @@ td {
   /*padding-right: 30px !important;
   padding-left: 30px !important;*/
   min-width: 120px;
+}
+
+.employee_salary th.th_long_text {
+  min-width: 220px;
 }
 
 .clip {
@@ -294,4 +319,12 @@ table.time_balance td:first-child {
 .classif_title {
   padding: 25px 0;
   text-align: center;
+}
+
+.salary-view .row {
+  margin-top: 20px;
+}
+
+.buttons .btn:not(:last-child){
+  margin-right: 10px;
 }

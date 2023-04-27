@@ -16,7 +16,8 @@ CREATE TABLE `salary_fzp` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `author` int(11) NOT NULL, 
- `is_approved` int(2) DEFAULT 0,
+ `is_approved` int(2) DEFAULT 0, -- 0 - не утрвержден, 1 - утвержден, 2 - отправлен на доработку, 4 - на согласовании
+ `rejection_reason` varchar(500), default NULL ,
 
  PRIMARY KEY (`id`),
 
@@ -35,9 +36,9 @@ CREATE TABLE `salary_month` (
  `working_hours_per_month` int(11) NOT NULL, -- количество рабочих часов
  `worked_hours_per_month` int(11) NOT NULL,  -- количество отработанных часов
 
- `increase_payments` double(10,2) DEFAULT null,  -- бонусы и прибавки
+ `increase_payments` double(10,2) DEFAULT 0,  -- бонусы и прибавки
  `increase_explanation` text DEFAULT null,       -- пояснения к бонусам и прибавкам
- `decrease_payments` double(10,2) DEFAULT null,  -- штрафы и удержания
+ `decrease_payments` double(10,2) DEFAULT 0,  -- штрафы и удержания
  `decrease_explanation` text DEFAULT null,       -- пояснения к штрафам и удержаниям
 
  `advances` double(10,2) DEFAULT null,           -- авансы

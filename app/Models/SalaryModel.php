@@ -18,7 +18,7 @@ class SalaryModel extends Model
 
   public function getCurrentMonthFZP()
   {
-    $sql = "select * from salary_fzp where MONTH(`date_time`) = MONTH(now()) and YEAR(`date_time`) = YEAR(now())";
+    $sql = "select * from salary_fzp where MONTH(`date_time`) = MONTH(now()) and YEAR(`date_time`) = YEAR(now()) ";
 
     $query = $this->db->query($sql);
 
@@ -42,6 +42,19 @@ class SalaryModel extends Model
     }
   }
 
+  public function getMonthFZPs_by_year($year)
+  {
+    $sql = "select * from salary_fzp where year(date_time) = year(?) and is_approved = 1 order by date_time";
+
+    $query = $this->db->query($sql, array($year));
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return false;
+    }
+  }
+
   public function create_month_fzp($user) {
       $builder = $this->db->table($this->table);
       $data = [
@@ -50,6 +63,7 @@ class SalaryModel extends Model
       $builder->insert($data);
       $insert_id =  $this->db->insertID();//$builder->insert_id();
       
+      write_to_file("fzp_log", "create fzp - id=".$insert_id );
       return  $insert_id;
   }
 
@@ -85,7 +99,10 @@ END AS working_hours
   }
 
   public function getAllEmployeesForFZP() {
-    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(now()) and YEAR(`date_time`) = YEAR(now())) as salary_fzp, employee.salary as employee_salary, 160 as working_hours_per_month
+    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(now()) and YEAR(`date_time`) = YEAR(now())) as salary_fzp, employee.salary as employee_salary, CASE
+    WHEN employee.direction = 2 THEN (select `w40_6d_hours` from working_time_balance where year = year(now()) AND `month`= month(now()))
+    ELSE (select `w40_5d_hours` from working_time_balance where year = year(now()) AND `month`= month(now()))
+    END AS working_hours_per_month
     from employee 
     where `fire_date` is null and employee.company in (2,3,4)
     ORDER by employee.company asc,  `surname` ASC";
@@ -125,8 +142,28 @@ END AS working_hours
     $builder->where('salary_fzp', $fzp_id);
     $res = $builder->update();
     
+    $log_info =  "employee_id: ".$id."; worked_hours_per_month:".$_POST['worked_hours_per_month']."; increase_payments: ".$_POST['increase_payments']."; decrease_payments = ".$_POST['decrease_payments'];
+    d( $log_info);
+    write_to_file("fzp_log", "update_employee_salary - ".$log_info);
+
     return $res;
     //return true;
+  }
+
+  public function update_fzp_status() {
+    $id = $_POST['id'];
+    
+    $builder = $this->db->table('salary_fzp');
+    $builder->set('is_approved', $_POST['is_approved']);
+    $builder->set('rejection_reason', $_POST['rejection_reason']);
+    
+    $builder->where('id', $id);
+    $res = $builder->update();
+    
+    $log_info = $_POST['is_approved'] == 2 ? " Вернуть на доработку - ".$_POST['rejection_reason'] : ($_POST['is_approved'] == 1 ? 'утвержден' : 'на согласовании');
+    write_to_file("fzp_log", "update fzp_status  - ".$log_info);
+    
+    return $res;
   }
  
 }

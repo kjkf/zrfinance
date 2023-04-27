@@ -15,6 +15,7 @@ $(document).ready(function () {
     let need_employee =
       $('option:selected', this).attr('need_employee') === 'true';
     let need_contractor = $('option:selected', this).attr('need_contractor');
+    need_contractor = parseInt(need_contractor);
     let need_goods = $('option:selected', this).attr('need_goods') === 'true';
     let companyID = $('#company_id').val();
 

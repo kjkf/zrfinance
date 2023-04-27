@@ -404,8 +404,9 @@
 <script src="<?= base_url('assets/js/classificators.js')?>"></script>
 <?php } ?>
 
-<?php if(isset($page_name) && $page_name == 'salary_fond'){ ?>
+<?php if(isset($page_name) && $page_name == 'salary_month'){ ?>
   <script src="<?= base_url('assets/vendors/datatables/datatables.min.js')?>"></script>
+  <script src="<?= base_url('assets/vendors/datatables/dataTables.fixedColumns.min.js')?>"></script>
   <script src="<?= base_url('assets/js/salary.js')?>"></script>
 <?php } ?>
 </body>
