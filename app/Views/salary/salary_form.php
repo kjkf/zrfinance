@@ -36,12 +36,12 @@ if (isset($fzp) && !empty($fzp)) :?>
     if ($status != 1) :
     ?>
       <?php if ($status == "4" && $user_role == 3) { ?>
-        <button class="btn btn-info btn-sm mr-1" id="submit">Утвердить</button>
-        <!--<button class="btn btn-info btn-sm mr-1" id="return">Отправить на доработку</button>-->
-        <button class="btn btn-success mr-1" data-bs-toggle="modal" data-bs-target="#modal_Return">Отправить на доработку</button>
+        <button class="btn btn-secondary btn-sm mr-1" id="submit">Утвердить</button>
+        <!--<button class="btn btn-secondary btn-sm mr-1" id="return">Отправить на доработку</button>-->
+        <button class="btn btn-secondary mr-1" data-bs-toggle="modal" data-bs-target="#modal_Return">Отправить на доработку</button>
 
       <?php } else if (($status == "0" || $status == "2") && $user_role == 5) { ?>
-        <button class="btn btn-info btn-sm mr-1" id="send">Отправить на утверждение</button>
+        <button class="btn btn-secondary btn-sm mr-1" id="send">Отправить на утверждение</button>
       <?php } ?>
 
     <?php endif; ?>
@@ -53,7 +53,6 @@ if (isset($fzp) && !empty($fzp)) :?>
       <div class="alert alert-danger mt-2" role="alert">
         <?php echo $fzp['rejection_reason'] ?>
       </div>
-      <!--<button class="btn btn-danger btn-sm mr-1" id="hide">Спрятать</button>-->
     </div>
   <?php endif; ?>
 
@@ -117,8 +116,14 @@ if (isset($fzp) && !empty($fzp)) :?>
                   <td><span><?= number_format($employee['employee_salary'], 2, '.', ' ') ?></span></td>
                   <?php $workedSalary = $employee['employee_salary'] / $employee['working_hours_per_month'] * $employee['worked_hours_per_month'] ?>
                   <td><span><?= number_format($workedSalary, 2, '.', ' ') ?></span></td>
-                  <td><span><?= number_format($employee['increase_payments'], 2, '.', ' ')?></span></td>
-                  <td><span><?=number_format($employee['decrease_payments'], 2, '.', ' ')?></span></td>
+                  <td>
+                    <span><?= number_format($employee['increase_payments'], 2, '.', ' ')?></span>
+                    <input type="hidden" class="incReason" value="<?php echo $employee['increase_explanation']?>">
+                  </td>
+                  <td>
+                    <span><?=number_format($employee['decrease_payments'], 2, '.', ' ')?></span>
+                    <input type="hidden" class="decReason" value="<?php echo $employee['decrease_payments']?>">
+                  </td>
                   <?php $resultSalary = $workedSalary + $employee['increase_payments'] - $employee['decrease_payments']; ?>
                   <td><span><?= number_format($resultSalary, 2, '.', ' ') ?></span></td>
                 </tr>
@@ -189,4 +194,5 @@ if (isset($fzp) && !empty($fzp)) :?>
     </div>
   </div>
 </div>
+
 <!--</template>-->

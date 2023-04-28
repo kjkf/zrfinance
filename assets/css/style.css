@@ -328,3 +328,7 @@ table.time_balance td:first-child {
 .buttons .btn:not(:last-child){
   margin-right: 10px;
 }
+
+.w-70p {
+  width: 70% !important;
+}

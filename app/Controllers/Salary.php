@@ -2,12 +2,17 @@
 
 namespace App\Controllers;
 use App\Models\SalaryModel;
+use CodeIgniter\I18n\Time;
 class Salary extends BaseController
 {
+  var $userInfo;
   public function __construct()
   {
     helper(['url', 'form', 'file', 'date']);
     $this->salaryModel = new SalaryModel();
+    $usersModel = new \App\Models\UsersModel();
+    $loggedUserID = session()->get('loggedUser');
+    $this->userInfo = $usersModel->find($loggedUserID);
   }
 
   public function index()
@@ -16,14 +21,17 @@ class Salary extends BaseController
     $loggedUserID = session()->get('loggedUser');
     $userInfo = $usersModel->find($loggedUserID);
 
-    $currentYearFZPs = $this->salaryModel->getMonthFZPs_by_year(date('Y-m-d H:i:s'));
+    $currentYearFZPs = $this->salaryModel->getMonthFZPs_by_year(date('Y-m-d H:i:s'), 1);
+    $currentYearWorkingFZPs = $this->salaryModel->getMonthFZPs_by_year(date('Y-m-d H:i:s'), "0, 1, 4");
 
     $data = [
       'title' => 'Фонд заработной платы',
       'page_name' => 'salary_fond',
       'user' => $userInfo,
       'is_current_fzp' => $this->salaryModel->getCurrentMonthFZP(),
-      'currentYearFZPs' => $currentYearFZPs
+      'currentYearFZPs' => $currentYearFZPs,
+      'currentYearWorkingFZPs' => $currentYearWorkingFZPs,
+
     ];
 
     echo view('partials/_header', $data);
@@ -31,6 +39,7 @@ class Salary extends BaseController
     echo view('partials/_footer', $data);
   }
 
+  /** create fzp for current month */
   public function create_fzp() {
     $usersModel = new \App\Models\UsersModel();
     $loggedUserID = session()->get('loggedUser');
@@ -108,6 +117,30 @@ class Salary extends BaseController
     echo view('partials/_footer', $data);
   }
 
+  public function create_fzp_by_date() {
+    $fzpMonth = $_POST['fzpMonth'];
+    $fzpYear = $_POST['fzpYear'];
+    $fzp = $this->salaryModel->is_fzp_by_date($fzpMonth, $fzpYear);
+    if (!empty($fzp)) {
+      $fzp_id = $fzp[0]['id'];
+      $result = "exist";
+    } else {
+      $time = Time::create($fzpYear, $fzpMonth, 1);
+      $date = $time->toDateString();
+    
+     // $date = date_create($time);
+      $fzp_id = $this->salaryModel->create_fzp_by_date($this->userInfo['id'], $date );
+      $this->create_month_salary_by_date($date);
+      $result = "new";
+      
+    }
+
+    return json_encode(array(
+      "fzp_id" => $fzp_id,
+      "type" => $result,
+    ));
+  }
+
   private function prepareEmployeesInfo($companies, $fzp_id, $date) {
     $employees = array();
     $json = array();
@@ -142,6 +175,12 @@ class Salary extends BaseController
 
   public function create_month_salary() {
     $data = $this->salaryModel->getAllEmployeesForFZP();
+
+    $this->salaryModel->create_month_salary($data);
+  }
+
+  public function create_month_salary_by_date($date) {
+    $data = $this->salaryModel->getAllEmployeesForFZP_by_date($date);
 
     $this->salaryModel->create_month_salary($data);
   }

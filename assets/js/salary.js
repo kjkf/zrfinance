@@ -1,6 +1,7 @@
 let CURRENT_TR = null;
 let api = null;
 document.addEventListener('DOMContentLoaded', e => {
+  console.log("DOMContentLoaded!!!");
   const tables = $('.employee_salary').DataTable({
     'scrollY': '50vh',
     'scrollX':true,
@@ -89,7 +90,7 @@ document.addEventListener('DOMContentLoaded', e => {
       $(api.column(11).footer()).html(numberWithSpaces(total));
   },
   });
-
+  
   updateTotalSumToPay();
 
 

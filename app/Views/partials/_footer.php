@@ -409,5 +409,11 @@
   <script src="<?= base_url('assets/vendors/datatables/dataTables.fixedColumns.min.js')?>"></script>
   <script src="<?= base_url('assets/js/salary.js')?>"></script>
 <?php } ?>
+
+<?php if(isset($page_name) && $page_name == 'salary_fond'){ ?>
+  <script src="<?= base_url('assets/vendors/jquery/jquery-ui.min.js')?>"></script>
+  <script src="<?= base_url('assets/js/salary_view.js')?>"></script>
+<?php }?>
+
 </body>
 </html>

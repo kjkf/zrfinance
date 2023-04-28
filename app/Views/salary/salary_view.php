@@ -25,8 +25,9 @@
   </div>
 
   <!--тут все утвержденные ФЗП-->
-  <div class="row">
+  <div class="row fzp-wrapper">
     <?php if(isset($currentYearFZPs) && !empty($currentYearFZPs)) :?>
+      <h3>Утвержденные ФЗП</h3>
     <?php foreach($currentYearFZPs as $fzp) :
       $fzpId = $fzp['id'];
       $timestamp = strtotime($fzp['date_time']);
@@ -41,14 +42,66 @@
     <?php endif;?>
   </div>
 
-  
+  <!--тут созданные ФЗП-->
   <div class="row">
-    <?php if (isset($is_current_fzp) && empty($is_current_fzp)) :?>
-     <a href="<?=base_url('salary/fzp')?>">Создать ФЗП за текущий месяц</a>    <!--если нет ФЗП на этот месяц-->
-    <?php elseif ($is_current_fzp[0]['is_approved'] != "1"):
-      $fzp_id = $is_current_fzp[0]['id']?>
-      <a href="<?=base_url('salary/fzp/'.$fzp_id)?>">Открыть ФЗП за текущий месяц</a> <!--если есть не утрвержденный ФЗП на этот месяц-->
+    <?php if(isset($currentYearWorkingFZPs) && !empty($currentYearWorkingFZPs)) :?>
+      <h3>Созданные, но ещё не утвержденные ФЗП</h3>
+    <?php foreach($currentYearWorkingFZPs as $fzp) :
+      $fzpId = $fzp['id'];
+      $timestamp = strtotime($fzp['date_time']);
+      //if (date("n") == date("n", $timestamp)) continue;
+      $fzp_month = getMonthByNum(date("n", $timestamp) - 1);
+      $fzp_year = date('Y', $timestamp);
+      ?>
+      <div>
+        <a href="<?=base_url('salary/fzp/'.$fzpId)?>">Открыть ФЗП за <?=$fzp_month?> месяц  <?=$fzp_year?></a>
+      </div>
+    <?php endforeach;?>
     <?php endif;?>
   </div>
 
+  <?php 
+  $user_role = $user['role'];
+  if ($user_role != 3) { ?>
+    <div class="mt-3">
+    <?php $cur_month = getMonthByNum(date('n')-1);?>
+    <?php if (isset($is_current_fzp) && empty($is_current_fzp)) :?>
+     <a class="btn btn-secondary" href="<?=base_url('salary/fzp')?>">Создать ФЗП за текущий месяц(<?= $cur_month?>)</a>    <!--если нет ФЗП на этот месяц-->
+    <?php// elseif ($is_current_fzp[0]['is_approved'] != "1"):
+      //$fzp_id = $is_current_fzp[0]['id']?>
+      <!--<a class="btn btn-secondary" href="<?=base_url('salary/fzp/'.$fzp_id)?>">Открыть ФЗП за текущий месяц(<?= $cur_month?>)</a> если есть не утрвержденный ФЗП на этот месяц-->
+    <?php endif;?>
+
+    <input type="hidden" id="fzp_month">
+    <input type="hidden" id="fzp_year">
+    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_chooseDate">Создать ФЗП</button>    <!--если нет ФЗП на этот месяц-->
+  </div>
+  <?php }?>
+  
+
 </div>
+
+<div class="modal fade" tabindex="-1" aria-labelledby="create_fzp_for_date" id="modal_chooseDate" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="create_fzp_for_date">Выберите месяц и год, для которых хотите создать ФЗП</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <input type="text" id="fzpDate" class="date-picker"  autocomplete="off"/>
+        </div>
+        <div class="d-flex justify-content-end buttons mt-1">
+          <button class="btn btn-info btn-sm mr-1" id="create_fzp">Создать ФЗП</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ui-datepicker-calendar {
+    display: none;
+    }
+</style>

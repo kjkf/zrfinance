@@ -42,11 +42,11 @@ class SalaryModel extends Model
     }
   }
 
-  public function getMonthFZPs_by_year($year)
+  public function getMonthFZPs_by_year($year, $status)
   {
-    $sql = "select * from salary_fzp where year(date_time) = year(?) and is_approved = 1 order by date_time";
+    $sql = "select * from salary_fzp where year(date_time) = year(?) and is_approved in (?) order by date_time";
 
-    $query = $this->db->query($sql, array($year));
+    $query = $this->db->query($sql, array($year, $status));
 
     if (!empty($sql)) {
       return $query->getResultArray();
@@ -67,6 +67,22 @@ class SalaryModel extends Model
       return  $insert_id;
   }
 
+  public function create_fzp_by_date($user, $date) {
+    $builder = $this->db->table($this->table);
+    $data = [
+      'author' => $user,
+      'date_time' => $date,
+    ];
+    
+    $sql = $builder->set($data)->getCompiledInsert();
+//    print_r($sql);
+    $builder->insert($data);
+    $insert_id =  $this->db->insertID();//
+    
+    write_to_file("fzp_log", "create fzp - id=".$insert_id );
+    return  $insert_id;
+}
+
   public function create_month_salary($data) {
     $builder = $this->db->table("salary_month");
     
@@ -74,10 +90,19 @@ class SalaryModel extends Model
     
   }
 
+  public function is_fzp_by_date($fzpMonth, $fzpYear) {
+    $sql = "SELECT * FROM `salary_fzp` where month(`date_time`)=? and YEAR(`date_time`) = ?";
+    $query = $this->db->query($sql, array(intval($fzpMonth), intval($fzpYear)));
+    
+    $res = $query->getResultArray();
+   
+    return $res;
+  }
+
   public function getEmployeesInfo($company_id, $fzp_id, $date)
   {
     $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`, `increase_payments`, `increase_explanation`, `decrease_payments`, `decrease_explanation`, CASE
-    WHEN direction.name = 'Цех' THEN (select `w40_6d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
+    WHEN direction.name = 'Цех' THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
 END AS working_hours
     from salary_month 
@@ -100,7 +125,7 @@ END AS working_hours
 
   public function getAllEmployeesForFZP() {
     $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(now()) and YEAR(`date_time`) = YEAR(now())) as salary_fzp, employee.salary as employee_salary, CASE
-    WHEN employee.direction = 2 THEN (select `w40_6d_hours` from working_time_balance where year = year(now()) AND `month`= month(now()))
+    WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(now()) AND `month`= month(now()))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(now()) AND `month`= month(now()))
     END AS working_hours_per_month
     from employee 
@@ -108,6 +133,23 @@ END AS working_hours
     ORDER by employee.company asc,  `surname` ASC";
 
     $query = $this->db->query($sql);
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return false;
+    }
+  }
+  public function getAllEmployeesForFZP_by_date($date) {
+    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(?) and YEAR(`date_time`) = YEAR(?)) as salary_fzp, employee.salary as employee_salary, CASE
+    WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
+    ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
+    END AS working_hours_per_month
+    from employee 
+    where `fire_date` is null and employee.company in (2,3,4)
+    ORDER by employee.company asc,  `surname` ASC";
+
+    $query = $this->db->query($sql, array($date, $date, $date, $date, $date, $date));
 
     if (!empty($sql)) {
       return $query->getResultArray();

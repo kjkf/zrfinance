@@ -1,4 +1,5 @@
 <?php
+    $user_role = isset($user_role) ? $user_role : $user['role'];
     $is_chief = (isset($user_role) && $user_role == 3) ? true : false;
     $is_admin = (isset($user_role) && $user_role == 1) ? true : false;
 ?>
