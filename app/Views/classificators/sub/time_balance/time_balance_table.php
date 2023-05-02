@@ -1,7 +1,7 @@
 <div class="wrapper">
-<?php //d($balance_for_current_year); ?>
-<h4 class="classif_title">Баланс рабочего времени на 2023 год</h4>
-  <table class="time_balance">
+<?php //d($balance_for_year); ?>
+<h4 class="classif_title">Баланс рабочего времени на <?=$year?> год</h4>
+  <table class="time_balance table">
   <colgroup>
     <col style="background-color: #D6EEEE; width: auto">
     <col span=10 style="background-color: #D6EEEE; width: 9%">
@@ -45,9 +45,9 @@
 
 
   <?php
-  if (isset($balance_for_current_year) && !empty($balance_for_current_year)) : ?>
+  if (isset($balance_for_year) && !empty($balance_for_year)) : ?>
     <tbody>
-    <?php foreach ($balance_for_current_year as $item) : ?>
+    <?php foreach ($balance_for_year as $item) : ?>
       <tr>
         <td><?=getMonthByNum($item['month'] - 1)?></td> <!---1 потому что в БД месяца начинаются с 1-->
         <td><?=$item['calendar_days']?></td>

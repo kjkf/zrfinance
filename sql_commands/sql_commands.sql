@@ -37,6 +37,8 @@ CREATE TABLE `company` (
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--alter TABLE employee add COLUMN `salary_fact` double(10, 2) not null default 10
+--update employee set salary_fact = salary where `fire_date` is null
 CREATE TABLE `employee` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `name` text NOT NULL,
@@ -46,6 +48,7 @@ CREATE TABLE `employee` (
  `department` int(11) DEFAULT NULL,
  `company` int(11) DEFAULT NULL,
  `salary` double(10, 2) not null,
+ `salary_fact` double(10, 2) not null,
  `telephone` varchar(12) DEFAULT NULL,
  `is_fired` int(2) DEFAULT 0,
  `fire_date` datetime DEFAULT NULL,

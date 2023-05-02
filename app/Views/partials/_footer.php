@@ -401,6 +401,8 @@
 <?php } ?>
 <?php if(isset($page_name) && $page_name == 'classificators'){ ?>
 <script src="<?= base_url('assets/vendors/jquery/jquery-ui.min.js')?>"></script>
+<script src="<?= base_url('assets/vendors/datatables/datatables.min.js')?>"></script>
+<script src="<?= base_url('assets/vendors/datatables/dataTables.fixedColumns.min.js')?>"></script>
 <script src="<?= base_url('assets/js/classificators.js')?>"></script>
 <?php } ?>
 

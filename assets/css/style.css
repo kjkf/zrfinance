@@ -287,17 +287,33 @@ text-align: right;
 }
 
 /*=====================================*/
-table.time_balance {
+table {
   border-collapse: collapse;
   font-size: 14px;
 }
 
-table.time_balance td, table.time_balance th {
+table td, table th {
   border: 1px solid #ccc;
   padding: 5px;
   text-align: center;
 }
+table th { 
+  text-align: center !important;
+}
 
+tr.trSpan {
+  background-color: #125f5a;
+  text-align: center;
+  color: #fff;
+}
+
+table td.td-txt, table th.td-txt {
+ text-align: left;
+} 
+
+table td.td-num, table th.td-num {
+ text-align: right;
+} 
 
 tr.empty td {
   text-align: center;
