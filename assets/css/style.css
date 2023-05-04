@@ -296,6 +296,7 @@ table td, table th {
   border: 1px solid #ccc;
   padding: 5px;
   text-align: center;
+  vertical-align: middle;
 }
 table th { 
   text-align: center !important;
@@ -347,4 +348,8 @@ table.time_balance td:first-child {
 
 .w-70p {
   width: 70% !important;
+}
+
+.mr-10 {
+  margin-right: 10px;
 }

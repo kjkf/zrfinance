@@ -30,7 +30,7 @@ if (isset($fzp) && !empty($fzp)) :?>
 
   <div class="d-flex justify-content-end buttons mt-2">
     <?php
-    //d($user);
+//    d($bonus_fines);
     $user_role = $user['role'];
     $status = isset($fzp) && !empty($fzp) ? $fzp['is_approved'] : -1;
     if ($status != 1) :
@@ -117,14 +117,12 @@ if (isset($fzp) && !empty($fzp)) :?>
                   <?php $workedSalary = $employee['employee_salary'] / $employee['working_hours_per_month'] * $employee['worked_hours_per_month'] ?>
                   <td><span><?= number_format($workedSalary, 2, '.', ' ') ?></span></td>
                   <td>
-                    <span><?= number_format($employee['increase_payments'], 2, '.', ' ')?></span>
-                    <input type="hidden" class="incReason" value="<?php echo $employee['increase_explanation']?>">
+                    <span><?= number_format($employee['bonus'], 2, '.', ' ')?></span>
                   </td>
                   <td>
-                    <span><?=number_format($employee['decrease_payments'], 2, '.', ' ')?></span>
-                    <input type="hidden" class="decReason" value="<?php echo $employee['decrease_payments']?>">
+                    <span><?=number_format($employee['fines'], 2, '.', ' ')?></span>
                   </td>
-                  <?php $resultSalary = $workedSalary + $employee['increase_payments'] - $employee['decrease_payments']; ?>
+                  <?php $resultSalary = $workedSalary + $employee['bonus'] - $employee['fines']; ?>
                   <td><span><?= number_format($resultSalary, 2, '.', ' ') ?></span></td>
                 </tr>
               <?php endforeach; ?>
@@ -168,11 +166,18 @@ if (isset($fzp) && !empty($fzp)) :?>
 <input type="hidden" value="" id="old_bonus">
 <input type="hidden" value="" id="old_fines">
 
+<!--<input type="hidden" value="<?php //echo $bonus_fines ?>" id="bonus_type">
+<input type="hidden" value="<?php //echo $bonus_fines["fines"]?>" id="fines_type">-->
+
 
 <?php endif;?>
 
 <script>
-  const EMPLOYEES = JSON.parse(<?php echo json_encode($json); ?>);
+  const EMPLOYEES = JSON.parse(<?php echo json_encode($json); ?>)
+  console.log(EMPLOYEES);
+  //const bonusTypes = JSON.parse(<?php echo json_encode($bonus_fines["bonus"]); ?>)
+  //const finesTypes = JSON.parse(<?php echo json_encode($bonus_fines["fines"]); ?>)
+  ;
 </script>
 
 <!--<template id="rejection_reason">-->
@@ -181,6 +186,7 @@ if (isset($fzp) && !empty($fzp)) :?>
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal_addItemLabel">Причина отказа</h5>
+        
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -195,4 +201,132 @@ if (isset($fzp) && !empty($fzp)) :?>
   </div>
 </div>
 
+<div class="modal fade" id="modal_editEmployeeSalaryInfo" tabindex="-1"  aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_addItemLabel"></h5>
+        
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-2">
+          <div class="col-3">
+            <label for="working_hours">Кол-во рабочих часов</label>
+            <input type="text" class="form-control" id="working_hours" disabled>
+          </div>
+
+          <div class="col-3">
+            <label for="worked_hours_fact">Кол-во отработанных часов</label>
+            <input type="number" min=0 step=10 class="form-control" id="worked_hours_fact" placeholder="Введите колво отработанных часов по факту">
+          </div>
+
+          <div class="col-3">
+            <label for="total">Начислено по отраб. часам</label>
+            <input type="text" class="form-control" id="worked_salary" disabled>
+          </div>
+
+          <div class="col-3">
+            <label for="total">Итого к выдаче</label>
+            <input type="text" class="form-control" id="total" disabled>
+          </div>
+
+        </div>
+        
+        <div class="row mb-2">
+
+        </div>
+        
+        <div class="row">
+          <div class="col-6">
+          <table class="table table-sm caption-top bonus">
+            <colgroup>
+              <col style="width: 45%">
+              <col style="width: 35%">
+              <col style="width: auto">
+            </colgroup>
+            <caption>
+              Всего Прибавки:
+              <span>0.00</span> KZT
+            </caption>
+            <thead class="table-success">
+              <tr>
+                <td class="ttype">Тип</td>
+                <td>Сумма</td>
+                <td>Действия</td>
+              </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+              <tr class ="add_bonus" >
+                <td> <select class="form-select">
+                  <option value="-1">Выберите тип прибавки</option>
+                  <?php foreach($bonus_fines["bonus"] as $bonus) :?>
+                    <option value="<?=$bonus['id']?>"><?php echo $bonus['name']?></option>
+                  <?php endforeach;?>
+                </select> 
+              </td>
+              <td>
+                <input type="number" min = 0  class="sum" step="1000">
+              </td>
+              <td>
+                <a href="#" class="btn-icon save-btn" data-type="bonus" name="edit_item"><i class="fas fa-save"></i> </a>
+              </td>
+              </tr>
+            </tfoot>
+          </table>
+          
+          </div>
+
+          <div class="col-6">
+            <table class="table table-sm caption-top fines">
+              <colgroup>
+                <col style="width: 45%">
+                <col style="width: 35%">
+                <col style="width: auto">
+              </colgroup>
+              <caption>
+                Всего Удержаний:
+                <span>0.00</span> KZT
+              </caption>
+              <thead class="table-info">
+                <tr>
+                  <td class="ttype">Тип</td>
+                  <td>Сумма</td>
+                  <td>Действия</td>
+                </tr>
+              </thead>
+              <tbody></tbody>
+              <tfoot>
+                <tr class ="add_fines">
+                  <td> <select class="form-select fines">
+                    <option value="-1">Выберите тип удержания</option>
+                    <?php foreach($bonus_fines["fines"] as $fines) :?>
+                      <option value="<?=$fines['id']?>"><?php echo $fines['name']?></option>
+                    <?php endforeach;?>
+                  </select> 
+                </td>
+                <td>
+                  <input type="number" min = 0  class="sum" step="1000">
+                </td>
+                <td>
+                  <a href="#" class="btn-icon save-btn" data-type="fines" name="edit_item"><i class="fas fa-save"></i> </a>
+                </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          
+          
+        </div>        
+        <div class="d-flex justify-content-end ">
+            <button class="btn btn-secondary save-em-info mr-10">Сохранить</button>
+            <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <!--</template>-->
+<!--<a href="#" class="btn-icon" name="edit_item"><i class="fa-solid fa-pen-to-square"></i> </a>
+<a href="#" class="btn-icon" name="delete_item"><i class="fa-solid fa-trash-can"></i> </a>-->

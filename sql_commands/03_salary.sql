@@ -42,7 +42,7 @@ CREATE TABLE `salary_month` (
  `decrease_explanation` text DEFAULT null,       -- пояснения к штрафам и удержаниям
 
  `advances` double(10,2) DEFAULT null,           -- авансы
-PRIMARY KEY (`id`),
+ PRIMARY KEY (`id`),
  KEY `salary_fzp_key` (`salary_fzp`),
  KEY `employee_id` (`employee_id`),
 
@@ -79,6 +79,32 @@ CREATE TABLE `working_time_balance` (
  PRIMARY KEY (`id`)
 
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `bonus_fines_types` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `name` varchar(250) NOT NULL,
+ `type` varchar(250) NOT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `bonus_fines` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `employee_id` int(11) NOT NULL,
+ `salary_fzp` int(11) NOT NULL,  
+ `bonus`  double(10,2) NOT NULL default 0,
+ `fines`  double(10,2) NOT NULL default 0con,
+ `type_id` int(11) NOT NULL,
+
+ PRIMARY KEY (`id`),
+ KEY `salary_fzp_key` (`salary_fzp`),
+ KEY `employee_id` (`employee_id`),
+ KEY `type_id` (`type_id`),
+
+ CONSTRAINT `bonus_fines_type` FOREIGN KEY (`type_id`) REFERENCES `bonus_fines_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION ,
+ CONSTRAINT `bonus_fines_employee` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION ,
+ CONSTRAINT `bonus_fines_salary_fzp` FOREIGN KEY (`salary_fzp`) REFERENCES `salary_fzp` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ================================ ALTER TABLES ===========================
 --ALTER TABLE employee ADD COLUMN `department` int(11) DEFAULT NULL;
@@ -137,7 +163,16 @@ insert into `working_time_balance`(`year`, `month`,`calendar_days`, `working_cal
 (2022, 12, 31, 30, 21, 26, 168, 172, 151.2, 156);
 
 
-
+insert into `bonus_fines_types`(`id`, `name`, `type`) VALUES
+(1,'Бонусы и проценты', 'bonus'),
+(2,'Премия', 'bonus'),
+(3,'KPI процентный', 'bonus'),
+(4,'KPI результативный', 'bonus'),
+(5,'Штрафы', 'fines'),
+(6,'Прочие удержания', 'fines'),
+(7,'Удержания по ТМЦ(Форма)', 'fines'),
+(8,'Удержания по ТМЦ(Обувь)', 'fines'),
+(9,'Удержания по ТМЦ(Инструмент)', 'fines');
 
 
 insert into `department`(`id`, `name`) VALUES

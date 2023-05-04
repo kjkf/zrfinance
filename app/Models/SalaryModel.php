@@ -101,7 +101,7 @@ class SalaryModel extends Model
 
   public function getEmployeesInfo($company_id, $fzp_id, $date)
   {
-    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`, `increase_payments`, `increase_explanation`, `decrease_payments`, `decrease_explanation`, CASE
+    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`, `increase_payments`, `increase_explanation`, `decrease_payments`, `decrease_explanation`, bf.bonus as bonus, bf.fines as fines,  CASE
     WHEN direction.name = 'Цех' THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
 END AS working_hours
@@ -111,10 +111,12 @@ END AS working_hours
     left join department on department.id = employee.`department`
     left join direction on direction.id = employee.direction
     left join company on company.id = employee.company
-    where `salary_fzp`=? and employee.company in (2,3,4) and employee.company = ?
+    left join (SELECT bonus_fines.`employee_id`, max(bonus_fines.`salary_fzp`) as salary_fzp, sum(`bonus`) as bonus, sum(`fines`) as fines  
+FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`employee_id`) bf on bf.employee_id = salary_month.employee_id and salary_month.salary_fzp = bf.salary_fzp
+    where salary_month.`salary_fzp`=? and employee.company in (2,3,4) and employee.company = ?
     ORDER by employee.company asc,  `surname` ASC";
 
-    $query = $this->db->query($sql, array($date, $date, $date, $date, intval($fzp_id), intval($company_id)));
+    $query = $this->db->query($sql, array($date, $date, $date, $date, intval($fzp_id), intval($fzp_id), intval($company_id)));
 
     if (!empty($sql)) {
       return $query->getResultArray();
@@ -175,17 +177,17 @@ END AS working_hours
     //print_r($_POST['worked_hours_per_month']);
     $builder = $this->db->table('salary_month');
     $builder->set('worked_hours_per_month', $_POST['worked_hours_per_month']);
-    $builder->set('increase_payments', $_POST['increase_payments']);
+    //$builder->set('increase_payments', $_POST['increase_payments']);
     //$builder->set('increase_explanation', $_POST['increase_explanation']);
-    $builder->set('decrease_payments', $_POST['decrease_payments']);
+    //$builder->set('decrease_payments', $_POST['decrease_payments']);
     //$builder->set('decrease_explanation', $_POST['decrease_explanation']);
     
     $builder->where('employee_id', $id);
     $builder->where('salary_fzp', $fzp_id);
     $res = $builder->update();
     
-    $log_info =  "employee_id: ".$id."; worked_hours_per_month:".$_POST['worked_hours_per_month']."; increase_payments: ".$_POST['increase_payments']."; decrease_payments = ".$_POST['decrease_payments'];
-    d( $log_info);
+    $log_info =  "employee_id: ".$id."; worked_hours_per_month:".$_POST['worked_hours_per_month'];
+    //d( $log_info);
     write_to_file("fzp_log", "update_employee_salary - ".$log_info);
 
     return $res;
@@ -207,5 +209,52 @@ END AS working_hours
     
     return $res;
   }
- 
+
+  public function getBonusFinesTypes() {
+    $sql = "select * from bonus_fines_types";
+    $query = $this->db->query($sql);
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return false;
+    }
+  }
+
+  public function add_bonus_fines() {
+    $type_id = $_POST['type_id'];
+    $bonus = $_POST['bonus'];
+    $fines = $_POST['fines'];
+    $employee_id = $_POST['employee_id'];
+    $salary_fzp = $_POST['salary_fzp'];
+    
+    $builder = $this->db->table("bonus_fines");
+    $data = [
+      'salary_fzp' => $salary_fzp,
+      'type_id' => $type_id,
+      'bonus' => $bonus,
+      'fines' => $fines,
+      'employee_id' => $employee_id,
+    ];
+    $builder->insert($data);
+    $insert_id =  $this->db->insertID();//$builder->insert_id();
+
+    //print_r($insert_id);
+
+    return $insert_id;
+  }
+
+  public function getBonusFines_byEmployeeId($emp_id, $fzp_id) {
+    //TO DO переделать запрос так, чтобы один запрос вытаскивал бонусы\штрафы для всех сотрудников по фзп, а потом уже из результтата этого запроса искать бонусы\штрафы для конкретного сотрудника
+    $sql = " SELECT bonus_fines.id, bonus_fines.`bonus`, bonus_fines.`fines`, bonus_fines.`type_id`, bonus_fines_types.`type`, bonus_fines_types.name FROM `bonus_fines` left join bonus_fines_types on bonus_fines_types.id=bonus_fines.type_id  where employee_id = ? and salary_fzp=?";
+
+    $query = $this->db->query($sql, array($emp_id, $fzp_id));
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return false;
+    }
+  }
+  
 }

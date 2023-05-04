@@ -98,6 +98,8 @@ class Salary extends BaseController
     $employees = $employeesArr['employees'];
     //print_r($employeesArr['json']);
     $json = json_encode($employeesArr['json']);
+
+    $bonus_fines = $this->prepare_bonus_fines_types();
     
     $data = [
       'title' => 'СОЗДАТЬ Фонд заработной платы',
@@ -109,7 +111,8 @@ class Salary extends BaseController
       'year' => date('Y', $timestamp),
       'json' => $json,
       'fzp_id' => $id, 
-      'fzp' => $fzp[0]
+      'fzp' => $fzp[0],
+      'bonus_fines' => $bonus_fines
     ];
 
     echo view('partials/_header', $data);
@@ -151,8 +154,9 @@ class Salary extends BaseController
 
       foreach($employeesInfo as $employee) {
         $employee['fzp_id'] = $fzp_id;
-        $employee['bonus'] = 0;
-        $employee['fines'] = 0;
+        $employee['bonus_fines'] = $this->salaryModel->getBonusFines_byEmployeeId($employee['id'], $fzp_id);
+        //$employee['bonus'] = 0;
+        //$employee['fines'] = 0;
         $employee['work_day_fact'] = 0;
         $employee['company_id'] = $company['id'];
         $json[$employee['id']] = $employee;
@@ -195,6 +199,32 @@ class Salary extends BaseController
     
     $update_res =  $this->salaryModel->update_fzp_status();
     return $update_res;
+  }
+
+  private function prepare_bonus_fines_types() {
+    $bonus_fines = $this->salaryModel->getBonusFinesTypes();
+    $bonus = array();
+    $fines = array();
+    foreach($bonus_fines as $item) {
+      if ($item['type'] == 'bonus') {
+        array_push($bonus, $item);
+      } else {
+        array_push($fines, $item);
+      }
+    }
+
+    return array(
+      "bonus" => $bonus,
+      "fines" => $fines,
+    );
+  }
+
+  public function add_bonus_fines() {
+    $res = $this->salaryModel->add_bonus_fines();
+
+    //print_r($res);
+
+    echo $res;
   }
 
 }

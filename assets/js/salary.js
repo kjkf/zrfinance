@@ -1,7 +1,8 @@
 let CURRENT_TR = null;
 let api = null;
-document.addEventListener('DOMContentLoaded', e => {
-  console.log("DOMContentLoaded!!!");
+document.addEventListener('DOMContentLoaded', ev => {
+  //console.log(bonusTypes, finesTypes);
+
   const tables = $('.employee_salary').DataTable({
     'scrollY': '50vh',
     'scrollX':true,
@@ -104,36 +105,15 @@ document.addEventListener('DOMContentLoaded', e => {
     if(!isEditable) return false;
     const target = e.target.closest('.trow');
     
-    removeActiveTr(CURRENT_TR, target);
-    
-    if (!CURRENT_TR) {
-      setActiveTr(target);
-    }
-  });
-
-  document.addEventListener('click', e => {
-    if(!isEditable) return false; 
-    const activeRow = document.querySelector('.content.salary .trow.active');
-    const target = e.target.closest('.trow');
-
-    if (activeRow && !target) {
-      const table = activeRow.closest("table");
-      activeRow.classList.remove('active');
-      calculateSalary(activeRow);
+    if (!CURRENT_TR && target) {
+      CURRENT_TR = target.dataset.trid;
+      showEditEmployeeSalaryModal(target);
       
-      const tds = activeRow.children;
-      //deleteField(tds[6]);
-      //deleteField(tds[9]);
-      //deleteField(tds[10]);
+    }
 
-      if (isTrValsChanged(tds)){
-        save_tr(CURRENT_TR, activeRow);
-      } else {
-        closeActiveTrWithoutSave(activeRow);
-      }
-
-      //CURRENT_TR = null;
-    }    
+    $('#modal_editEmployeeSalaryInfo').on('hide.bs.modal', function (e) {
+      CURRENT_TR = null;
+    });
   });
 
   const sendBtn = document.getElementById('send');
@@ -160,143 +140,256 @@ document.addEventListener('DOMContentLoaded', e => {
       changeCurrentFZPStatus (fzp_id, 2, rej_reason);
     });
   }
+
+  const modal = document.getElementById("modal_editEmployeeSalaryInfo");
+  modal.addEventListener('click', e => {
+    const target = e.target.closest(".btn-icon");
+    if (target) {
+      if (target.classList.contains("save-btn")) {
+        const type = target.dataset.type;
+        saveBonusFines(type, modal);   
+      } else if (target.classList.contains("edit-btn")) {
+        // TO DO - изменить можно только сумму
+        console.log("edit");
+      } else {
+        console.log("delete");
+      }      
+    }
+
+    const saveEmpInfoBtn = e.target.closest(".save-em-info");
+    
+    if (saveEmpInfoBtn) {
+      saveEmpInfo(modal);
+    }
+  });
+
+  const setWorkedHoursInput = document.getElementById("worked_hours_fact");
+  setWorkedHoursInput.addEventListener('change', e => {
+    updateModalInputs(e.currentTarget.value);
+  });
 });
 
-function setActiveTr(tr) {
-  //console.log("setActiveTr");
-  if (tr) {
-    CURRENT_TR = tr.dataset.trid;
-    tr.classList.add('active');
-    const tds = tr.children;
-
-    save_previous_vals(tds);
-
-    insertField(tds[6], 'working_days_fact', 'number');
-    insertField(tds[9], 'bonus', 'number');
-    insertField(tds[10], 'fines', 'number');
-    
-    setChangeHandlers(tr);
-  }
-}
-
-function save_previous_vals(tds) {
-  const old_worked_hours = tds[6].querySelector("span").innerHTML;
-  const old_bonus = tds[9].querySelector("span").innerHTML;
-  const old_fines = tds[10].querySelector("span").innerHTML;
-  document.getElementById("old_worked_hours").value = old_worked_hours;
-  document.getElementById("old_bonus").value = old_bonus;
-  document.getElementById("old_fines").value = old_fines;
-}
-
-function isTrValsChanged(tds) {
-  const old_worked_hours = document.getElementById("old_worked_hours").value;
-  const old_bonus = document.getElementById("old_bonus").value;
-  const old_fines = document.getElementById("old_fines").value;
-
-  const new_worked_hours = tds[6].querySelector("input").value;
-  const new_bonus = tds[9].querySelector("input").value;
-  const new_fines = tds[10].querySelector("input").value;
-
- if (old_worked_hours !== new_worked_hours || old_bonus !== new_bonus || old_fines !== new_fines) {
-      return true;
-  }
-
-  return false;
-}
-
-function removeActiveTr(CURRENT_TR, newTR) {
-  const activeRow = document.querySelector('.content.salary .trow.active');
-  const newTrId = newTR ? newTR.dataset.trid : CURRENT_TR;
+function saveEmpInfo(modal ) {
   if (!CURRENT_TR) return false;
-  if (activeRow && newTrId !== activeRow.dataset.trid) {
-    const tds = activeRow.children;
-    if (isTrValsChanged(tds)){
-      save_tr(CURRENT_TR, activeRow);
-    } else {
-      closeActiveTrWithoutSave(activeRow);
-    }
-    
-  }  
+  save_tr();
+  $('#modal_editEmployeeSalaryInfo').modal('hide');
 }
 
-function closeActiveTrWithoutSave(activeRow) {
-  activeRow.classList.remove('active');
-  const tds = activeRow.children;
-  deleteField(tds[6]);
-  deleteField(tds[9]);
-  deleteField(tds[10]);
+function updateModalInputs(value) {
+  if (!CURRENT_TR) return false;
+  value = parseFloat(value);
+  const employee = EMPLOYEES[CURRENT_TR];
+  const modal = document.getElementById("modal_editEmployeeSalaryInfo");
+  modal.querySelector("h5").textContent = employee.surname + " " + employee.name;
 
-  const table = activeRow.closest("table.employee_salary");
-        
-  CURRENT_TR = null;
-}
+  const bonus = isNaN(parseFloat(employee.bonus)) ? 0 : parseFloat(employee.bonus);
+  const fines = isNaN(parseFloat(employee.fines)) ? 0 : parseFloat(employee.fines);
 
-function insertField(td, fieldId, type) {
-  const span = td.querySelector("span");
-  const tdContent = span.innerHTML.trim();
-  span.style.display = "none";
+  const worked_salary = parseFloat(employee.employee_salary) / parseFloat(employee.working_hours_per_month) * value;
+  const total_salary = worked_salary + bonus - fines;
   
-  const input = createField(fieldId, type);
-  input.value = tdContent;
-  td.insertAdjacentElement('afterbegin', input);
+  modal.querySelector("#worked_salary").value = numberWithSpaces(worked_salary);
+  modal.querySelector("#total").value = numberWithSpaces(total_salary);
+
 }
 
-function deleteField(td) {
-  const input = td.querySelector('input');
-  const span = td.querySelector("span");
-  span.textContent = numberWithSpaces(input.value);
-  span.style.display = "inline-block";
-  input.remove();
+function saveBonusFines(type, modal) {
+  const select = modal.querySelector(".add_"+type+" select");
+  const bonus = type === 'bonus' ? modal.querySelector(".add_"+type+" .sum").value : 0;
+  const fines = type === 'fines' ? modal.querySelector(".add_"+type+" .sum").value : 0;
+
+  const data = {
+    type: type,
+    name:  select.options[select.selectedIndex].text,
+    type_id: select.value, 
+    bonus:  bonus,
+    fines:  fines,
+    employee_id: CURRENT_TR,
+    salary_fzp: document.getElementById("fzp_id").value
+  };
+
+  const isValid = validateData(data);
+  
+  if (isValid) {
+    const url_path = base_url + '/salary/add_bonus_fines';
+    $.ajax({
+      url: url_path,
+      data: data,
+      method: 'POST',
+      success: function (id) {
+        data.id = id;
+        EMPLOYEES[CURRENT_TR].bonus_fines.push(data);
+        let bonus = isNaN(parseFloat(EMPLOYEES[CURRENT_TR].bonus)) ? 0 : EMPLOYEES[CURRENT_TR].bonus;
+        let fines = isNaN(parseFloat(EMPLOYEES[CURRENT_TR].fines)) ? 0 : EMPLOYEES[CURRENT_TR].fines;
+        bonus += isNaN(parseFloat(data.bonus)) ? 0 : parseFloat(data.bonus);
+        fines += isNaN(parseFloat(data.fines)) ? 0 : parseFloat(data.fines);
+        EMPLOYEES[CURRENT_TR].bonus =  bonus;
+        EMPLOYEES[CURRENT_TR].fines = fines;
+        addBonusFines_toTable(data);
+  
+        modal.querySelector("table.bonus caption span").textContent = EMPLOYEES[CURRENT_TR].bonus;
+        modal.querySelector("table.fines caption span").textContent = EMPLOYEES[CURRENT_TR].fines;
+
+        const worked_hours = modal.querySelector("#worked_hours_fact").value;
+        updateModalInputs(worked_hours);
+      },
+    });    
+  }
 }
 
-function createField(id, type) {
-  const fld = document.createElement("input");
-  fld.type = type;
-  fld.id = id;
-  fld.className = "fld";
-  if(type == 'number') {
-    fld.min = 0;
-    if (id = "working_days_fact") {
-      fld.step = 10;
-      fld.max = 300;
-    } else {
-      fld.step = 1000;
-    }
-    
+function addBonusFines_toTable(data) {
+  
+  const table = document.querySelector("#modal_editEmployeeSalaryInfo table."+ data.type);
+  const tbody = table.querySelector("tbody");
+  const tfoot = table.querySelector("tfoot");
+
+  const tr = createDataTr(data);
+  tbody.insertAdjacentElement('beforeend', tr);
+
+  tfoot.querySelector('select').value = -1;
+  tfoot.querySelector('.sum').value = 0;
+}
+
+function validateData(data) {
+  const str = data.type === "bonus" ? "прибавки" : "удержания";
+  const sum = data.type === "bonus" ? data.bonus : data.fines;
+  if (data.type_id < 0) {
+    alert("Выберите тип " + str);
+    return false;
   }
 
-  return fld;
+  if (sum <= 0) {
+    alert("Укажите сумму " + str);
+    return false;
+  }
+
+  return true;
 }
 
-function setChangeHandlers(tr) {
-  const inputs = tr.querySelectorAll("input");
+function showEditEmployeeSalaryModal(tr) {
+  if (!tr) return false;
+
+  const trId = tr.dataset.trid;
+  prepareEmployeeModalInfo(trId);
+  $('#modal_editEmployeeSalaryInfo').modal('show');
+}
+
+function prepareEmployeeModalInfo(trid) {
+  const employee = EMPLOYEES[trid];
   
-  if (inputs && inputs.length > 0) {
-    for (let i = 0; i < inputs.length; i++) {
-      inputs[i].addEventListener('change', e => {
-        calculateSalary(tr);
-      });
+  const modal = document.getElementById("modal_editEmployeeSalaryInfo");
+
+  const bonus = parseFloat(employee.bonus) || 0;
+  const fines = parseFloat(employee.fines) || 0;
+
+  const working_hours_per_month = parseInt(employee.working_hours_per_month) || 0;
+  const worked_hours_per_month = parseInt(employee.worked_hours_per_month) || 0;
+
+  const employee_salary = parseInt(employee.employee_salary) || 0;
+
+  const salary = employee_salary / working_hours_per_month * worked_hours_per_month;
+  const total_salary = salary + bonus - fines;
+
+  modal.querySelector("h5").textContent = employee.surname + " " + employee.name;
+
+  modal.querySelector("#working_hours").value = working_hours_per_month;
+  modal.querySelector("#worked_hours_fact").value = worked_hours_per_month;
+  modal.querySelector("#worked_salary").value = numberWithSpaces(salary);
+  modal.querySelector("#total").value = numberWithSpaces(total_salary);
+
+
+  appendRows(employee.bonus_fines);
+}
+
+function appendRows(data) {
+  const modal = document.getElementById("modal_editEmployeeSalaryInfo");
+  const bonusTable = modal.querySelector("table.bonus tbody");
+  const finesTable = modal.querySelector("table.fines tbody");
+  bonusTable.innerHTML = "";
+  finesTable.innerHTML = "";
+  let bonus = 0, fines=0;
+  for (let i=0; i < data.length; i++) {
+    const tr = createDataTr(data[i]);
+    
+    if (data[i].type === 'bonus') {
+      bonusTable.insertAdjacentElement('beforeend', tr);
+      bonus += parseFloat(data[i].bonus);
+    } else {
+      finesTable.insertAdjacentElement('beforeend', tr);
+      fines += parseFloat(data[i].fines);
     }
   }
+
+  modal.querySelector("table.bonus caption span").textContent = bonus;
+  modal.querySelector("table.fines caption span").textContent = fines;
+}
+
+function createDataTr(data) {
+  const tr = document.createElement("tr");
+  const sum = data.type === "bonus" ? data.bonus : data.fines;
+  tr.dataset.fbid = data.id;
+  const sumTd = createDataTd(sum);
+  const typeTd = createDataTd(data.name);
+  const actionTd = createActionTd();
+
+  tr.insertAdjacentElement('afterbegin', actionTd);
+  tr.insertAdjacentElement('afterbegin', sumTd);
+  tr.insertAdjacentElement('afterbegin', typeTd);
+
+  return tr;
+}
+
+function createBtnForTable(actionType) {
+  const a = document.createElement("a");
+  a.href = "#";
+  a.classList.add("btn-icon");
+  a.classList.add(actionType+"-btn");
+
+  const i = document.createElement("i");
+  i.classList.add("fa-solid");
+  const className = actionType === 'edit' ? "fa-pen-to-square" : "fa-trash-can";
+  i.classList.add(className);
+
+  a.insertAdjacentElement('afterbegin', i);
+
+  return a;
+}
+
+function createDataTd(value) {
+  const td = document.createElement("td");
+  td.textContent = value;
+
+  return td;
+}
+
+function createActionTd() {
+  const td = document.createElement("td");
+  const editBtn = createBtnForTable("edit");
+  const deleteBtn = createBtnForTable("delete");
+
+  td.insertAdjacentElement("beforeend", editBtn);
+  td.insertAdjacentElement("beforeend", deleteBtn);
+
+  return td;
 }
 
 function calculateSalary(tr) {
   const tds = tr.children;
-  const salary = EMPLOYEES[CURRENT_TR].salary;
-  const work_day_plan = parseInt(tds[5].textContent);
-  const work_day_fact = parseInt(tr.querySelector("#working_days_fact").value) || 0;
-  const bonus = parseFloat(tr.querySelector("#bonus").value) || 0;
-  const fines = parseFloat(tr.querySelector("#fines").value) || 0;
-
-  EMPLOYEES[CURRENT_TR].bonus = bonus;
-  EMPLOYEES[CURRENT_TR].increase_payments = bonus;
-  EMPLOYEES[CURRENT_TR].fines = fines;
-  EMPLOYEES[CURRENT_TR].decrease_payments = fines;
-  EMPLOYEES[CURRENT_TR].work_day_fact = work_day_fact;
+  const salary = parseFloat(EMPLOYEES[CURRENT_TR].salary);
+  const work_day_plan = parseInt(EMPLOYEES[CURRENT_TR].working_hours_per_month);
+  const bonus = isNaN(parseFloat(EMPLOYEES[CURRENT_TR].bonus)) ? 0 : parseFloat(EMPLOYEES[CURRENT_TR].bonus);
+  const fines = isNaN(parseFloat(EMPLOYEES[CURRENT_TR].fines)) ? 0 : parseFloat(EMPLOYEES[CURRENT_TR].fines);
+  
+  const work_day_fact = parseInt(document.querySelector("#modal_editEmployeeSalaryInfo #worked_hours_fact").value) || 0;
+   
   EMPLOYEES[CURRENT_TR].worked_hours_per_month = work_day_fact;
+  
   const current_salary = salary/work_day_plan*work_day_fact;
   const total = current_salary + bonus - fines;
+  tds[6].textContent = work_day_fact;
   tds[8].textContent = numberWithSpaces(current_salary.toFixed(2));
+  tds[9].textContent = numberWithSpaces(bonus.toFixed(2));
+  tds[10].textContent = numberWithSpaces(fines.toFixed(2));
   tds[11].textContent = numberWithSpaces(total.toFixed(2));
 
 }
@@ -307,7 +400,8 @@ var intVal = function (i) {
 };
 
 function calcTotals(tableId) {
-  const companyID = tableId.replace("salary_company_", "")
+  const companyID = tableId.replace("salary_company_", "");
+  
   const res = {
         //t_salary: 0,
         t_worked_salary: 0,
@@ -318,17 +412,21 @@ function calcTotals(tableId) {
 
   for (let key in EMPLOYEES) {
     if (EMPLOYEES[key].company_id == companyID) {
-      const bonus = EMPLOYEES[key].increase_payments ? parseFloat(EMPLOYEES[key].increase_payments) : 0;
-      const fines = EMPLOYEES[key].decrease_payments ? parseFloat(EMPLOYEES[key].decrease_payments) : 0;
+      const bonus = EMPLOYEES[key].bonus ? parseFloat(EMPLOYEES[key].bonus) : 0;
+      const fines = EMPLOYEES[key].fines ? parseFloat(EMPLOYEES[key].fines) : 0;
       const salary = EMPLOYEES[key].employee_salary ? parseFloat(EMPLOYEES[key].employee_salary) : 0;
+
+      const working_hours_per_month = EMPLOYEES[key].working_hours_per_month ? parseFloat(EMPLOYEES[key].working_hours_per_month) : 0;
+      const worked_hours_per_month = EMPLOYEES[key].worked_hours_per_month ? parseFloat(EMPLOYEES[key].worked_hours_per_month) : 0;
        
       res.t_bonus += bonus;
       res.t_fines += fines;
 
-      const current_salary = salary/EMPLOYEES[key].working_hours_per_month*EMPLOYEES[key].worked_hours_per_month;
+      const current_salary = salary/working_hours_per_month*worked_hours_per_month;
       const total = current_salary + bonus - fines;
       res.t_worked_salary += current_salary;
       res.total += total;
+
     }
   }
 
@@ -387,17 +485,15 @@ function numberWithSpaces(x) {
   return parts.join(".");
 }
 
-function save_tr(trid, activeRow) {
-  const data = {
-    'fzp_id' : EMPLOYEES[trid].fzp_id,
-    'worked_hours_per_month' : EMPLOYEES[trid].work_day_fact,
-    'increase_payments' : EMPLOYEES[trid].bonus,
-    //'increase_explanation' : EMPLOYEES[trid].,
-    'decrease_payments' : EMPLOYEES[trid].fines,
-    //'decrease_explanation' : EMPLOYEES[trid].,
-    'id': trid
-  };
+function save_tr() {  
+  const activeRow =  document.querySelector('[data-trid="' + CURRENT_TR + '"]')
   calculateSalary(activeRow);
+
+  const data = {
+    'fzp_id' : EMPLOYEES[CURRENT_TR].fzp_id,
+    'worked_hours_per_month' : EMPLOYEES[CURRENT_TR].work_day_fact,
+    'id': CURRENT_TR
+  };
   
   url_path = base_url + '/salary/update_employee_salary_calculation';
   $.ajax({
@@ -405,13 +501,6 @@ function save_tr(trid, activeRow) {
     data: data,
     method: 'POST',
     success: function (result) {
-      //console.log("ajax success");
-      activeRow.classList.remove('active');
-      const tds = activeRow.children;
-      deleteField(tds[6]);
-      deleteField(tds[9]);
-      deleteField(tds[10]);
-
       const table = activeRow.closest("table.employee_salary");
             
       CURRENT_TR = null;
@@ -445,7 +534,4 @@ function changeCurrentFZPStatus (id, status, reason="") {
       alert("Error while status update");
     }
   });
-
-
-
 }
