@@ -92,6 +92,7 @@ class Salary extends BaseController
     $companies = $this->salaryModel->getCompaniesInfo();
     $fzp = $this->salaryModel->getMonthFZP_by_id($id);
     $fzp_date = $fzp[0]['date_time'];
+    
     $timestamp = strtotime($fzp_date);
     
     $employeesArr = $this->prepareEmployeesInfo($companies, $id, $fzp_date);

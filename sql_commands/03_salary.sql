@@ -1,5 +1,11 @@
 -- ================================ CREATE TABLES ================================
 
+CREATE TABLE `emp_contract_type` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `contract_type` varchar(250) NOT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `department` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `name` varchar(250) NOT NULL,
@@ -18,6 +24,8 @@ CREATE TABLE `salary_fzp` (
  `author` int(11) NOT NULL, 
  `is_approved` int(2) DEFAULT 0, -- 0 - не утрвержден, 1 - утвержден, 2 - отправлен на доработку, 4 - на согласовании
  `rejection_reason` varchar(500), default NULL ,
+ `mrp` double(10, 2) DEFAULT 0, 
+ `min_zp` double(10, 2) DEFAULT 0, 
 
  PRIMARY KEY (`id`),
 
@@ -32,15 +40,15 @@ CREATE TABLE `salary_month` (
  `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `salary_fzp` int(11) NOT NULL, 
  `employee_salary` double(10,2) DEFAULT null,  -- зарплата, так как может меняться, нужно сохранять для истории
+ `employee_salary_fact` double(10,2) DEFAULT null,  -- зарплата, так как может меняться, нужно сохранять для истории
 
  `working_hours_per_month` int(11) NOT NULL, -- количество рабочих часов
  `worked_hours_per_month` int(11) NOT NULL,  -- количество отработанных часов
 
- `increase_payments` double(10,2) DEFAULT 0,  -- бонусы и прибавки
- `increase_explanation` text DEFAULT null,       -- пояснения к бонусам и прибавкам
- `decrease_payments` double(10,2) DEFAULT 0,  -- штрафы и удержания
- `decrease_explanation` text DEFAULT null,       -- пояснения к штрафам и удержаниям
-
+ `tax_OSMS` double(10,2) DEFAULT 0,  -- налог ОСМС
+ `tax_IPN` double(10,2) DEFAULT 0,  -- налог ИПН
+ `tax_OPV` double(10,2) DEFAULT 0,  -- налог ОВП
+ 
  `advances` double(10,2) DEFAULT null,           -- авансы
  PRIMARY KEY (`id`),
  KEY `salary_fzp_key` (`salary_fzp`),
@@ -106,20 +114,39 @@ CREATE TABLE `bonus_fines` (
  CONSTRAINT `bonus_fines_salary_fzp` FOREIGN KEY (`salary_fzp`) REFERENCES `salary_fzp` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `salary_settings` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `mrp` double(10, 2) not null default 0,
+ `min_zp` double(10, 2) not null default 0,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- ================================ ALTER TABLES ===========================
+--ALTER TABLE employee ADD COLUMN `contract_type` int(11) DEFAULT NULL;
+--ALTER TABLE employee ADD COLUMN `is_tax` int(11) DEFAULT 1;
 --ALTER TABLE employee ADD COLUMN `department` int(11) DEFAULT NULL;
 --ALTER TABLE employee ADD COLUMN `direction` int(11) DEFAULT NULL;
 --ALTER TABLE employee ADD COLUMN `salary` double(10, 2) not null DEFAULT 0;
+--ALTER TABLE employee ADD COLUMN `salary_fact` double(10, 2) not null DEFAULT 0;
 
+--ALTER TABLE employee ADD KEY `contract_type` (`contract_type`);
 --ALTER TABLE employee ADD KEY `department` (`department`);
 --ALTER TABLE employee ADD KEY `direction` (`direction`);
 
+--ALTER TABLE employee ADD CONSTRAINT `user_contract_type` FOREIGN KEY (`contract_type`) REFERENCES `emp_contract_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 --ALTER TABLE employee ADD CONSTRAINT `user_position` FOREIGN KEY (`position`) REFERENCES `position` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 --ALTER TABLE employee ADD CONSTRAINT `user_department` FOREIGN KEY (`department`) REFERENCES `department` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 --ALTER TABLE employee ADD CONSTRAINT `user_direction` FOREIGN KEY (`direction`) REFERENCES `direction` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 --ALTER TABLE employee ADD CONSTRAINT `user_company` FOREIGN KEY (`company`) REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ================================ INSERTS ================================
+insert into salary_settings(mrp) calues (3450);
+
+insert into emp_contract_type(contract_type) values 
+('Трудовой договор'),
+('ГПХ');
+
 insert into `working_time_balance`(`year`, `month`,`calendar_days`, `working_calendar_days`, `working_5_days`, `working_6_days`, `w40_5d_hours`, `w40_6d_hours`, `w36_5d_hours`, `w36_6d_hours`) VALUES
 (2023, 1, 31, 29, 20, 23, 160, 155, 144, 138),
 (2023, 2, 28, 28, 20, 24, 160, 160, 144, 144),

@@ -67,9 +67,7 @@
     <?php $cur_month = getMonthByNum(date('n')-1);?>
     <?php if (isset($is_current_fzp) && empty($is_current_fzp)) :?>
      <a class="btn btn-secondary" href="<?=base_url('salary/fzp')?>">Создать ФЗП за текущий месяц(<?= $cur_month?>)</a>    <!--если нет ФЗП на этот месяц-->
-    <?php// elseif ($is_current_fzp[0]['is_approved'] != "1"):
-      //$fzp_id = $is_current_fzp[0]['id']?>
-      <!--<a class="btn btn-secondary" href="<?=base_url('salary/fzp/'.$fzp_id)?>">Открыть ФЗП за текущий месяц(<?= $cur_month?>)</a> если есть не утрвержденный ФЗП на этот месяц-->
+
     <?php endif;?>
 
     <input type="hidden" id="fzp_month">

@@ -57,8 +57,13 @@ class SalaryModel extends Model
 
   public function create_month_fzp($user) {
       $builder = $this->db->table($this->table);
+      $fzp_settings = $this->getCurrentFZPSettings(date('Y-m-d H:i:s'));
+      $mrp = $fzp_settings[0]['mrp'];
+      $min_zp = $fzp_settings[0]['min_zp'];
       $data = [
-        'author' => $user
+        'author' => $user,
+        'mrp' => $mrp,
+        'min_zp' => $min_zp,
       ];
       $builder->insert($data);
       $insert_id =  $this->db->insertID();//$builder->insert_id();
@@ -69,9 +74,14 @@ class SalaryModel extends Model
 
   public function create_fzp_by_date($user, $date) {
     $builder = $this->db->table($this->table);
+    $fzp_settings = $this->getCurrentFZPSettings(date('Y-m-d H:i:s'));
+    $mrp = $fzp_settings[0]['mrp'];
+    $min_zp = $fzp_settings[0]['min_zp'];
     $data = [
       'author' => $user,
       'date_time' => $date,
+      'mrp' => $mrp,
+      'min_zp' => $min_zp,
     ];
     
     $sql = $builder->set($data)->getCompiledInsert();
@@ -90,6 +100,19 @@ class SalaryModel extends Model
     
   }
 
+  public function getCurrentFZPSettings($date)
+  {
+    $sql = "select mrp, min_zp from salary_settings where year(date_time) = year(?)";
+
+    $query = $this->db->query($sql, array($date));
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return false;
+    }
+  }
+
   public function is_fzp_by_date($fzpMonth, $fzpYear) {
     $sql = "SELECT * FROM `salary_fzp` where month(`date_time`)=? and YEAR(`date_time`) = ?";
     $query = $this->db->query($sql, array(intval($fzpMonth), intval($fzpYear)));
@@ -101,7 +124,7 @@ class SalaryModel extends Model
 
   public function getEmployeesInfo($company_id, $fzp_id, $date)
   {
-    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`, `increase_payments`, `increase_explanation`, `decrease_payments`, `decrease_explanation`, bf.bonus as bonus, bf.fines as fines,  CASE
+    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`,  bf.bonus as bonus, bf.fines as fines, `tax_OSMS`, `tax_IPN`, `tax_OPV`, employee_salary_fact,  CASE
     WHEN direction.name = 'Цех' THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
 END AS working_hours
@@ -126,7 +149,7 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
   }
 
   public function getAllEmployeesForFZP() {
-    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(now()) and YEAR(`date_time`) = YEAR(now())) as salary_fzp, employee.salary as employee_salary, CASE
+    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(now()) and YEAR(`date_time`) = YEAR(now())) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact, CASE
     WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(now()) AND `month`= month(now()))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(now()) AND `month`= month(now()))
     END AS working_hours_per_month
@@ -143,7 +166,7 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     }
   }
   public function getAllEmployeesForFZP_by_date($date) {
-    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(?) and YEAR(`date_time`) = YEAR(?)) as salary_fzp, employee.salary as employee_salary, CASE
+    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(?) and YEAR(`date_time`) = YEAR(?)) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact, CASE
     WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
     END AS working_hours_per_month
@@ -177,10 +200,9 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     //print_r($_POST['worked_hours_per_month']);
     $builder = $this->db->table('salary_month');
     $builder->set('worked_hours_per_month', $_POST['worked_hours_per_month']);
-    //$builder->set('increase_payments', $_POST['increase_payments']);
-    //$builder->set('increase_explanation', $_POST['increase_explanation']);
-    //$builder->set('decrease_payments', $_POST['decrease_payments']);
-    //$builder->set('decrease_explanation', $_POST['decrease_explanation']);
+    $builder->set('tax_OSMS', $_POST['tax_OSMS']);
+    $builder->set('tax_OPV', $_POST['tax_OPV']);
+    $builder->set('tax_IPN', $_POST['tax_IPN']);
     
     $builder->where('employee_id', $id);
     $builder->where('salary_fzp', $fzp_id);

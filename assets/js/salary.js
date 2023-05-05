@@ -185,12 +185,21 @@ function updateModalInputs(value) {
   const bonus = isNaN(parseFloat(employee.bonus)) ? 0 : parseFloat(employee.bonus);
   const fines = isNaN(parseFloat(employee.fines)) ? 0 : parseFloat(employee.fines);
 
-  const worked_salary = parseFloat(employee.employee_salary) / parseFloat(employee.working_hours_per_month) * value;
-  const total_salary = worked_salary + bonus - fines;
+  //- parseFloat(tax_osms) - parseFloat(tax_opv) - parseFloat(tax_ipn)
+  const worked_salary_off = parseFloat(employee.employee_salary) / parseFloat(employee.working_hours_per_month) * value;
+  const tax_osms = calcOSMS(worked_salary_off);
+  const tax_opv = calcTaxOVP(worked_salary_off);
+  const tax_ipn = prepareCalcIPN(worked_salary_off);
+
+  const worked_salary = parseFloat(employee.employee_salary_fact) / parseFloat(employee.working_hours_per_month) * value;
+  const total_salary = worked_salary + bonus - fines - tax_osms - tax_opv - tax_ipn;
   
+  modal.querySelector("#tax_osms").value = numberWithSpaces(tax_osms);
+  modal.querySelector("#tax_opv").value = numberWithSpaces(tax_opv);
+  modal.querySelector("#tax_ipn").value = numberWithSpaces(tax_ipn);
+
   modal.querySelector("#worked_salary").value = numberWithSpaces(worked_salary);
   modal.querySelector("#total").value = numberWithSpaces(total_salary);
-
 }
 
 function saveBonusFines(type, modal) {
@@ -282,15 +291,23 @@ function prepareEmployeeModalInfo(trid) {
   const bonus = parseFloat(employee.bonus) || 0;
   const fines = parseFloat(employee.fines) || 0;
 
+  const tax_osms = parseFloat(employee.tax_OSMS) || 0;
+  const tax_opv = parseFloat(employee.tax_OPV) || 0;
+  const tax_ipn = parseFloat(employee.tax_IPN) || 0;
+
   const working_hours_per_month = parseInt(employee.working_hours_per_month) || 0;
   const worked_hours_per_month = parseInt(employee.worked_hours_per_month) || 0;
 
-  const employee_salary = parseInt(employee.employee_salary) || 0;
+  const employee_salary_fact = parseInt(employee.employee_salary_fact) || 0;
 
-  const salary = employee_salary / working_hours_per_month * worked_hours_per_month;
+  const salary = employee_salary_fact / working_hours_per_month * worked_hours_per_month;
   const total_salary = salary + bonus - fines;
 
-  modal.querySelector("h5").textContent = employee.surname + " " + employee.name;
+  modal.querySelector("h4").textContent = employee.surname + " " + employee.name;
+
+  modal.querySelector("#tax_osms").value = tax_osms;
+  modal.querySelector("#tax_opv").value = tax_opv;
+  modal.querySelector("#tax_ipn").value = tax_ipn;
 
   modal.querySelector("#working_hours").value = working_hours_per_month;
   modal.querySelector("#worked_hours_fact").value = worked_hours_per_month;
@@ -381,17 +398,22 @@ function calculateSalary(tr) {
   const fines = isNaN(parseFloat(EMPLOYEES[CURRENT_TR].fines)) ? 0 : parseFloat(EMPLOYEES[CURRENT_TR].fines);
   
   const work_day_fact = parseInt(document.querySelector("#modal_editEmployeeSalaryInfo #worked_hours_fact").value) || 0;
+  const tax_osms = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_osms").value) || 0;
+  const tax_opv = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_opv").value) || 0;
+  const tax_ipn = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_ipn").value) || 0;
    
   EMPLOYEES[CURRENT_TR].worked_hours_per_month = work_day_fact;
-  
+  EMPLOYEES[CURRENT_TR].tax_OSMS = tax_osms;
+  EMPLOYEES[CURRENT_TR].tax_OPV = tax_opv;
+  EMPLOYEES[CURRENT_TR].tax_IPN = tax_ipn;
+
   const current_salary = salary/work_day_plan*work_day_fact;
-  const total = current_salary + bonus - fines;
+  const total = current_salary + bonus - fines - parseFloat(tax_osms) - parseFloat(tax_opv) - parseFloat(tax_ipn);
   tds[6].textContent = work_day_fact;
   tds[8].textContent = numberWithSpaces(current_salary.toFixed(2));
   tds[9].textContent = numberWithSpaces(bonus.toFixed(2));
   tds[10].textContent = numberWithSpaces(fines.toFixed(2));
   tds[11].textContent = numberWithSpaces(total.toFixed(2));
-
 }
 
 var intVal = function (i) {
@@ -403,7 +425,6 @@ function calcTotals(tableId) {
   const companyID = tableId.replace("salary_company_", "");
   
   const res = {
-        //t_salary: 0,
         t_worked_salary: 0,
         t_bonus: 0,
         t_fines: 0,
@@ -414,7 +435,7 @@ function calcTotals(tableId) {
     if (EMPLOYEES[key].company_id == companyID) {
       const bonus = EMPLOYEES[key].bonus ? parseFloat(EMPLOYEES[key].bonus) : 0;
       const fines = EMPLOYEES[key].fines ? parseFloat(EMPLOYEES[key].fines) : 0;
-      const salary = EMPLOYEES[key].employee_salary ? parseFloat(EMPLOYEES[key].employee_salary) : 0;
+      const salary = EMPLOYEES[key].employee_salary_fact ? parseFloat(EMPLOYEES[key].employee_salary_fact) : 0;
 
       const working_hours_per_month = EMPLOYEES[key].working_hours_per_month ? parseFloat(EMPLOYEES[key].working_hours_per_month) : 0;
       const worked_hours_per_month = EMPLOYEES[key].worked_hours_per_month ? parseFloat(EMPLOYEES[key].worked_hours_per_month) : 0;
@@ -460,24 +481,6 @@ function updateTotalSumToPay() {
   document.querySelector(".salary-total span").textContent = numberWithSpaces(sum);
 }
 
-//function calcColTotals(table, colIndex) {
-//  let removeTag = function(str) {
-//    return str.replace(/<\/?[^>]+(>|$)/g, "");
-//  }
-//  let colTotal = 0;
-  
-//  colTotal = table
-//      .column(colIndex)
-//      .data()
-//      .reduce(function (a, b) {
-//        b = removeTag(b);
-//        //console.log(b);
-//          return intVal(a) + intVal(b);
-//      }, 0);
-//  console.log(colIndex, colTotal);
-//  return colTotal;
-//}
-
 function numberWithSpaces(x) {
   x = x ? parseFloat(x).toFixed(2) : 0.00;
   var parts = x.toString().split(".");
@@ -491,7 +494,10 @@ function save_tr() {
 
   const data = {
     'fzp_id' : EMPLOYEES[CURRENT_TR].fzp_id,
-    'worked_hours_per_month' : EMPLOYEES[CURRENT_TR].work_day_fact,
+    'worked_hours_per_month' : EMPLOYEES[CURRENT_TR].worked_hours_per_month,
+    'tax_OSMS' : EMPLOYEES[CURRENT_TR].tax_OSMS,
+    'tax_OPV' : EMPLOYEES[CURRENT_TR].tax_OPV,
+    'tax_IPN' : EMPLOYEES[CURRENT_TR].tax_IPN,
     'id': CURRENT_TR
   };
   
@@ -534,4 +540,34 @@ function changeCurrentFZPStatus (id, status, reason="") {
       alert("Error while status update");
     }
   });
+}
+
+function calcTaxOVP(salary) {
+  return salary * 0.1;
+}
+
+function calcOSMS(salary) {
+  return salary * 0.02;
+}
+
+function prepareCalcIPN(salary) {
+  const mrp = parseFloat(document.getElementById("mrp").value) || 0;
+  const min_zp = parseFloat(document.getElementById("min_zp").value) || 0;
+  if (salary <= min_zp) {
+    return calcIPN_with_90_cor(salary, mrp);
+  } else {
+    return calcIPN(salary, mrp);
+  }
+}
+
+function calcIPN_with_90_cor(salary, mrp) {
+  const res = salary - (salary * 0.1) - (salary * 0.02) - 14 * mrp;
+  console.log(res);
+  return (res - res * 0.9) * 0.1;
+}
+
+function calcIPN(salary, mrp) {
+  const res = salary - (salary * 0.1) - (salary * 0.02) - 14 * mrp;
+  console.log(res);
+  return res * 0.1;
 }

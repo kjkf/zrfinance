@@ -122,7 +122,7 @@ if (isset($fzp) && !empty($fzp)) :?>
                   <td>
                     <span><?=number_format($employee['fines'], 2, '.', ' ')?></span>
                   </td>
-                  <?php $resultSalary = $workedSalary + $employee['bonus'] - $employee['fines']; ?>
+                  <?php $resultSalary = $workedSalary + $employee['bonus'] - $employee['fines'] - $employee['tax_OSMS'] - $employee['tax_OPV'] - $employee['tax_IPN']; ?>
                   <td><span><?= number_format($resultSalary, 2, '.', ' ') ?></span></td>
                 </tr>
               <?php endforeach; ?>
@@ -157,6 +157,8 @@ if (isset($fzp) && !empty($fzp)) :?>
 
 <input type="hidden" value="<?= $fzp['id'] ?>" id="fzp_id">
 <input type="hidden" value="<?= $fzp['date_time'] ?>" id="fzp_date">
+<input type="hidden" value="<?= $fzp['mrp'] ?>" id="mrp">
+<input type="hidden" value="<?= $fzp['min_zp'] ?>" id="min_zp">
 <input type="hidden" value="<?= $fzp['author'] ?>" id="fzp_author">
 <input type="hidden" value="<?= $fzp['rejection_reason'] ?>" id="fzp_rejection_reason">
 <input type="hidden" value="<?= $fzp['is_approved'] ?>" id="fzp_is_approved">
@@ -205,7 +207,7 @@ if (isset($fzp) && !empty($fzp)) :?>
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal_addItemLabel"></h5>
+        <h4 class="modal-title" id="modal_addItemLabel"></h4>
         
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -230,13 +232,27 @@ if (isset($fzp) && !empty($fzp)) :?>
             <label for="total">Итого к выдаче</label>
             <input type="text" class="form-control" id="total" disabled>
           </div>
-
         </div>
         
+        <div class="row"> <h5>Налоги</h5> </div>
         <div class="row mb-2">
+          <div class="col-4">
+              <label for="working_hours">ОСМС</label>
+              <input type="text" class="form-control" id="tax_osms" disabled>
+          </div>
 
+          <div class="col-4">
+              <label for="working_hours">ОВП</label>
+              <input type="text" class="form-control" id="tax_opv" disabled>
+          </div>
+
+          <div class="col-4">
+              <label for="working_hours">ИПН</label>
+              <input type="text" class="form-control" id="tax_ipn" disabled>
+          </div>
         </div>
         
+        <div class="row"> <h5>Прибавки и удержания</h5> </div>
         <div class="row">
           <div class="col-6">
           <table class="table table-sm caption-top bonus">
