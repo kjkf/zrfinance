@@ -1,6 +1,8 @@
 <?php
+    $user_role = isset($user_role) ? $user_role : $user['role'];
     $is_chief = (isset($user_role) && $user_role == 3) ? true : false;
     $is_admin = (isset($user_role) && $user_role == 1) ? true : false;
+    $is_access_to_classif = (isset($user_role) && ($user_role == 1 || $user_role == 3 || $user_role == 5)) ? true : false;
 ?>
 
 <div class="row" style = "margin-top:30px; padding:20px 60px; height: auto; background-color:#A50000; color: white">
@@ -17,7 +19,11 @@
         <?php if ($is_admin || $is_chief) :?>
         <li><a class="dropdown-item" href="<?php echo base_url('dashboard')?>">Движение</a></li>
         <li><a class="dropdown-item" href="<?php echo base_url('report')?>">Отчёты</a></li>
-        <li><a class="dropdown-item" href="<?php echo base_url('classificators')?>">Классификаторы</a></li>
+        
+        <?php endif; ?>
+        <?php if ($is_access_to_classif) :?>
+          <li><a class="dropdown-item" href="<?php echo base_url('salary')?>">Заработная плата</a></li>
+          <li><a class="dropdown-item" href="<?php echo base_url('classificators')?>">Классификаторы</a></li>
         <?php endif; ?>
         <li><a href="<?php echo  site_url('auth/logout')?>" class="dropdown-item">Выйти</a></li>
       </ul>

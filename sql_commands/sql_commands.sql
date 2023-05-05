@@ -36,15 +36,30 @@ CREATE TABLE `company` (
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--alter TABLE employee add COLUMN `salary_fact` double(10, 2) not null default 10
+--update employee set salary_fact = salary where `fire_date` is null
 CREATE TABLE `employee` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `name` text NOT NULL,
  `surname` text NOT NULL,
  `email` text,
  `position` int(11) DEFAULT NULL,
+ `department` int(11) DEFAULT NULL,
  `company` int(11) DEFAULT NULL,
+ `salary` double(10, 2) not null,
+ `salary_fact` double(10, 2) not null,
  `telephone` varchar(12) DEFAULT NULL,
- PRIMARY KEY (`id`)
+ `is_fired` int(2) DEFAULT 0,
+ `fire_date` datetime DEFAULT NULL,
+ PRIMARY KEY (`id`),
+
+ KEY `position` (`position`),
+ KEY `department` (`department`),
+ KEY `company` (`company`),
+
+ CONSTRAINT `user_position` FOREIGN KEY (`position`) REFERENCES `position` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION, 
+ CONSTRAINT `user_department` FOREIGN KEY (`department`) REFERENCES `department` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ CONSTRAINT `user_company` FOREIGN KEY (`company`) REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `position` (
@@ -231,7 +246,8 @@ INSERT INTO `roles`(`id`, `role`) VALUES
 (1,'admin'),
 (2,'guest'),
 (3,'chief'),
-(4,'accountant');
+(4,'accountant'),
+(5,'hr');
 
 INSERT INTO `status`(`id`, `name`) VALUES
 (1, 'new'),
@@ -297,113 +313,113 @@ INSERT INTO `position`(`id`, `name`) VALUES
 (28,'Маляр');
 
 
-INSERT INTO `employee`(`name`, `surname`, `email`, `position`) VALUES
-('Владимир','Акимов','akimov.08@list.ru',16),
-('Лариса','Артемьева','hr@zlatar12.com',1),
-('Александр','Бондарь','a.bondar@zlatar12.com',10),
-('Александр','Буховец','alexbuh@mail.ru',19),
-('Ядвига','Волынская','y.volynskaya@zlatar12.com',12),
-('Павел','Губин','pavel.g@office.hoster.kz',13),
-('Алексей','Друзенко','druzen91@gmail.com',2),
-('Ильяс','Закиров','i.zakirov@zlatar12.com',10),
-('Аскар','Идрисов','askar_i88@mail.ru',18),
-('Ержан','Калмуратов','aler-forever@mail.ru',18),
-('Жанасыл','Канатбеков','Zh.Kanatbekov@zlatar12.com',8),
-('Станислав','Королев','korolevstas@mail.ru',18),
-('Александр','Корчебанов','a.korchebanov@zlatar12.com',17),
-('Куаныш','Сарсенбаев','zlatarsklad@gmail.com',11),
-('Асемгуль','Курмангалиева','asem@mail.ru',9),
-('Юлия','Мавлянова','julia@zlatar12.com',6),
-('Бота','Мадимова','msbota@gmail.com',null),
-('Раиса','Мамадалиева','glavbuch@zlatar12.com',4),
-('Николай','Матвиенко','matvienko@mail.ru',18),
-('Гульмира','Моллахунова','GMollakhunova@zlatar12.com',null),
-('Мадина','Мухтарова','m.mukhtarova@zlatar12.com',12),
-('Медет','Нариманов','medet199624@gmail.com',16),
-('Александр','Обидин','bokhanalex1302@gmail.com',19),
-('Виктор','Панченко','panchenko.v71@mail.ru',15),
-('Мурат','Примбетов','murat/primbetov@mail.ru',18),
-('Виталий','Рассказов','v.rasskazov@zlatar12.com',7),
-('Олег','Родченко','ro2872@list.ru',18),
-('Валерий','Романенко','zakup@zlatar12.com',null),
-('Аида','Саимова','a.saimova@zlatar12.com',12),
-('Ализар','Сайфатов','',16),
-('Евгений','Свинолупов','y.svinolupov@zlatar12.com',14),
-('Наталья','Струнина','eva06.86@mail.ru',3),
-('Ербол','Тайбагаров','e.taibagarov@zlatar12.com',6),
-('Константин','Цай','k.tsay@zlatar12.com',null),
-('Тахир','Чаплыев','t.chaplyev@zlatar12.com',12),
-('Ахмет','Чило-Оглы','akhmet.chiloogly@mail.ru',19),
-('Дмитрий','Шаломенцев','mitya3010760@gmail.com',21),
-('Эдуард','Шмальц','odin-dwa-tri@mail.ru',20),
-('Дмитрий','Щукин','d.chshukin@zlatar12.com',null),
-('Валерия','Ялонжа','valeriya.k@office.hoster.kz',null);
+--INSERT INTO `employee`(`name`, `surname`, `email`, `position`) VALUES
+--('Владимир','Акимов','akimov.08@list.ru',16),
+--('Лариса','Артемьева','hr@zlatar12.com',1),
+--('Александр','Бондарь','a.bondar@zlatar12.com',10),
+--('Александр','Буховец','alexbuh@mail.ru',19),
+--('Ядвига','Волынская','y.volynskaya@zlatar12.com',12),
+--('Павел','Губин','pavel.g@office.hoster.kz',13),
+--('Алексей','Друзенко','druzen91@gmail.com',2),
+--('Ильяс','Закиров','i.zakirov@zlatar12.com',10),
+--('Аскар','Идрисов','askar_i88@mail.ru',18),
+--('Ержан','Калмуратов','aler-forever@mail.ru',18),
+--('Жанасыл','Канатбеков','Zh.Kanatbekov@zlatar12.com',8),
+--('Станислав','Королев','korolevstas@mail.ru',18),
+--('Александр','Корчебанов','a.korchebanov@zlatar12.com',17),
+--('Куаныш','Сарсенбаев','zlatarsklad@gmail.com',11),
+--('Асемгуль','Курмангалиева','asem@mail.ru',9),
+--('Юлия','Мавлянова','julia@zlatar12.com',6),
+--('Бота','Мадимова','msbota@gmail.com',null),
+--('Раиса','Мамадалиева','glavbuch@zlatar12.com',4),
+--('Николай','Матвиенко','matvienko@mail.ru',18),
+--('Гульмира','Моллахунова','GMollakhunova@zlatar12.com',null),
+--('Мадина','Мухтарова','m.mukhtarova@zlatar12.com',12),
+--('Медет','Нариманов','medet199624@gmail.com',16),
+--('Александр','Обидин','bokhanalex1302@gmail.com',19),
+--('Виктор','Панченко','panchenko.v71@mail.ru',15),
+--('Мурат','Примбетов','murat/primbetov@mail.ru',18),
+--('Виталий','Рассказов','v.rasskazov@zlatar12.com',7),
+--('Олег','Родченко','ro2872@list.ru',18),
+--('Валерий','Романенко','zakup@zlatar12.com',null),
+--('Аида','Саимова','a.saimova@zlatar12.com',12),
+--('Ализар','Сайфатов','',16),
+--('Евгений','Свинолупов','y.svinolupov@zlatar12.com',14),
+--('Наталья','Струнина','eva06.86@mail.ru',3),
+--('Ербол','Тайбагаров','e.taibagarov@zlatar12.com',6),
+--('Константин','Цай','k.tsay@zlatar12.com',null),
+--('Тахир','Чаплыев','t.chaplyev@zlatar12.com',12),
+--('Ахмет','Чило-Оглы','akhmet.chiloogly@mail.ru',19),
+--('Дмитрий','Шаломенцев','mitya3010760@gmail.com',21),
+--('Эдуард','Шмальц','odin-dwa-tri@mail.ru',20),
+--('Дмитрий','Щукин','d.chshukin@zlatar12.com',null),
+--('Валерия','Ялонжа','valeriya.k@office.hoster.kz',null);
 
-INSERT INTO `employee`(`name`, `surname`, `company`, `position`) VALUES
-('Мадимова', 'Жанара',5,6),
-('Курмангалиева', 'Асемгуль',3,9),
-('Карсаков', 'Александр',3,12),
-('Жанзак', 'Жасулан',3,8),
-('Утегенов', 'Ерман',3,8),
-('Мацура', 'Евгений',4,24),
-('Уалиханов', 'Еркин',4,25),
-('Соколов', 'Сергей',4,26),
-('Цаценко', 'Оксана',4,3),
-('Тураев', 'Талгат',2,28),
-('Савин', 'Евгений',2,19),
-('Попов', 'Валерий',2,19),
-('Узаков  Талгат', 'Талгат',2,28),
-('Байтугулов', 'Ануар',2,27),
-('Сердюк', 'Валерий',2,18),
-('Дуйсенбаев', 'Хамит',2,28),
-('Барвинок', 'Сергей',2,19),
-('Бекжанов', 'Бекзат',2,16),
-('Уткин', 'Данил',2,19),
-('Шуртыгин', 'Николай',2,19),
-('Жуматаев', 'Дулатбек',2,28),
-('Касымов', 'Арман',2,28),
-('Есжанов', 'Максат',2,16);
+--INSERT INTO `employee`(`name`, `surname`, `company`, `position`) VALUES
+--('Мадимова', 'Жанара',5,6),
+--('Курмангалиева', 'Асемгуль',3,9),
+--('Карсаков', 'Александр',3,12),
+--('Жанзак', 'Жасулан',3,8),
+--('Утегенов', 'Ерман',3,8),
+--('Мацура', 'Евгений',4,24),
+--('Уалиханов', 'Еркин',4,25),
+--('Соколов', 'Сергей',4,26),
+--('Цаценко', 'Оксана',4,3),
+--('Тураев', 'Талгат',2,28),
+--('Савин', 'Евгений',2,19),
+--('Попов', 'Валерий',2,19),
+--('Узаков  Талгат', 'Талгат',2,28),
+--('Байтугулов', 'Ануар',2,27),
+--('Сердюк', 'Валерий',2,18),
+--('Дуйсенбаев', 'Хамит',2,28),
+--('Барвинок', 'Сергей',2,19),
+--('Бекжанов', 'Бекзат',2,16),
+--('Уткин', 'Данил',2,19),
+--('Шуртыгин', 'Николай',2,19),
+--('Жуматаев', 'Дулатбек',2,28),
+--('Касымов', 'Арман',2,28),
+--('Есжанов', 'Максат',2,16);
 
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 1;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 2;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 3;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 4;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 5;
-UPDATE `employee` SET `company` = '' WHERE `employee`.`id` = 6;
-UPDATE `employee` SET `company` = '1' WHERE `employee`.`id` = 7;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 8;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 9;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 10;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 11;
-UPDATE `employee` SET `company` = '' WHERE `employee`.`id` = 12;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 13;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 14;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 15;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 16;
-UPDATE `employee` SET `company` = '5' WHERE `employee`.`id` = 17;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 18;
-UPDATE `employee` SET `company` = '5' WHERE `employee`.`id` = 19;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 20;
-UPDATE `employee` SET `company` = '' WHERE `employee`.`id` = 21;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 22;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 23;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 24;
-UPDATE `employee` SET `company` = '1' WHERE `employee`.`id` = 25;
-UPDATE `employee` SET `company` = '4' WHERE `employee`.`id` = 26;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 27;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 28;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 29;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 30;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 31;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 32;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 33;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 34;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 35;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 36;
-UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 37;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 38;
-UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 39;
-UPDATE `employee` SET `company` = '' WHERE `employee`.`id` = 40;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 1;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 2;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 3;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 4;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 5;
+--UPDATE `employee` SET `company` = '' WHERE `employee`.`id` = 6;
+--UPDATE `employee` SET `company` = '1' WHERE `employee`.`id` = 7;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 8;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 9;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 10;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 11;
+--UPDATE `employee` SET `company` = '' WHERE `employee`.`id` = 12;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 13;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 14;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 15;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 16;
+--UPDATE `employee` SET `company` = '5' WHERE `employee`.`id` = 17;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 18;
+--UPDATE `employee` SET `company` = '5' WHERE `employee`.`id` = 19;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 20;
+--UPDATE `employee` SET `company` = '' WHERE `employee`.`id` = 21;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 22;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 23;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 24;
+--UPDATE `employee` SET `company` = '1' WHERE `employee`.`id` = 25;
+--UPDATE `employee` SET `company` = '4' WHERE `employee`.`id` = 26;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 27;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 28;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 29;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 30;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 31;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 32;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 33;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 34;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 35;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 36;
+--UPDATE `employee` SET `company` = '2' WHERE `employee`.`id` = 37;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 38;
+--UPDATE `employee` SET `company` = '3' WHERE `employee`.`id` = 39;
+--UPDATE `employee` SET `company` = '' WHERE `employee`.`id` = 40;
 
 
 alter table `expense_item` add column `need_contractor` int(6) DEFAULT null; -- в значении указывается айдишник категории, к которой относится контрагент

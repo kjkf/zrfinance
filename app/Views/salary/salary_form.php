@@ -1,0 +1,348 @@
+<?php echo view('partials/_top_nav.php'); ?>
+
+<?php
+if (isset($validation)) : ?>
+  <div class="have-errors">
+    <?= $validation->listErrors() ?>
+    <a href="<?= base_url('salary') ?>" class="goto">Вернуться</a>
+  </div>
+<?php endif; ?>
+
+<div class="row">
+  <div class="col-md-12 col-md-offset-12" style="padding-left: 0; padding-right:0;">
+    <?php if (!empty(session()->getFlashData('fail'))) { ?>
+      <div class="alert alert-danger">
+        <?= session()->getFlashData('fail') ?>
+      </div>
+    <?php } ?>
+    <?php if (!empty(session()->getFlashData('success'))) { ?>
+      <div class="alert alert-success">
+        <?= session()->getFlashData('success') ?>
+      </div>
+    <?php } ?>
+  </div>
+</div>
+
+<?php 
+if (isset($fzp) && !empty($fzp)) :?>
+
+<div class="container">
+
+  <div class="d-flex justify-content-end buttons mt-2">
+    <?php
+//    d($bonus_fines);
+    $user_role = $user['role'];
+    $status = isset($fzp) && !empty($fzp) ? $fzp['is_approved'] : -1;
+    if ($status != 1) :
+    ?>
+      <?php if ($status == "4" && $user_role == 3) { ?>
+        <button class="btn btn-secondary btn-sm mr-1" id="submit">Утвердить</button>
+        <!--<button class="btn btn-secondary btn-sm mr-1" id="return">Отправить на доработку</button>-->
+        <button class="btn btn-secondary mr-1" data-bs-toggle="modal" data-bs-target="#modal_Return">Отправить на доработку</button>
+
+      <?php } else if (($status == "0" || $status == "2") && $user_role == 5) { ?>
+        <button class="btn btn-secondary btn-sm mr-1" id="send">Отправить на утверждение</button>
+      <?php } ?>
+
+    <?php endif; ?>
+    <a href="<?= base_url("salary") ?>" class="btn btn-info btn-sm mr-1" id="close">Закрыть</a>
+  </div>
+
+  <?php if ($status == "2" && $user_role == 5) : ?>
+    <div>
+      <div class="alert alert-danger mt-2" role="alert">
+        <?php echo $fzp['rejection_reason'] ?>
+      </div>
+    </div>
+  <?php endif; ?>
+
+  <?php
+  //d($employees);
+  if (isset($employees) && !empty($employees)) : ?>
+    <div class="content salary">
+      <div class="salary-head d-flex justify-content-start align-items-center mr-3">
+        <div class="flex-grow-1">
+          <p>
+            Всего <?php echo word_form('сотрудник', $employees_count) ?>
+          </p>
+
+          <p> Зарплата за <?= $month ?> <?= $year ?> года</p>
+        </div>
+        <div class="salary-total flex-grow-1">
+          <?php $total = 1200972; ?>
+          <p>Общая сумма к выплате <span></span></p>
+        </div>
+      </div>
+      <?php
+      foreach ($employees as $key => $company) :
+        $count = 1;
+        $companyInfo = explode("|", $key);
+        $companyId = $companyInfo[0];
+        $companyName = $companyInfo[1];
+      ?>
+        <div class="department">
+          <p>Подразделение: <?php echo $companyName ?></p>
+          <?php //d($company);
+          ?>
+          <table class="employee_salary display compact" id="salary_company_<?= $companyId ?>">
+            <thead>
+              <tr>
+                <th class="th_text clip" title="направление">направление</th>
+                <th class="th_col">№ </th>
+                <th class="th_text th_long_text">Ф.И.О.</th>
+                <th class="th_text th_long_text">Должность</th>
+                <th class="th_text">Компания</th>
+                <th class="th_num">Кол-во рабочих часов в мес.</th>
+                <th class="th_num">Кол-во отработаных часов</th>
+                <th class="th_money">Оклад</th>
+                <th class="th_money">Начислено по отраб. дням</th>
+                <th class="th_money">Прибавки</th>
+                <th class="th_money">Удержания</th>
+                <th class="th_money">К выдаче</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($company as $employee) :
+                //$json[$employee['id']] = $employee; 
+              ?>
+                <tr class="trow" data-trid="<?= $employee['id'] ?>">
+                  <td><span><?= $employee['direction'] ?></span></td>
+                  <td><?= $count++ ?></td>
+                  <td><span><?= $employee['surname'] ?> <?= $employee['name'] ?></span></td>
+                  <td><span><?= $employee['position'] ?></span></td>
+                  <td><span><?= $employee['company'] ?></span></td>
+                  <td><span><?= $employee['working_hours_per_month'] ?></span></td>
+                  <td><span><?= $employee['worked_hours_per_month'] ?></span></td>
+                  <td><span><?= number_format($employee['employee_salary'], 2, '.', ' ') ?></span></td>
+                  <?php $workedSalary = $employee['employee_salary'] / $employee['working_hours_per_month'] * $employee['worked_hours_per_month'] ?>
+                  <td><span><?= number_format($workedSalary, 2, '.', ' ') ?></span></td>
+                  <td>
+                    <span><?= number_format($employee['bonus'], 2, '.', ' ')?></span>
+                  </td>
+                  <td>
+                    <span><?=number_format($employee['fines'], 2, '.', ' ')?></span>
+                  </td>
+                  <?php $resultSalary = $workedSalary + $employee['bonus'] - $employee['fines'] - $employee['tax_OSMS'] - $employee['tax_OPV'] - $employee['tax_IPN']; ?>
+                  <td><span><?= number_format($resultSalary, 2, '.', ' ') ?></span></td>
+                </tr>
+              <?php endforeach; ?>
+
+            </tbody>
+            <tfoot>
+              <tr class="table_footer">
+                <th></th>
+                <th></th>
+                <th>Итого</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      <?php endforeach; ?>
+
+    </div>
+  <? else : ?>
+    <h2>Нет информации о сотрудниках</h2>
+  <? endif; ?>
+
+</div>
+
+<input type="hidden" value="<?= $fzp['id'] ?>" id="fzp_id">
+<input type="hidden" value="<?= $fzp['date_time'] ?>" id="fzp_date">
+<input type="hidden" value="<?= $fzp['mrp'] ?>" id="mrp">
+<input type="hidden" value="<?= $fzp['min_zp'] ?>" id="min_zp">
+<input type="hidden" value="<?= $fzp['author'] ?>" id="fzp_author">
+<input type="hidden" value="<?= $fzp['rejection_reason'] ?>" id="fzp_rejection_reason">
+<input type="hidden" value="<?= $fzp['is_approved'] ?>" id="fzp_is_approved">
+<input type="hidden" value="<?= $user_role ?>" id="role">
+
+<input type="hidden" value="" id="old_worked_hours">
+<input type="hidden" value="" id="old_bonus">
+<input type="hidden" value="" id="old_fines">
+
+<!--<input type="hidden" value="<?php //echo $bonus_fines ?>" id="bonus_type">
+<input type="hidden" value="<?php //echo $bonus_fines["fines"]?>" id="fines_type">-->
+
+
+<?php endif;?>
+
+<script>
+  const EMPLOYEES = JSON.parse(<?php echo json_encode($json); ?>)
+  console.log(EMPLOYEES);
+  //const bonusTypes = JSON.parse(<?php echo json_encode($bonus_fines["bonus"]); ?>)
+  //const finesTypes = JSON.parse(<?php echo json_encode($bonus_fines["fines"]); ?>)
+  ;
+</script>
+
+<!--<template id="rejection_reason">-->
+<div class="modal fade" id="modal_Return" tabindex="-1" aria-labelledby="modal_addItemLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_addItemLabel">Причина отказа</h5>
+        
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <textarea id="rej_reason" class="form-control" cols="30" rows="5" placeholder="Укажите причину возвращения на доработку" required></textarea>
+        </div>
+        <div class="d-flex justify-content-end buttons mt-1">
+          <button class="btn btn-info btn-sm mr-1" id="return">Отправить на доработку</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_editEmployeeSalaryInfo" tabindex="-1"  aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal_addItemLabel"></h4>
+        
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-2">
+          <div class="col-3">
+            <label for="working_hours">Кол-во рабочих часов</label>
+            <input type="text" class="form-control" id="working_hours" disabled>
+          </div>
+
+          <div class="col-3">
+            <label for="worked_hours_fact">Кол-во отработанных часов</label>
+            <input type="number" min=0 step=10 class="form-control" id="worked_hours_fact" placeholder="Введите колво отработанных часов по факту">
+          </div>
+
+          <div class="col-3">
+            <label for="total">Начислено по отраб. часам</label>
+            <input type="text" class="form-control" id="worked_salary" disabled>
+          </div>
+
+          <div class="col-3">
+            <label for="total">Итого к выдаче</label>
+            <input type="text" class="form-control" id="total" disabled>
+          </div>
+        </div>
+        
+        <div class="row"> <h5>Налоги</h5> </div>
+        <div class="row mb-2">
+          <div class="col-4">
+              <label for="working_hours">ОСМС</label>
+              <input type="text" class="form-control" id="tax_osms" disabled>
+          </div>
+
+          <div class="col-4">
+              <label for="working_hours">ОВП</label>
+              <input type="text" class="form-control" id="tax_opv" disabled>
+          </div>
+
+          <div class="col-4">
+              <label for="working_hours">ИПН</label>
+              <input type="text" class="form-control" id="tax_ipn" disabled>
+          </div>
+        </div>
+        
+        <div class="row"> <h5>Прибавки и удержания</h5> </div>
+        <div class="row">
+          <div class="col-6">
+          <table class="table table-sm caption-top bonus">
+            <colgroup>
+              <col style="width: 45%">
+              <col style="width: 35%">
+              <col style="width: auto">
+            </colgroup>
+            <caption>
+              Всего Прибавки:
+              <span>0.00</span> KZT
+            </caption>
+            <thead class="table-success">
+              <tr>
+                <td class="ttype">Тип</td>
+                <td>Сумма</td>
+                <td>Действия</td>
+              </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+              <tr class ="add_bonus" >
+                <td> <select class="form-select">
+                  <option value="-1">Выберите тип прибавки</option>
+                  <?php foreach($bonus_fines["bonus"] as $bonus) :?>
+                    <option value="<?=$bonus['id']?>"><?php echo $bonus['name']?></option>
+                  <?php endforeach;?>
+                </select> 
+              </td>
+              <td>
+                <input type="number" min = 0  class="sum" step="1000">
+              </td>
+              <td>
+                <a href="#" class="btn-icon save-btn" data-type="bonus" name="edit_item"><i class="fas fa-save"></i> </a>
+              </td>
+              </tr>
+            </tfoot>
+          </table>
+          
+          </div>
+
+          <div class="col-6">
+            <table class="table table-sm caption-top fines">
+              <colgroup>
+                <col style="width: 45%">
+                <col style="width: 35%">
+                <col style="width: auto">
+              </colgroup>
+              <caption>
+                Всего Удержаний:
+                <span>0.00</span> KZT
+              </caption>
+              <thead class="table-info">
+                <tr>
+                  <td class="ttype">Тип</td>
+                  <td>Сумма</td>
+                  <td>Действия</td>
+                </tr>
+              </thead>
+              <tbody></tbody>
+              <tfoot>
+                <tr class ="add_fines">
+                  <td> <select class="form-select fines">
+                    <option value="-1">Выберите тип удержания</option>
+                    <?php foreach($bonus_fines["fines"] as $fines) :?>
+                      <option value="<?=$fines['id']?>"><?php echo $fines['name']?></option>
+                    <?php endforeach;?>
+                  </select> 
+                </td>
+                <td>
+                  <input type="number" min = 0  class="sum" step="1000">
+                </td>
+                <td>
+                  <a href="#" class="btn-icon save-btn" data-type="fines" name="edit_item"><i class="fas fa-save"></i> </a>
+                </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          
+          
+        </div>        
+        <div class="d-flex justify-content-end ">
+            <button class="btn btn-secondary save-em-info mr-10">Сохранить</button>
+            <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--</template>-->
+<!--<a href="#" class="btn-icon" name="edit_item"><i class="fa-solid fa-pen-to-square"></i> </a>
+<a href="#" class="btn-icon" name="delete_item"><i class="fa-solid fa-trash-can"></i> </a>-->

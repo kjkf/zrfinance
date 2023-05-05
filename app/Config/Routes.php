@@ -41,6 +41,9 @@ $routes->get('/', 'Home::index');
 
 $routes->group('', ['filter' => 'authCheck'], function($routes){
   $routes->get('/dashboard', 'Dashboard::index');
+  $routes->get('/salary', 'Salary::index');
+  $routes->get('/salary/fzp', 'Salary::create_fzp');
+  $routes->get('/salary/fzp/(:any)', 'Salary::update_fzp/$1');
   $routes->get('/report', 'Report::index');
 });
 
