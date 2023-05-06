@@ -154,7 +154,7 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(now()) AND `month`= month(now()))
     END AS working_hours_per_month
     from employee 
-    where `fire_date` is null and employee.company in (2,3,4)
+    where ((MONTH(`fire_date`) > MONTH(now()) and year(`fire_date`) > year(now())) OR `fire_date` IS NULL) and employee.company in (2,3,4)
     ORDER by employee.company asc,  `surname` ASC";
 
     $query = $this->db->query($sql);
@@ -171,10 +171,10 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
     END AS working_hours_per_month
     from employee 
-    where `fire_date` is null and employee.company in (2,3,4)
+    where ((MONTH(`fire_date`) > MONTH(?) and year(`fire_date`) > year(?)) OR `fire_date` IS NULL) and employee.company in (2,3,4)
     ORDER by employee.company asc,  `surname` ASC";
 
-    $query = $this->db->query($sql, array($date, $date, $date, $date, $date, $date));
+    $query = $this->db->query($sql, array($date, $date, $date, $date, $date, $date, $date, $date));
 
     if (!empty($sql)) {
       return $query->getResultArray();
@@ -277,6 +277,27 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     } else {
       return false;
     }
+  }
+
+  public function update_bonus_fines() {
+    $id = $_POST['id'];
+    $type = $_POST['type'];
+
+    $builder = $this->db->table('bonus_fines');
+    $builder->set($type, $_POST['newVal']);
+    
+    $builder->where('id', $id);
+    $res = $builder->update();
+   return $res; 
+  }
+
+  public function delet_bonus_fines() {
+    $id = $_POST['id'];
+    
+    $builder = $this->db->table('bonus_fines');
+    $builder->where('id', $id);
+    
+    return $builder->delete();
   }
   
 }

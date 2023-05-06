@@ -23,7 +23,7 @@ CREATE TABLE `salary_fzp` (
  `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `author` int(11) NOT NULL, 
  `is_approved` int(2) DEFAULT 0, -- 0 - не утрвержден, 1 - утвержден, 2 - отправлен на доработку, 4 - на согласовании
- `rejection_reason` varchar(500), default NULL ,
+ `rejection_reason` varchar(500) default NULL ,
  `mrp` double(10, 2) DEFAULT 0, 
  `min_zp` double(10, 2) DEFAULT 0, 
 
@@ -101,7 +101,7 @@ CREATE TABLE `bonus_fines` (
  `employee_id` int(11) NOT NULL,
  `salary_fzp` int(11) NOT NULL,  
  `bonus`  double(10,2) NOT NULL default 0,
- `fines`  double(10,2) NOT NULL default 0con,
+ `fines`  double(10,2) NOT NULL default 0,
  `type_id` int(11) NOT NULL,
 
  PRIMARY KEY (`id`),
@@ -141,7 +141,7 @@ CREATE TABLE `salary_settings` (
 --ALTER TABLE employee ADD CONSTRAINT `user_company` FOREIGN KEY (`company`) REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ================================ INSERTS ================================
-insert into salary_settings(mrp) calues (3450);
+insert into salary_settings(mrp, min_zp) calues (3450, 70000);
 
 insert into emp_contract_type(contract_type) values 
 ('Трудовой договор'),
