@@ -1,4 +1,33 @@
 -- ================================ CREATE TABLES ================================
+CREATE TABLE `citezenship_types` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `citezenship_types` varchar(250) NOT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `resident_type` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `employee_id` int(11) NOT NULL UNIQUE, 
+ `citezenship_type` int(11) NOT NULL,
+ `country` int(11) NOT NULL,
+ 
+ KEY `employee_resident_id` (`employee_id`),
+ KEY `country` (`country`),
+ KEY `citezenship_type` (`citezenship_type`),
+
+ CONSTRAINT `citezenship_type` FOREIGN KEY (`citezenship_type`) REFERENCES `citezenship_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION ,
+ CONSTRAINT `country` FOREIGN KEY (`country`) REFERENCES `countries` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION ,
+ CONSTRAINT `employee_resident` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION ,
+
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `countries` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `country` varchar(250) NOT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `emp_contract_type` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -42,6 +71,8 @@ CREATE TABLE `salary_month` (
  `employee_salary` double(10,2) DEFAULT null,  -- зарплата, так как может меняться, нужно сохранять для истории
  `employee_salary_fact` double(10,2) DEFAULT null,  -- зарплата, так как может меняться, нужно сохранять для истории
 
+ `pay_per_hour` double(10, 2) not null DEFAULT 0,
+
  `working_hours_per_month` int(11) NOT NULL, -- количество рабочих часов
  `worked_hours_per_month` int(11) NOT NULL,  -- количество отработанных часов
 
@@ -49,7 +80,8 @@ CREATE TABLE `salary_month` (
  `tax_IPN` double(10,2) DEFAULT 0,  -- налог ИПН
  `tax_OPV` double(10,2) DEFAULT 0,  -- налог ОВП
  
- `advances` double(10,2) DEFAULT null,           -- авансы
+ `advances` double(10,2) DEFAULT 0,           -- авансы
+ `holiday_pays` double(10,2) DEFAULT 0,           -- отпускные
  PRIMARY KEY (`id`),
  KEY `salary_fzp_key` (`salary_fzp`),
  KEY `employee_id` (`employee_id`),
@@ -122,6 +154,24 @@ CREATE TABLE `salary_settings` (
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+-- в этой таблице будут лежать типы платильщиков налогов, возможно временное решение,
+-- код строится так: код состоит из 3 чисел, каждая цифра отвечает за конкетный налог: 
+--              1ая цифра - налог ОСМС
+--              2ая цифра - налог ОПВ
+--              3ья цифра - налог ИПН
+--   если налог платиться ставиться цифра 1, если не платиться, то цифра 0
+-- для тех кто платит все налоги значение будет 111
+-- для тех кто НЕ платит все налоги значение будет 000
+
+CREATE TABLE `tax_pay_types` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `tax_pay_type` varchar(250) not null,
+ `code` varchar(20) not null
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- ================================ ALTER TABLES ===========================
 --ALTER TABLE employee ADD COLUMN `contract_type` int(11) DEFAULT NULL;
 --ALTER TABLE employee ADD COLUMN `is_tax` int(11) DEFAULT 1;
@@ -129,23 +179,48 @@ CREATE TABLE `salary_settings` (
 --ALTER TABLE employee ADD COLUMN `direction` int(11) DEFAULT NULL;
 --ALTER TABLE employee ADD COLUMN `salary` double(10, 2) not null DEFAULT 0;
 --ALTER TABLE employee ADD COLUMN `salary_fact` double(10, 2) not null DEFAULT 0;
+--ALTER TABLE employee ADD COLUMN `pay_per_hour` double(10, 2) not null DEFAULT 0;
 
 --ALTER TABLE employee ADD KEY `contract_type` (`contract_type`);
 --ALTER TABLE employee ADD KEY `department` (`department`);
 --ALTER TABLE employee ADD KEY `direction` (`direction`);
+--ALTER TABLE employee ADD KEY `is_tax` (`is_tax`) ;
 
 --ALTER TABLE employee ADD CONSTRAINT `user_contract_type` FOREIGN KEY (`contract_type`) REFERENCES `emp_contract_type` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 --ALTER TABLE employee ADD CONSTRAINT `user_position` FOREIGN KEY (`position`) REFERENCES `position` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 --ALTER TABLE employee ADD CONSTRAINT `user_department` FOREIGN KEY (`department`) REFERENCES `department` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 --ALTER TABLE employee ADD CONSTRAINT `user_direction` FOREIGN KEY (`direction`) REFERENCES `direction` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 --ALTER TABLE employee ADD CONSTRAINT `user_company` FOREIGN KEY (`company`) REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+--ALTER TABLE employee ADD CONSTRAINT `tax_pay_type` FOREIGN KEY (`is_tax`) REFERENCES `tax_pay_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ================================ INSERTS ================================
-insert into salary_settings(mrp, min_zp) calues (3450, 70000);
+insert into salary_settings(mrp, min_zp) values (3450, 70000);
+
+insert into tax_pay_types(tax_pay_type, code) values 
+('Налоги не отчисляются', "000"),
+('Все налоги отчисляются', "111"),
+('Налоги отчисляются, кроме ОСМС', "011");
+
 
 insert into emp_contract_type(contract_type) values 
 ('Трудовой договор'),
 ('ГПХ');
+
+insert into citezenship_types (citezenship_types) values 
+('Лицо без гражданства'),
+('Гражданин РК'),
+('Гражданин иностранного государства');
+
+insert into countries (country) values 
+('Россия'),
+('Кыргызстан'),
+('Беларусь'),
+('Украина'),
+('Китай'),
+('Узбекистан'),
+('Таджикистан');
+
+INSERT INTO `resident_type`(`employee_id`, `citezenship_type`)  (SELECT id, 2 from employee where `fire_date` is null or `fire_date` > '2023-01-01');
 
 insert into `working_time_balance`(`year`, `month`,`calendar_days`, `working_calendar_days`, `working_5_days`, `working_6_days`, `w40_5d_hours`, `w40_6d_hours`, `w36_5d_hours`, `w36_6d_hours`) VALUES
 (2023, 1, 31, 29, 20, 23, 160, 155, 144, 138),

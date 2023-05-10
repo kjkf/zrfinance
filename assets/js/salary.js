@@ -178,6 +178,16 @@ document.addEventListener('DOMContentLoaded', ev => {
   setWorkedHoursInput.addEventListener('change', e => {
     updateModalInputs(e.currentTarget.value);
   });
+
+  const advancedPay = document.getElementById("advanced_pay");
+  advancedPay.addEventListener('change', e => {
+    updateModalInputs(setWorkedHoursInput.value);
+  });
+  
+  const holidayPay = document.getElementById("holiday_pay");
+  holidayPay.addEventListener('change', e => {
+    updateModalInputs(setWorkedHoursInput.value);
+  });
 });
 
 function saveEmpInfo(modal ) {
@@ -195,15 +205,22 @@ function updateModalInputs(value) {
 
   const bonus = isNaN(parseFloat(employee.bonus)) ? 0 : parseFloat(employee.bonus);
   const fines = isNaN(parseFloat(employee.fines)) ? 0 : parseFloat(employee.fines);
+  
+  const holiday_pays = isNaN(intVal(modal.querySelector("#holiday_pay").value)) ? 0 : parseFloat(intVal(modal.querySelector("#holiday_pay").value));
+  const advances = isNaN(intVal(modal.querySelector("#advanced_pay").value)) ? 0 : parseFloat(intVal(modal.querySelector("#advanced_pay").value));
 
-  //- parseFloat(tax_osms) - parseFloat(tax_opv) - parseFloat(tax_ipn)
-  const worked_salary_off = parseFloat(employee.employee_salary) / parseFloat(employee.working_hours_per_month) * value;
+  console.log("holiday_pays="+holiday_pays, "advances="+advances);
+  
+  const worked_salary_off = parseFloat(employee.employee_salary) / parseFloat(employee.working_hours_per_month) * value + holiday_pays;
   const tax_osms = calcOSMS(worked_salary_off);
   const tax_opv = calcTaxOVP(worked_salary_off);
-  const tax_ipn = prepareCalcIPN(worked_salary_off);
+  const tax_ipn = calc_IPN_taxes(worked_salary_off, employee.contract_type,employee.citezenship_type); 
 
+  const taxes = employee.is_tax === "1" ? 0 : employee.is_tax === "2" ? (tax_osms + tax_opv + tax_ipn) : (tax_opv + tax_ipn);
+
+  console.log(bonus, fines, taxes, advances, holiday_pays);
   const worked_salary = parseFloat(employee.employee_salary_fact) / parseFloat(employee.working_hours_per_month) * value;
-  const total_salary = worked_salary + bonus - fines - tax_osms - tax_opv - tax_ipn;
+  const total_salary = worked_salary + bonus - fines - taxes - advances + holiday_pays;
   
   modal.querySelector("#tax_osms").value = numberWithSpaces(tax_osms);
   modal.querySelector("#tax_opv").value = numberWithSpaces(tax_opv);
@@ -393,9 +410,13 @@ function prepareEmployeeModalInfo(trid) {
   const worked_hours_per_month = parseInt(employee.worked_hours_per_month) || 0;
 
   const employee_salary_fact = parseInt(employee.employee_salary_fact) || 0;
+  const official_salary = parseInt(employee.employee_salary) || 0;
 
   const salary = employee_salary_fact / working_hours_per_month * worked_hours_per_month;
   const total_salary = salary + bonus - fines;
+
+  const holiday_pays = isNaN(parseFloat(employee.holiday_pays)) ? 0 : parseFloat(employee.holiday_pays);
+  const advances = isNaN(parseFloat(employee.advances)) ? 0 : parseFloat(employee.advances);
 
   modal.querySelector("h4").textContent = employee.surname + " " + employee.name;
 
@@ -403,9 +424,14 @@ function prepareEmployeeModalInfo(trid) {
   modal.querySelector("#tax_opv").value = tax_opv;
   modal.querySelector("#tax_ipn").value = tax_ipn;
 
+  modal.querySelector("#advanced_pay").value = numberWithSpaces(advances);
+  modal.querySelector("#holiday_pay").value = numberWithSpaces(holiday_pays);
+
   modal.querySelector("#working_hours").value = working_hours_per_month;
   modal.querySelector("#worked_hours_fact").value = worked_hours_per_month;
   modal.querySelector("#worked_salary").value = numberWithSpaces(salary);
+  modal.querySelector("#official_salary").value = numberWithSpaces(official_salary);
+  modal.querySelector("#salary_fact").value = numberWithSpaces(employee_salary_fact);
   modal.querySelector("#total").value = numberWithSpaces(total_salary);
 
 
@@ -522,11 +548,15 @@ function calculateSalary(tr) {
   const tax_osms = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_osms").value) || 0;
   const tax_opv = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_opv").value) || 0;
   const tax_ipn = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_ipn").value) || 0;
+  const advances = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #advanced_pay").value) || 0;
+  const holiday_pays = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #holiday_pay").value) || 0;
    
   EMPLOYEES[CURRENT_TR].worked_hours_per_month = work_day_fact;
   EMPLOYEES[CURRENT_TR].tax_OSMS = tax_osms;
   EMPLOYEES[CURRENT_TR].tax_OPV = tax_opv;
   EMPLOYEES[CURRENT_TR].tax_IPN = tax_ipn;
+  EMPLOYEES[CURRENT_TR].holiday_pays = holiday_pays;
+  EMPLOYEES[CURRENT_TR].advances = advances;
 
   const current_salary = salary/work_day_plan*work_day_fact;
   const total = current_salary + bonus - fines - parseFloat(tax_osms) - parseFloat(tax_opv) - parseFloat(tax_ipn);
@@ -619,6 +649,8 @@ function save_tr() {
     'tax_OSMS' : EMPLOYEES[CURRENT_TR].tax_OSMS,
     'tax_OPV' : EMPLOYEES[CURRENT_TR].tax_OPV,
     'tax_IPN' : EMPLOYEES[CURRENT_TR].tax_IPN,
+    'advances' : EMPLOYEES[CURRENT_TR].advances,
+    'holiday_pays' : EMPLOYEES[CURRENT_TR].holiday_pays,
     'id': CURRENT_TR
   };
   
@@ -640,7 +672,6 @@ function save_tr() {
   });
 
 }
-
 
 function changeCurrentFZPStatus (id, status, reason="") {
   const data = {
@@ -688,8 +719,24 @@ function calcIPN_with_90_cor(salary, mrp) {
 }
 
 function calcIPN(salary, mrp) {
-  
   const res = salary - (salary * 0.1) - (salary * 0.02) - 14 * mrp;
-  console.log(res);
   return res * 0.1;
+}
+
+function calcGPH_IPN(salary) {
+  const res = salary - (salary * 0.1) - (salary * 0.02);
+  return res * 0.1;
+}
+
+function nonResidentIPN(salary) {
+  return salary * 0.1;
+}
+
+function calc_IPN_taxes(worked_salary_off, contract_type, citezenship_type) {
+  console.log(worked_salary_off, contract_type, citezenship_type);
+  if (citezenship_type === "2") {
+    return contract_type === '1' ? prepareCalcIPN(worked_salary_off) : calcGPH_IPN(worked_salary_off);
+  }  else {
+    return nonResidentIPN(worked_salary_off);
+  }
 }

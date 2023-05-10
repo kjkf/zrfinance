@@ -203,4 +203,4 @@ if (isset($fzp) && !empty($fzp)) :?>
   </div>
 </div>
 
-<?php echo view('partials/_salary_modal', []); ?>
+<?php echo view('partials/modals/_salary_modal', []); ?>

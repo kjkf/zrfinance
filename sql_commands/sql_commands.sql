@@ -52,6 +52,7 @@ CREATE TABLE `employee` (
  `telephone` varchar(12) DEFAULT NULL,
  `is_fired` int(2) DEFAULT 0,
  `fire_date` datetime DEFAULT NULL,
+ `start_date` datetime DEFAULT NULL,
  PRIMARY KEY (`id`),
 
  KEY `position` (`position`),

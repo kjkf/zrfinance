@@ -9,6 +9,27 @@
       <div class="modal-body">
         <div class="row mb-2">
           <div class="col-3">
+            <label for="working_hours">Официальная ЗП / ставка в час</label>
+            <input type="text" class="form-control" id="official_salary" disabled>
+          </div>
+
+          <div class="col-3">
+            <label for="worked_hours_fact">Фактическая ЗП</label>
+            <input type="text" class="form-control" id="salary_fact" disabled>
+          </div>
+
+          <div class="col-3">
+            <label for="total">Авансы</label>
+            <input type="text" class="form-control" id="advanced_pay" placeholder="Укажите сумму выданных авансов">
+          </div>
+
+          <div class="col-3">
+            <label for="total">Отпускные</label>
+            <input type="text" class="form-control" id="holiday_pay" placeholder="Укажите сумму отпускных">
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-3">
             <label for="working_hours">Кол-во рабочих часов</label>
             <input type="text" class="form-control" id="working_hours" disabled>
           </div>
@@ -37,7 +58,7 @@
           </div>
 
           <div class="col-4">
-              <label for="working_hours">ОВП</label>
+              <label for="working_hours">ОПВ</label>
               <input type="text" class="form-control" id="tax_opv" disabled>
           </div>
 

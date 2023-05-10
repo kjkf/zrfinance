@@ -124,8 +124,8 @@ class SalaryModel extends Model
 
   public function getEmployeesInfo($company_id, $fzp_id, $date)
   {
-    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`,  bf.bonus as bonus, bf.fines as fines, `tax_OSMS`, `tax_IPN`, `tax_OPV`, employee_salary_fact,  CASE
-    WHEN direction.name = 'Цех' THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
+    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`,  bf.bonus as bonus, bf.fines as fines, `tax_OSMS`, `tax_IPN`, `tax_OPV`, employee_salary_fact,  salary_month.advances, salary_month.holiday_pays, employee.contract_type,  resident_type.citezenship_type, is_tax,
+    CASE WHEN direction.name = 'Цех' THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
 END AS working_hours
     from salary_month 
@@ -134,6 +134,7 @@ END AS working_hours
     left join department on department.id = employee.`department`
     left join direction on direction.id = employee.direction
     left join company on company.id = employee.company
+    left join resident_type on resident_type.employee_id = salary_month.`employee_id`
     left join (SELECT bonus_fines.`employee_id`, max(bonus_fines.`salary_fzp`) as salary_fzp, sum(`bonus`) as bonus, sum(`fines`) as fines  
 FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`employee_id`) bf on bf.employee_id = salary_month.employee_id and salary_month.salary_fzp = bf.salary_fzp
     where salary_month.`salary_fzp`=? and employee.company in (2,3,4) and employee.company = ?
@@ -149,8 +150,8 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
   }
 
   public function getAllEmployeesForFZP() {
-    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(now()) and YEAR(`date_time`) = YEAR(now())) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact, CASE
-    WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(now()) AND `month`= month(now()))
+    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(now()) and YEAR(`date_time`) = YEAR(now())) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact, 
+    CASE WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(now()) AND `month`= month(now()))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(now()) AND `month`= month(now()))
     END AS working_hours_per_month
     from employee 
@@ -166,8 +167,8 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     }
   }
   public function getAllEmployeesForFZP_by_date($date) {
-    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(?) and YEAR(`date_time`) = YEAR(?)) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact, CASE
-    WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
+    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(?) and YEAR(`date_time`) = YEAR(?)) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact,  
+    CASE WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
     END AS working_hours_per_month
     from employee 
@@ -200,6 +201,8 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     //print_r($_POST['worked_hours_per_month']);
     $builder = $this->db->table('salary_month');
     $builder->set('worked_hours_per_month', $_POST['worked_hours_per_month']);
+    $builder->set('advances', $_POST['advances']);
+    $builder->set('holiday_pays', $_POST['holiday_pays']);
     $builder->set('tax_OSMS', $_POST['tax_OSMS']);
     $builder->set('tax_OPV', $_POST['tax_OPV']);
     $builder->set('tax_IPN', $_POST['tax_IPN']);
