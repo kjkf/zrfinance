@@ -159,10 +159,10 @@ document.addEventListener('DOMContentLoaded', ev => {
         //console.log("edit");
         editBonusFines(type, tr); 
       } else if (target.classList.contains("update-btn")) {
-        console.log("update");
+        //console.log("update");
         updateBonusFines(type, tr); 
       } else {
-        console.log("delete");
+        //console.log("delete");
         deleteBonusFines(id, tr); 
       }      
     }

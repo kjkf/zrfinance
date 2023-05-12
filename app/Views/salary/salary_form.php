@@ -177,9 +177,6 @@ if (isset($fzp) && !empty($fzp)) :?>
 <script>
   const EMPLOYEES = JSON.parse(<?php echo json_encode($json); ?>)
   console.log(EMPLOYEES);
-  //const bonusTypes = JSON.parse(<?php echo json_encode($bonus_fines["bonus"]); ?>)
-  //const finesTypes = JSON.parse(<?php echo json_encode($bonus_fines["fines"]); ?>)
-  ;
 </script>
 
 <!--<template id="rejection_reason">-->

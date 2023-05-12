@@ -353,3 +353,10 @@ table.time_balance td:first-child {
 .mr-10 {
   margin-right: 10px;
 }
+/*=====================================*/
+.user-photo {
+  min-width: 150px;
+  min-height: 200px;
+  background-color: #aaa;
+  padding-right: 1rem;
+}
