@@ -173,10 +173,10 @@ class Salary extends BaseController
   }
 
   private function prepareEmployeesInfo($fzp_id, $date) {
-    $employees = array();
+    //$employees = array();
     $json = array();
       $employeesInfo = $this->salaryModel->getEmployeesInfo($fzp_id, $date);
-      d($employeesInfo);
+      
       foreach($employeesInfo as $employee) {
         $employee['fzp_id'] = $fzp_id;
         $employee['bonus_fines'] = $this->salaryModel->getBonusFines_byEmployeeId($employee['id'], $fzp_id);
