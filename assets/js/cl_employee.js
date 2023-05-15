@@ -136,6 +136,18 @@ document.addEventListener("DOMContentLoaded", ev => {
     } 
   });
 
+  $("select").on("change", function(e) {
+    const trid = modal.querySelector("#trid").value;
+   
+    const property = $(this).attr("id");
+    const select = document.getElementById(property);
+    const value = e.value;
+    console.log("!!!!", property, "222", select, "333", value);
+    if (EMPLOYEES[trid][property] !== $(this).value) {
+      modal.querySelector("#is_tr_changed").value = 1;
+    }
+  });
+
   const updateEmployeeInfoBtn = modal.querySelector("#saveBtn");
   if (updateEmployeeInfoBtn) {
     updateEmployeeInfoBtn.addEventListener('click', e => {
@@ -145,7 +157,6 @@ document.addEventListener("DOMContentLoaded", ev => {
   }
 
 });
-
 
 function draw_table_body(table, data) {
   const tbody = table.querySelector("tbody");
@@ -336,6 +347,7 @@ function updateEmployeeInfo(id, modal) {
     success: function (result) {
       //console.log(result);
       modal.querySelector("#closeModal").click();
+      updateTableAfterSaving(id);
       
     },
     fail: function(result) {
@@ -343,6 +355,30 @@ function updateEmployeeInfo(id, modal) {
       alert("Error loading employee by id");
     }
   });
+}
+
+function updateTableAfterSaving(id) {
+  const tr = document.querySelector("table.employees tr[data-trid='" + id + "']");
+  if (tr) {
+    const tds = tr.children;
+    tds[1].textContent = EMPLOYEES[id].surname + " " + EMPLOYEES[id].name;
+
+    const companySelect = document.getElementById("company");
+    const companyText = companySelect.options[companySelect.selectedIndex].text;
+    tds[2].textContent = companyText;
+
+    const departmentSelect = document.getElementById("department");
+    const departmentText = departmentSelect.options[departmentSelect.selectedIndex].text;
+    tds[3].textContent = departmentText;
+
+    const positionSelect = document.getElementById("position");
+    const positionText = positionSelect.options[positionSelect.selectedIndex].text;
+    tds[4].textContent = positionText;
+
+    tds[5].textContent = EMPLOYEES[id].email;
+    tds[6].textContent = EMPLOYEES[id].telephone;
+    tds[7].textContent = EMPLOYEES[id].salary;
+  }
 }
 
 function updateEmployeeJSON(modal, id) {
@@ -458,4 +494,11 @@ function datepickerLocaleRu() {
     showMonthAfterYear: false,
     yearSuffix: '',
   });
+}
+
+function numberWithSpaces(x) {
+  x = x ? parseFloat(x).toFixed(2) : 0.00;
+  var parts = x.toString().split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return parts.join(".");
 }
