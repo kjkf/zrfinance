@@ -49,6 +49,7 @@ CREATE TABLE `employee` (
  `company` int(11) DEFAULT NULL,
  `salary` double(10, 2) not null,
  `salary_fact` double(10, 2) not null,
+ `pay_per_hour` double(10, 2) not null DEFAULT 0,
  `telephone` varchar(12) DEFAULT NULL,
  `is_fired` int(2) DEFAULT 0,
  `fire_date` datetime DEFAULT NULL,
