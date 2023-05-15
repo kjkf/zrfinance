@@ -139,6 +139,22 @@ class EmployeesModel extends Model
    return $res; 
   }
 
+  public function update_citezenship_type() {
+    $id = $_POST['trid'];
+    $country = empty($_POST['country']) ? NULL : $_POST['country'];
+    $citezenship_type = empty($_POST['citezenship_type']) ? NULL : $_POST['citezenship_type'];
+    
+    $builder = $this->db->table('resident_type');
+    $builder->set('country', $country);
+    $builder->set('citezenship_type', $citezenship_type);
+
+    $builder->where('employee_id', $id);
+    //$sql = $builder->getCompiledUpdate();
+    //print_r($sql);
+    $res = $builder->update();
+   return $res; 
+  }
+
   //private function prepareEmployeesInfoByEmpId($employees) {
   //  $json = array();
   //  foreach ($employees as $item) {

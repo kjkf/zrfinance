@@ -108,6 +108,19 @@ document.addEventListener("DOMContentLoaded", ev => {
       } else {
         countryWrap.style.display = "none";
       }
+      const trid = modal.querySelector("#trid").value;
+      //console.log(e.target);
+      const property = e.target.getAttribute("name"); //$(this).attr("name");
+      //console.log(property);
+      var selected = $("input[type='radio'][name='" + property + "']:checked");
+      console.log(trid, selected, selected.val());
+      if (selected.length > 0) {
+        const inputVal = selected.val();
+        if (EMPLOYEES[trid][property] !== inputVal) {
+          document.getElementById("citizenship_changed").value = 1;
+        }
+      }
+      
     });
   }
 
@@ -142,8 +155,8 @@ document.addEventListener("DOMContentLoaded", ev => {
     const property = $(this).attr("id");
     const select = document.getElementById(property);
     const value = e.value;
-    console.log("!!!!", property, "222", select, "333", value);
-    if (EMPLOYEES[trid][property] !== $(this).value) {
+    //console.log("!!!!", property, "222", select, "333", value);
+    if (EMPLOYEES[trid][property] !== value) {
       modal.querySelector("#is_tr_changed").value = 1;
     }
   });
@@ -301,6 +314,7 @@ function prepareModalVals(modal, id) {
 
 function clearModalVals(modal) {
   modal.querySelector("#is_tr_changed").value = 0;
+  modal.querySelector("#citizenship_changed").value = 0;
   modal.querySelector("#surname").value = '';
   modal.querySelector("#name").value = '';
   modal.querySelector("#middlename").value = '';
@@ -335,7 +349,7 @@ function updateEmployeeInfo(id, modal) {
     return false;
   }
 
-  updateEmployeeJSON(modal, id)
+  updateEmployeeJSON(modal, id);
   const data = getUpdateFields(id);
 
   const url_path = base_url + '/Classificators/update_employee_byId';
@@ -348,6 +362,9 @@ function updateEmployeeInfo(id, modal) {
       //console.log(result);
       modal.querySelector("#closeModal").click();
       updateTableAfterSaving(id);
+      if (document.getElementById("citizenship_changed").value === "1") {
+        updateCitizenship(id);
+      }
       
     },
     fail: function(result) {
@@ -379,6 +396,27 @@ function updateTableAfterSaving(id) {
     tds[6].textContent = EMPLOYEES[id].telephone;
     tds[7].textContent = EMPLOYEES[id].salary;
   }
+}
+
+function updateCitizenship(id) {
+  const data = {
+    "trid" : id,
+    "country" : EMPLOYEES[id].country,
+    "citezenship_type" : EMPLOYEES[id].citezenship_type
+  }
+  const url = base_url + '/Classificators/update_citezenship_type';
+  $.ajax({
+    url: url,
+    data: data,
+    method: 'POST',
+    success: function (result) {
+            
+    },
+    fail: function(result) {
+      console.error(result);
+      alert("Error loading employee by id");
+    }
+  });
 }
 
 function updateEmployeeJSON(modal, id) {
