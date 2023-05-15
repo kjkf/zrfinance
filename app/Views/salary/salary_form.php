@@ -63,7 +63,7 @@ if (isset($fzp) && !empty($fzp)) :?>
       <div class="salary-head d-flex justify-content-start align-items-center mr-3">
         <div class="flex-grow-1">
           <p>
-            Всего <?php echo word_form('сотрудник', $employees_count) ?>
+            Всего <?php echo word_form('сотрудник', count($employees)) ?>
           </p>
 
           <p> Зарплата за <?= $month ?> <?= $year ?> года</p>
