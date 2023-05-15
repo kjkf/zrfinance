@@ -69,22 +69,21 @@ if (isset($fzp) && !empty($fzp)) :?>
           <p> Зарплата за <?= $month ?> <?= $year ?> года</p>
         </div>
         <div class="salary-total flex-grow-1">
-          <?php $total = 1200972; ?>
           <p>Общая сумма к выплате <span></span></p>
         </div>
       </div>
       <?php
-      foreach ($employees as $key => $company) :
-        $count = 1;
-        $companyInfo = explode("|", $key);
-        $companyId = $companyInfo[0];
-        $companyName = $companyInfo[1];
-      ?>
+      //foreach ($employees as $key => $company) :
+      //  $count = 1;
+      //  $companyInfo = explode("|", $key);
+      //  $companyId = $companyInfo[0];
+      //  $companyName = $companyInfo[1];
+      //?>
         <div class="department">
-          <p>Подразделение: <?php echo $companyName ?></p>
-          <?php //d($company);
+          <!--<p>Подразделение: <?php // echo $companyName ?></p>-->
+          <?php //d($employees);
           ?>
-          <table class="employee_salary display compact" id="salary_company_<?= $companyId ?>">
+          <table class="employee_salary display compact" id="salary_company">
             <thead>
               <tr>
                 <th class="th_text clip" title="направление">направление</th>
@@ -102,8 +101,11 @@ if (isset($fzp) && !empty($fzp)) :?>
               </tr>
             </thead>
             <tbody>
-              <?php foreach ($company as $employee) :
+              <?php 
+              $count = 1;
+              foreach ($employees as $employee) :
                 //$json[$employee['id']] = $employee; 
+                
               ?>
                 <tr class="trow" data-trid="<?= $employee['id'] ?>">
                   <td><span><?= $employee['direction'] ?></span></td>
@@ -146,7 +148,7 @@ if (isset($fzp) && !empty($fzp)) :?>
             </tfoot>
           </table>
         </div>
-      <?php endforeach; ?>
+      <?php // endforeach; ?>
 
     </div>
   <? else : ?>

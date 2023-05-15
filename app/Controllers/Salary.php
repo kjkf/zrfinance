@@ -60,7 +60,8 @@ class Salary extends BaseController
 
     $companies = $this->salaryModel->getCompaniesInfo();
     $date = date('Y-m-d H:i:s');
-    $employeesArr = $this->prepareEmployeesInfo($companies, $fzp_id, $date);
+    //$employeesArr = $this->prepareEmployeesInfoByCompany($companies, $fzp_id, $date);
+    $employeesArr = $this->prepareEmployeesInfo($fzp_id, $date);
     $employees = $employeesArr['employees'];
     //print_r($employeesArr['json']);
     $json = json_encode($employeesArr['json']);
@@ -95,7 +96,8 @@ class Salary extends BaseController
     
     $timestamp = strtotime($fzp_date);
     
-    $employeesArr = $this->prepareEmployeesInfo($companies, $id, $fzp_date);
+    //$employeesArr = $this->prepareEmployeesInfoByCompany($companies, $id, $fzp_date);
+    $employeesArr = $this->prepareEmployeesInfo($id, $fzp_date);
     $employees = $employeesArr['employees'];
     //print_r($employeesArr['json']);
     $json = json_encode($employeesArr['json']);
@@ -145,11 +147,11 @@ class Salary extends BaseController
     ));
   }
 
-  private function prepareEmployeesInfo($companies, $fzp_id, $date) {
+  private function prepareEmployeesInfoByCompany($companies, $fzp_id, $date) {
     $employees = array();
     $json = array();
     foreach($companies as $company) {
-      $employeesInfo = $this->salaryModel->getEmployeesInfo($company['id'], $fzp_id, $date);
+      $employeesInfo = $this->salaryModel->getEmployeesInfoByCompany($company['id'], $fzp_id, $date);
       $key = $company['id']."|".$company['name'];
       $employees[$key] = $employeesInfo;
 
@@ -166,6 +168,25 @@ class Salary extends BaseController
 
     return array(
       'employees'=> $employees, 
+      'json' => $json
+    );
+  }
+
+  private function prepareEmployeesInfo($fzp_id, $date) {
+    //$employees = array();
+    $json = array();
+      $employeesInfo = $this->salaryModel->getEmployeesInfo($fzp_id, $date);
+      
+      foreach($employeesInfo as $employee) {
+        $employee['fzp_id'] = $fzp_id;
+        $employee['bonus_fines'] = $this->salaryModel->getBonusFines_byEmployeeId($employee['id'], $fzp_id);
+        $employee['work_day_fact'] = 0;
+        $json[$employee['id']] = $employee;
+      }
+
+
+    return array(
+      'employees'=> $employeesInfo, 
       'json' => $json
     );
   }

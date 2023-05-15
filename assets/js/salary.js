@@ -210,9 +210,9 @@ function updateModalInputs(value) {
   const advances = isNaN(intVal(modal.querySelector("#advanced_pay").value)) ? 0 : parseFloat(intVal(modal.querySelector("#advanced_pay").value));
 
   let official_salary = parseFloat(employee.employee_salary) || 0;
-  console.log(official_salary, employee.direction);
-  console.log(!official_salary && employee.direction === 'Цех');
-  console.log( employee.pay_per_hour, employee.working_hours);
+  //console.log(official_salary, employee.direction);
+  //console.log(!official_salary && employee.direction === 'Цех');
+  //console.log( employee.pay_per_hour, employee.working_hours);
   if (!official_salary && employee.direction === 'Цех') {
     official_salary = employee.pay_per_hour * employee.working_hours;
   }
@@ -229,12 +229,12 @@ function updateModalInputs(value) {
   const worked_salary = parseFloat(employee.employee_salary_fact) / parseFloat(employee.working_hours_per_month) * value;
   const total_salary = worked_salary + bonus - fines - taxes - advances + holiday_pays;
   
-  modal.querySelector("#tax_osms").value = numberWithSpaces(tax_osms);
-  modal.querySelector("#tax_opv").value = numberWithSpaces(tax_opv);
-  modal.querySelector("#tax_ipn").value = numberWithSpaces(tax_ipn);
+  modal.querySelector("#tax_osms").value = numberWithSpaces(Math.round(tax_osms));
+  modal.querySelector("#tax_opv").value = numberWithSpaces(Math.round(tax_opv));
+  modal.querySelector("#tax_ipn").value = numberWithSpaces(Math.round(tax_ipn));
 
-  modal.querySelector("#worked_salary").value = numberWithSpaces(worked_salary);
-  modal.querySelector("#total").value = numberWithSpaces(total_salary);
+  modal.querySelector("#worked_salary").value = numberWithSpaces(Math.round(worked_salary));
+  modal.querySelector("#total").value = numberWithSpaces(Math.round(total_salary));
 }
 
 function saveBonusFines(type, modal) {
@@ -389,7 +389,6 @@ function validateData(data) {
     alert("Укажите сумму " + str);
     return false;
   }
-
   return true;
 }
 
@@ -434,19 +433,19 @@ function prepareEmployeeModalInfo(trid) {
 
   modal.querySelector("h4").textContent = employee.surname + " " + employee.name;
 
-  modal.querySelector("#tax_osms").value = tax_osms;
-  modal.querySelector("#tax_opv").value = tax_opv;
-  modal.querySelector("#tax_ipn").value = tax_ipn;
+  modal.querySelector("#tax_osms").value = numberWithSpaces(Math.round(tax_osms));
+  modal.querySelector("#tax_opv").value = numberWithSpaces(Math.round(tax_opv));
+  modal.querySelector("#tax_ipn").value = numberWithSpaces(Math.round(tax_ipn));
 
-  modal.querySelector("#advanced_pay").value = numberWithSpaces(advances);
-  modal.querySelector("#holiday_pay").value = numberWithSpaces(holiday_pays);
+  modal.querySelector("#advanced_pay").value = numberWithSpaces(Math.round(advances));
+  modal.querySelector("#holiday_pay").value = numberWithSpaces(Math.round(holiday_pays));
 
   modal.querySelector("#working_hours").value = working_hours_per_month;
   modal.querySelector("#worked_hours_fact").value = worked_hours_per_month;
-  modal.querySelector("#worked_salary").value = numberWithSpaces(salary);
-  modal.querySelector("#official_salary").value = numberWithSpaces(official_salary);
-  modal.querySelector("#salary_fact").value = numberWithSpaces(employee_salary_fact);
-  modal.querySelector("#total").value = numberWithSpaces(total_salary);
+  modal.querySelector("#worked_salary").value = numberWithSpaces(Math.round(salary));
+  modal.querySelector("#official_salary").value = numberWithSpaces(Math.round(official_salary));
+  modal.querySelector("#salary_fact").value = numberWithSpaces(Math.round(employee_salary_fact));
+  modal.querySelector("#total").value = numberWithSpaces(Math.round(total_salary));
 
 
   appendRows(employee.bonus_fines);
@@ -471,15 +470,15 @@ function appendRows(data) {
     }
   }
 
-  modal.querySelector("table.bonus caption span").textContent = bonus;
-  modal.querySelector("table.fines caption span").textContent = fines;
+  modal.querySelector("table.bonus caption span").textContent = numberWithSpaces(bonus);
+  modal.querySelector("table.fines caption span").textContent = numberWithSpaces(fines);
 }
 
 function createDataTr(data) {
   const tr = document.createElement("tr");
   const sum = data.type === "bonus" ? data.bonus : data.fines;
   tr.dataset.fbid = data.id;
-  const sumTd = createDataTd(sum);
+  const sumTd = createDataTd(numberWithSpaces(sum));
   const typeTd = createDataTd(data.name);
   const actionTd = createActionTd();
 
@@ -633,15 +632,17 @@ function updateTotals(tableId) {
 }
 
 function updateTotalSumToPay() {
-  const pkTable = $("#salary_company_2").DataTable();
-  const tdTable = $("#salary_company_3").DataTable();
-  const montTable = $("#salary_company_4").DataTable();
+  const table = $("#salary_company").DataTable();
+  //const pkTable = $("#salary_company_2").DataTable();
+  //const tdTable = $("#salary_company_3").DataTable();
+  //const montTable = $("#salary_company_4").DataTable();
 
-  const pkSum = $(pkTable.column(11).footer()).html().replace(/ /g, "");
-  const tdSum = $(tdTable.column(11).footer()).html().replace(/ /g, "");
-  const montSum = $(montTable.column(11).footer()).html().replace(/ /g, "");
+  //const pkSum = $(pkTable.column(11).footer()).html().replace(/ /g, "");
+  //const tdSum = $(tdTable.column(11).footer()).html().replace(/ /g, "");
+  //const montSum = $(montTable.column(11).footer()).html().replace(/ /g, "");
+  const sum = $(table.column(11).footer()).html().replace(/ /g, "");
 
-  const sum = parseFloat(pkSum) + parseFloat(tdSum) + parseFloat(montSum);
+  //const sum = parseFloat(pkSum) + parseFloat(tdSum) + parseFloat(montSum);
 
   document.querySelector(".salary-total span").textContent = numberWithSpaces(sum);
 }
