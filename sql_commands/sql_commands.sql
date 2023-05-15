@@ -42,6 +42,7 @@ CREATE TABLE `employee` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `name` text NOT NULL,
  `surname` text NOT NULL,
+ `middlename` text NOT NULL,
  `email` text,
  `position` int(11) DEFAULT NULL,
  `department` int(11) DEFAULT NULL,
@@ -51,6 +52,8 @@ CREATE TABLE `employee` (
  `telephone` varchar(12) DEFAULT NULL,
  `is_fired` int(2) DEFAULT 0,
  `fire_date` datetime DEFAULT NULL,
+ `start_date` datetime DEFAULT NULL,
+ `birth_date` datetime DEFAULT NULL,
  PRIMARY KEY (`id`),
 
  KEY `position` (`position`),

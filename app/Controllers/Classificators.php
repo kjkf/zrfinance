@@ -14,7 +14,7 @@ class Classificators extends BaseController
     public function index()
     {
       $usersModel = new \App\Models\UsersModel();
-      $employeesModel = new \App\Models\EmployeesModel;;
+      $employeesModel = new \App\Models\EmployeesModel;
       $financeModel = new \App\Models\FinanceModel();
       $loggedUserID = session()->get('loggedUser');
       $userInfo = $usersModel->find($loggedUserID);
@@ -36,6 +36,7 @@ class Classificators extends BaseController
         'balance_for_current_year' => $time_balance,
         'balance_year' => $balance_year,
         'employees' => $employeesModel->getActiveEmployees(),
+        'clasificData' => $this->get_classificators_data()
       ];
 
       echo view('partials/_header', $data);
@@ -67,6 +68,47 @@ class Classificators extends BaseController
         'balance' => $balance,
         'year' => $year,
       );
+    }
+
+    public function get_classificators_data() {
+      $employeeModel = new \App\Models\EmployeesModel();
+      $contractType = $employeeModel->get_contract_type();
+      $citizenship = $employeeModel->get_citizenship();
+      $taxPayType = $employeeModel->get_tax_pay_type();
+      $directions = $employeeModel->get_directions();
+      $positions = $employeeModel->get_positions();
+      $positions = $employeeModel->get_positions();
+      $companies = $employeeModel->get_companies();
+      $countries = $employeeModel->get_countries();
+      $department = $employeeModel->get_department();
+
+      return array(
+        'contractType' => $contractType,
+        'citizenship' => $citizenship,
+        'taxPayType' => $taxPayType,
+        'directions' => $directions,
+        'positions' => $positions,
+        'companies' => $companies,
+        'countries' => $countries,
+        'department' => $department,
+      );
+    }
+
+    public function get_fired_employees() {
+      $employeesModel = new \App\Models\EmployeesModel;
+      $firedEmployees = $employeesModel->get_fired_employees();
+      echo  json_encode($firedEmployees);
+    }
+
+    public function get_employee_byId() {
+      $employeeModel = new \App\Models\EmployeesModel();
+      $employee = $employeeModel->getEmployeeById();
+      echo  json_encode($employee);
+    }
+
+    public function update_employee_byId() {
+      $employeeModel = new \App\Models\EmployeesModel();
+      return $employeeModel->update_employee_byId();
     }
     
 }

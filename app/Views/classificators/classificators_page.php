@@ -6,6 +6,8 @@
     $is_chief = (isset($user_role) && $user_role == 3) ? true : false;
     $is_admin = (isset($user_role) && $user_role == 1) ? true : false;
     $is_access_to_classif = (isset($user_role) && ($user_role == 1 || $user_role == 3 || $user_role == 5)) ? true : false;
+
+    $activeTab = $is_chief || $is_admin ? "" : "show active";
 ?>
 
 
@@ -19,7 +21,7 @@
       <?php endif; ?>
       <?php if ($is_access_to_classif) :?>
         <button class="nav-link" id="nav-time-balance-tab" data-bs-toggle="tab" data-bs-target="#nav-time-balance" type="button" role="tab" aria-controls="nav-time-balance" aria-selected="false">Баланс рабочего времени</button>
-        <button class="nav-link" id="nav-employees-tab" data-bs-toggle="tab" data-bs-target="#nav-employees" type="button" role="tab" aria-controls="nav-employees" aria-selected="false">Сотрудники</button>
+        <button class="nav-link <?php echo $activeTab?>" id="nav-employees-tab" data-bs-toggle="tab" data-bs-target="#nav-employees" type="button" role="tab" aria-controls="nav-employees" aria-selected="false">Сотрудники</button>
       <?php endif; ?>
       </div>
     </nav>
@@ -39,8 +41,8 @@
         <?php echo view('classificators/sub/time_balance/time_balance_view', ['balance_year' => $balance_year]); ?>
       </div>
 
-      <div class="tab-pane fade" id="nav-employees" role="tabpanel" aria-labelledby="nav-employees-tab" tabindex="0">
-        <?php echo view('classificators/sub/employees/employees', ['employees' => $employees]); ?>
+      <div class="tab-pane fade  <?php echo $activeTab?>" id="nav-employees" role="tabpanel" aria-labelledby="nav-employees-tab" tabindex="0">
+        <?php echo view('classificators/sub/employees/employee_tabs', ['employees' => $employees]); ?>
       </div>
     <?php endif; ?>
     </div>

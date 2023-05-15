@@ -1,4 +1,3 @@
-<script src="<?= base_url('assets/js/cl_employee.js')?>"></script>
 <div class="container" style="margin-top:50px;">
   <div class="wrapper">
     <table class="employees" id = "tbl_employees">
@@ -33,7 +32,7 @@
                 <td colspan=8 </td><?= $key ?></td>
               </tr>
               <?php foreach($company as $employee) :?>
-                <tr class="emp_info">
+                <tr class="emp_info"  data-trid="<?= $employee['id'] ?>">
                   <td class=""><?=$count++;?></td>
                   <td class="td_text"><?= $employee['fio'] ?></td>
                   <td class="td_text"><?= $employee['company'] ?></td>
@@ -56,4 +55,3 @@
   </div>
 </div>
 
-<?php echo view('partials/_modals', []); ?>

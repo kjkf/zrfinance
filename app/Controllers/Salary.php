@@ -228,4 +228,16 @@ class Salary extends BaseController
     echo $res;
   }
 
+  public function update_bonus_fines() {
+    $res = $this->salaryModel->update_bonus_fines();
+    echo $res;
+  }
+
+  public function delet_bonus_fines() {
+    $res = $this->salaryModel->delet_bonus_fines();
+    echo $res;
+  }
+
+  
+
 }

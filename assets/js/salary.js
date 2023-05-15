@@ -144,15 +144,26 @@ document.addEventListener('DOMContentLoaded', ev => {
   const modal = document.getElementById("modal_editEmployeeSalaryInfo");
   modal.addEventListener('click', e => {
     const target = e.target.closest(".btn-icon");
+    
     if (target) {
+      const tr = target.closest("tr");
+      const id = tr.dataset.fbid;
+      let type = target.dataset.type;
+      if (!type) {
+        const table = target.closest("table");
+        type = table.classList.contains("bonus") ? "bonus" : "fines";
+      }
       if (target.classList.contains("save-btn")) {
-        const type = target.dataset.type;
         saveBonusFines(type, modal);   
       } else if (target.classList.contains("edit-btn")) {
-        // TO DO - изменить можно только сумму
-        console.log("edit");
+        //console.log("edit");
+        editBonusFines(type, tr); 
+      } else if (target.classList.contains("update-btn")) {
+        //console.log("update");
+        updateBonusFines(type, tr); 
       } else {
-        console.log("delete");
+        //console.log("delete");
+        deleteBonusFines(id, tr); 
       }      
     }
 
@@ -167,6 +178,16 @@ document.addEventListener('DOMContentLoaded', ev => {
   setWorkedHoursInput.addEventListener('change', e => {
     updateModalInputs(e.currentTarget.value);
   });
+
+  const advancedPay = document.getElementById("advanced_pay");
+  advancedPay.addEventListener('change', e => {
+    updateModalInputs(setWorkedHoursInput.value);
+  });
+  
+  const holidayPay = document.getElementById("holiday_pay");
+  holidayPay.addEventListener('change', e => {
+    updateModalInputs(setWorkedHoursInput.value);
+  });
 });
 
 function saveEmpInfo(modal ) {
@@ -180,19 +201,33 @@ function updateModalInputs(value) {
   value = parseFloat(value);
   const employee = EMPLOYEES[CURRENT_TR];
   const modal = document.getElementById("modal_editEmployeeSalaryInfo");
-  modal.querySelector("h5").textContent = employee.surname + " " + employee.name;
+  modal.querySelector("h4").textContent = employee.surname + " " + employee.name;
 
   const bonus = isNaN(parseFloat(employee.bonus)) ? 0 : parseFloat(employee.bonus);
   const fines = isNaN(parseFloat(employee.fines)) ? 0 : parseFloat(employee.fines);
+  
+  const holiday_pays = isNaN(intVal(modal.querySelector("#holiday_pay").value)) ? 0 : parseFloat(intVal(modal.querySelector("#holiday_pay").value));
+  const advances = isNaN(intVal(modal.querySelector("#advanced_pay").value)) ? 0 : parseFloat(intVal(modal.querySelector("#advanced_pay").value));
 
-  //- parseFloat(tax_osms) - parseFloat(tax_opv) - parseFloat(tax_ipn)
-  const worked_salary_off = parseFloat(employee.employee_salary) / parseFloat(employee.working_hours_per_month) * value;
+  let official_salary = parseFloat(employee.employee_salary) || 0;
+  console.log(official_salary, employee.direction);
+  console.log(!official_salary && employee.direction === 'Цех');
+  console.log( employee.pay_per_hour, employee.working_hours);
+  if (!official_salary && employee.direction === 'Цех') {
+    official_salary = employee.pay_per_hour * employee.working_hours;
+  }
+  
+  const worked_salary_off = official_salary / parseFloat(employee.working_hours_per_month) * value + holiday_pays;
+  console.log(worked_salary_off);
   const tax_osms = calcOSMS(worked_salary_off);
   const tax_opv = calcTaxOVP(worked_salary_off);
-  const tax_ipn = prepareCalcIPN(worked_salary_off);
+  const tax_ipn = calc_IPN_taxes(worked_salary_off, employee.contract_type,employee.citezenship_type); 
 
+  const taxes = employee.is_tax === "1" ? 0 : employee.is_tax === "2" ? (tax_osms + tax_opv + tax_ipn) : (tax_opv + tax_ipn);
+
+  console.log(bonus, fines, taxes, advances, holiday_pays);
   const worked_salary = parseFloat(employee.employee_salary_fact) / parseFloat(employee.working_hours_per_month) * value;
-  const total_salary = worked_salary + bonus - fines - tax_osms - tax_opv - tax_ipn;
+  const total_salary = worked_salary + bonus - fines - taxes - advances + holiday_pays;
   
   modal.querySelector("#tax_osms").value = numberWithSpaces(tax_osms);
   modal.querySelector("#tax_opv").value = numberWithSpaces(tax_opv);
@@ -246,8 +281,91 @@ function saveBonusFines(type, modal) {
   }
 }
 
-function addBonusFines_toTable(data) {
+function editBonusFines(type, tr) {
+  const saveBtn = createBtnForTable("update");
   
+  const tds = tr.children;
+  const editBtn = tr.querySelector(".edit-btn");
+  editBtn.style.display = "none";
+
+  const oldValue = tds[1].innerHTML;
+  const span = document.createElement("span");
+  span.style.display = "none";
+  span.textContent = intVal(oldValue);
+  tds[1].innerHTML = "";
+  const input = createField(type, 'number');
+  input.value = intVal(oldValue);
+  tds[1].insertAdjacentElement('beforeend', input);
+  tds[1].insertAdjacentElement('beforeend', span);
+  tds[2].insertAdjacentElement('afterbegin', saveBtn);
+  
+}
+
+function updateBonusFines(type, tr) {
+  const tds = tr.children;
+  const trid = tr.dataset.fbid;
+  const value = tds[1].querySelector("input").value;
+  const oldVal = tds[1].querySelector("span").textContent;
+  
+  if (oldVal !== value) {
+    if(value > 0) {
+      const data = {
+        "id" : trid,
+        "newVal" : value,
+        "type" : type
+      }
+    const url_path = base_url + '/salary/update_bonus_fines';
+    $.ajax({
+      url: url_path,
+      data: data,
+      method: 'POST',
+      success: function (result) {
+        console.log(result);
+        closeEditBonusFinesTr(tr);
+      },
+    });    
+    } else {
+      const str = type === 'bonus' ? "прибавки" : "удержания";
+      alert("Укажите сумму " + str);
+      tds[1].querySelector("input").focus();
+    }    
+  } else {
+    closeEditBonusFinesTr(tr);
+  }
+  
+}
+
+function deleteBonusFines(id, tr) {
+  const data = {
+    "id" : id
+  }
+  const url_path = base_url + '/salary/delet_bonus_fines';
+    $.ajax({
+      url: url_path,
+      data: data,
+      method: 'POST',
+      success: function (result) {
+        tr.remove();
+    },
+  });
+
+}
+
+function closeEditBonusFinesTr(tr) {
+  const tds = tr.children;
+  const newVal = tds[1].querySelector("input").value;
+  tds[1].querySelector("span").remove();
+  tds[1].querySelector("input").remove();
+  tds[1].innerHTML = numberWithSpaces(newVal);
+
+  const updateBtn = tds[2].querySelector(".update-btn");
+  updateBtn.remove();
+
+  const editBtn = tds[2].querySelector(".edit-btn");
+  editBtn.style.display = "inline";
+}
+
+function addBonusFines_toTable(data) {
   const table = document.querySelector("#modal_editEmployeeSalaryInfo table."+ data.type);
   const tbody = table.querySelector("tbody");
   const tfoot = table.querySelector("tfoot");
@@ -300,8 +418,19 @@ function prepareEmployeeModalInfo(trid) {
 
   const employee_salary_fact = parseInt(employee.employee_salary_fact) || 0;
 
+  let official_salary = parseInt(employee.employee_salary) || 0;
+  //console.log(official_salary, employee.direction);
+  //console.log(!official_salary && employee.direction === 'Цех');
+  //console.log( employee.pay_per_hour, employee.working_hours);
+  if (!official_salary && employee.direction === 'Цех') {
+    official_salary = employee.pay_per_hour * employee.working_hours;
+  }
+
   const salary = employee_salary_fact / working_hours_per_month * worked_hours_per_month;
   const total_salary = salary + bonus - fines;
+
+  const holiday_pays = isNaN(parseFloat(employee.holiday_pays)) ? 0 : parseFloat(employee.holiday_pays);
+  const advances = isNaN(parseFloat(employee.advances)) ? 0 : parseFloat(employee.advances);
 
   modal.querySelector("h4").textContent = employee.surname + " " + employee.name;
 
@@ -309,9 +438,14 @@ function prepareEmployeeModalInfo(trid) {
   modal.querySelector("#tax_opv").value = tax_opv;
   modal.querySelector("#tax_ipn").value = tax_ipn;
 
+  modal.querySelector("#advanced_pay").value = numberWithSpaces(advances);
+  modal.querySelector("#holiday_pay").value = numberWithSpaces(holiday_pays);
+
   modal.querySelector("#working_hours").value = working_hours_per_month;
   modal.querySelector("#worked_hours_fact").value = worked_hours_per_month;
   modal.querySelector("#worked_salary").value = numberWithSpaces(salary);
+  modal.querySelector("#official_salary").value = numberWithSpaces(official_salary);
+  modal.querySelector("#salary_fact").value = numberWithSpaces(employee_salary_fact);
   modal.querySelector("#total").value = numberWithSpaces(total_salary);
 
 
@@ -356,6 +490,33 @@ function createDataTr(data) {
   return tr;
 }
 
+function deleteField(td) {
+  const input = td.querySelector('input');
+  const span = td.querySelector("span");
+  span.textContent = input.value;
+  span.style.display = "inline-block";
+  input.remove();
+}
+
+function createField(id, type) {
+  const fld = document.createElement("input");
+  fld.type = type;
+  fld.id = id;
+  fld.className = "fld";
+  if(type == 'number') {
+    fld.min = 0;
+    if (id = "working_days_fact") {
+      fld.step = 10;
+      fld.max = 300;
+    } else {
+      fld.step = 1000;
+    }
+    
+  }
+
+  return fld;
+}
+
 function createBtnForTable(actionType) {
   const a = document.createElement("a");
   a.href = "#";
@@ -364,7 +525,7 @@ function createBtnForTable(actionType) {
 
   const i = document.createElement("i");
   i.classList.add("fa-solid");
-  const className = actionType === 'edit' ? "fa-pen-to-square" : "fa-trash-can";
+  const className = actionType === 'edit' ? "fa-pen-to-square" : actionType === 'delete' ?  "fa-trash-can" : "fa-save";
   i.classList.add(className);
 
   a.insertAdjacentElement('afterbegin', i);
@@ -401,11 +562,15 @@ function calculateSalary(tr) {
   const tax_osms = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_osms").value) || 0;
   const tax_opv = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_opv").value) || 0;
   const tax_ipn = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_ipn").value) || 0;
+  const advances = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #advanced_pay").value) || 0;
+  const holiday_pays = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #holiday_pay").value) || 0;
    
   EMPLOYEES[CURRENT_TR].worked_hours_per_month = work_day_fact;
   EMPLOYEES[CURRENT_TR].tax_OSMS = tax_osms;
   EMPLOYEES[CURRENT_TR].tax_OPV = tax_opv;
   EMPLOYEES[CURRENT_TR].tax_IPN = tax_ipn;
+  EMPLOYEES[CURRENT_TR].holiday_pays = holiday_pays;
+  EMPLOYEES[CURRENT_TR].advances = advances;
 
   const current_salary = salary/work_day_plan*work_day_fact;
   const total = current_salary + bonus - fines - parseFloat(tax_osms) - parseFloat(tax_opv) - parseFloat(tax_ipn);
@@ -498,6 +663,8 @@ function save_tr() {
     'tax_OSMS' : EMPLOYEES[CURRENT_TR].tax_OSMS,
     'tax_OPV' : EMPLOYEES[CURRENT_TR].tax_OPV,
     'tax_IPN' : EMPLOYEES[CURRENT_TR].tax_IPN,
+    'advances' : EMPLOYEES[CURRENT_TR].advances,
+    'holiday_pays' : EMPLOYEES[CURRENT_TR].holiday_pays,
     'id': CURRENT_TR
   };
   
@@ -519,7 +686,6 @@ function save_tr() {
   });
 
 }
-
 
 function changeCurrentFZPStatus (id, status, reason="") {
   const data = {
@@ -568,6 +734,30 @@ function calcIPN_with_90_cor(salary, mrp) {
 
 function calcIPN(salary, mrp) {
   const res = salary - (salary * 0.1) - (salary * 0.02) - 14 * mrp;
-  console.log(res);
   return res * 0.1;
+}
+
+function calcGPH_IPN(salary) {
+  const res = salary - (salary * 0.1) - (salary * 0.02);
+  return res * 0.1;
+}
+
+function nonResidentIPN(salary) {
+  return salary * 0.1;
+}
+
+function calc_VNJ_IPN(salary) {
+  const res = salary - (salary * 0.1) - (salary * 0.02);
+  return res * 0.1;
+}
+
+function calc_IPN_taxes(worked_salary_off, contract_type, citezenship_type) {
+  console.log(worked_salary_off, contract_type, citezenship_type);
+  if (citezenship_type === "2") {
+    return contract_type === '1' ? prepareCalcIPN(worked_salary_off) : calcGPH_IPN(worked_salary_off);
+  } else if (citezenship_type === "4") {
+    return calc_VNJ_IPN(worked_salary_off);
+  }  else {
+    return nonResidentIPN(worked_salary_off);
+  }
 }
