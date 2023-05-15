@@ -209,9 +209,16 @@ function updateModalInputs(value) {
   const holiday_pays = isNaN(intVal(modal.querySelector("#holiday_pay").value)) ? 0 : parseFloat(intVal(modal.querySelector("#holiday_pay").value));
   const advances = isNaN(intVal(modal.querySelector("#advanced_pay").value)) ? 0 : parseFloat(intVal(modal.querySelector("#advanced_pay").value));
 
-  console.log("holiday_pays="+holiday_pays, "advances="+advances);
+  let official_salary = parseFloat(employee.employee_salary) || 0;
+  console.log(official_salary, employee.direction);
+  console.log(!official_salary && employee.direction === 'Цех');
+  console.log( employee.pay_per_hour, employee.working_hours);
+  if (!official_salary && employee.direction === 'Цех') {
+    official_salary = employee.pay_per_hour * employee.working_hours;
+  }
   
-  const worked_salary_off = parseFloat(employee.employee_salary) / parseFloat(employee.working_hours_per_month) * value + holiday_pays;
+  const worked_salary_off = official_salary / parseFloat(employee.working_hours_per_month) * value + holiday_pays;
+  console.log(worked_salary_off);
   const tax_osms = calcOSMS(worked_salary_off);
   const tax_opv = calcTaxOVP(worked_salary_off);
   const tax_ipn = calc_IPN_taxes(worked_salary_off, employee.contract_type,employee.citezenship_type); 
@@ -410,7 +417,14 @@ function prepareEmployeeModalInfo(trid) {
   const worked_hours_per_month = parseInt(employee.worked_hours_per_month) || 0;
 
   const employee_salary_fact = parseInt(employee.employee_salary_fact) || 0;
-  const official_salary = parseInt(employee.employee_salary) || 0;
+
+  let official_salary = parseInt(employee.employee_salary) || 0;
+  //console.log(official_salary, employee.direction);
+  //console.log(!official_salary && employee.direction === 'Цех');
+  //console.log( employee.pay_per_hour, employee.working_hours);
+  if (!official_salary && employee.direction === 'Цех') {
+    official_salary = employee.pay_per_hour * employee.working_hours;
+  }
 
   const salary = employee_salary_fact / working_hours_per_month * worked_hours_per_month;
   const total_salary = salary + bonus - fines;
@@ -732,10 +746,17 @@ function nonResidentIPN(salary) {
   return salary * 0.1;
 }
 
+function calc_VNJ_IPN(salary) {
+  const res = salary - (salary * 0.1) - (salary * 0.02);
+  return res * 0.1;
+}
+
 function calc_IPN_taxes(worked_salary_off, contract_type, citezenship_type) {
   console.log(worked_salary_off, contract_type, citezenship_type);
   if (citezenship_type === "2") {
     return contract_type === '1' ? prepareCalcIPN(worked_salary_off) : calcGPH_IPN(worked_salary_off);
+  } else if (citezenship_type === "4") {
+    return calc_VNJ_IPN(worked_salary_off);
   }  else {
     return nonResidentIPN(worked_salary_off);
   }

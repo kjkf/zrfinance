@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use CodeIgniter\I18n\DateTime;
 
 class EmployeesModel extends Model
 {
@@ -30,7 +31,7 @@ class EmployeesModel extends Model
               left join position on position.id = employee.position
               left join company on company.id = employee.company
               where `fire_date` is not null and employee.company in (2, 3, 4)
-              order by employee.company asc";
+              order by employee.company asc,  `surname` ASC";
 
 
     $query = $this->db->query($sql);
@@ -52,7 +53,7 @@ class EmployeesModel extends Model
               left join position on position.id = employee.position
               left join company on company.id = employee.company
               where `fire_date` is null and employee.company in (2, 3, 4)
-              order by employee.company asc";
+              order by employee.company asc,  `surname` ASC";
 
 
     $query = $this->db->query($sql);
@@ -69,7 +70,7 @@ class EmployeesModel extends Model
   public function getEmployeeById()
   {
     $id = $_POST['trid'];
-    $sql = "SELECT employee.id, `surname`, `employee`.`name`, `company`.`name` as company, employee.company as company, `email`, `telephone`, position,  department, salary, salary_fact, salary, birth_date, middlename, start_date, direction, `contract_type`, `is_tax`, `pay_per_hour`, resident_type.`citezenship_type`, resident_type.`country`
+    $sql = "SELECT employee.id, `surname`, `employee`.`name`, `company`.`name` as company, employee.company as company, `email`, `telephone`, position,  department, salary, salary_fact, salary, birth_date, middlename, start_date, fire_date, direction, `contract_type`, `is_tax`, `pay_per_hour`, resident_type.`citezenship_type`, resident_type.`country`
               FROM `employee` 
               left join resident_type on resident_type.`employee_id` = employee.id
               left join department on department.id = employee.department
@@ -88,6 +89,15 @@ class EmployeesModel extends Model
     }
   }
 
+  private function getDateParam($date) {
+    if (empty($date)) {
+      return NULL;
+    } else {
+      $time = strtotime($date);
+      return date('Y-m-d',$time);
+    }
+  }
+
   public function update_employee_byId() {
     $id = $_POST['trid'];
     $company = empty($_POST['company']) ? NULL : $_POST['company'];
@@ -99,8 +109,9 @@ class EmployeesModel extends Model
     $contract_type = empty($_POST['contract_type']) ? NULL : $_POST['contract_type'];
     $fire_date = empty($_POST['fire_date']) ? NULL : $_POST['fire_date'];
     $start_date = empty($_POST['start_date']) ? NULL : $_POST['start_date'];
+    //$start_date = $this->getDateParam($_POST['start_date']);
     $birth_date = empty($_POST['birth_date']) ? NULL : $_POST['birth_date'];
-
+    
     $builder = $this->db->table('employee');
 
     $builder->set('surname', $_POST['surname']);

@@ -124,7 +124,7 @@ class SalaryModel extends Model
 
   public function getEmployeesInfo($company_id, $fzp_id, $date)
   {
-    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`,  bf.bonus as bonus, bf.fines as fines, `tax_OSMS`, `tax_IPN`, `tax_OPV`, employee_salary_fact,  salary_month.advances, salary_month.holiday_pays, employee.contract_type,  resident_type.citezenship_type, is_tax,
+    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`,  bf.bonus as bonus, bf.fines as fines, `tax_OSMS`, `tax_IPN`, `tax_OPV`, employee_salary_fact,  salary_month.advances, salary_month.holiday_pays, employee.contract_type,  resident_type.citezenship_type, is_tax, salary_month.pay_per_hour,
     CASE WHEN direction.name = 'Цех' THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
 END AS working_hours
@@ -150,13 +150,13 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
   }
 
   public function getAllEmployeesForFZP() {
-    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(now()) and YEAR(`date_time`) = YEAR(now())) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact, 
+    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(now()) and YEAR(`date_time`) = YEAR(now())) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact, pay_per_hour,
     CASE WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(now()) AND `month`= month(now()))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(now()) AND `month`= month(now()))
     END AS working_hours_per_month
     from employee 
-    where ((MONTH(`fire_date`) > MONTH(now()) and year(`fire_date`) > year(now())) OR `fire_date` IS NULL) and employee.company in (2,3,4)
-    ORDER by employee.company asc,  `surname` ASC";
+    where ((date(`fire_date`) > date(now()) ) OR `fire_date` IS NULL) and employee.company in (2,3,4) and (date(`start_date`) < date(now()) ))
+    ORDER by employee.company asc,  `surname` ASC"; 
 
     $query = $this->db->query($sql);
 
@@ -167,12 +167,20 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     }
   }
   public function getAllEmployeesForFZP_by_date($date) {
-    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(?) and YEAR(`date_time`) = YEAR(?)) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact,  
+    //$builder = $this->db->table('employee');
+    //$builder->select('SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(?) and YEAR(`date_time`) = YEAR(?)) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact,  
+    //CASE WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
+    //ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
+    //END AS working_hours_per_month
+    //from employee 
+    //where ((MONTH(`fire_date`) > MONTH(?) and year(`fire_date`) > year(?)) OR `fire_date` IS NULL) and employee.company in (2,3,4) and (month(`start_date`) <  month(?) and year(`start_date`) < year(?))
+    //ORDER by employee.company asc,  `surname` ASC', false);
+    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(?) and YEAR(`date_time`) = YEAR(?)) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact,  pay_per_hour, 
     CASE WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
     END AS working_hours_per_month
     from employee 
-    where ((MONTH(`fire_date`) > MONTH(?) and year(`fire_date`) > year(?)) OR `fire_date` IS NULL) and employee.company in (2,3,4)
+    where ((date(`fire_date`) > date(?) ) OR `fire_date` IS NULL) and employee.company in (2,3,4) and (date(`start_date`) <  date(?) )
     ORDER by employee.company asc,  `surname` ASC";
 
     $query = $this->db->query($sql, array($date, $date, $date, $date, $date, $date, $date, $date));

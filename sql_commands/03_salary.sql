@@ -209,7 +209,8 @@ insert into emp_contract_type(contract_type) values
 insert into citezenship_types (citezenship_types) values 
 ('Лицо без гражданства'),
 ('Гражданин РК'),
-('Гражданин иностранного государства');
+('Гражданин иностранного государства'),
+('Вид на жительство');
 
 insert into countries (country) values 
 ('Россия'),

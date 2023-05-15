@@ -2,30 +2,51 @@ let EMPLOYEES = {};
 
 document.addEventListener("DOMContentLoaded", ev => {
 
+  datepickerLocaleRu();
+
+  const d = new Date();
+  let minYear = d.getFullYear()- 2;
+  let maxYear = d.getFullYear();
   $( "#fire_date" ).datepicker({
     buttonImage: "images/calendar.gif",
     buttonImageOnly: true,
     buttonText: "Выберите дату",
+    minDate: new Date(minYear, 0, 1),
+    maxDate: new Date(maxYear, 11, 1),
+    changeMonth: true,
+    changeYear: true,
     altField: "#actualDate",
     dateFormat: "dd.mm.yy",
     dayNamesMin: [ "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС" ],
     monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
   });
-  
+
+  minYear = d.getFullYear()- 66;
+  maxYear = d.getFullYear() - 15;
   $( "#birth_date" ).datepicker({
     buttonImage: "images/calendar.gif",
     buttonImageOnly: true,
     buttonText: "Выберите дату",
+    minDate: new Date(minYear, 0, 1),
+    maxDate: new Date(maxYear, 11, 1),
+    changeMonth: true,
+    changeYear: true,
     altField: "#actualDate",
     dateFormat: "dd.mm.yy",
     dayNamesMin: [ "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС" ],
     monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
   });
   
+  minYear = d.getFullYear()- 2;
+  maxYear = d.getFullYear() + 1;
   $( "#start_date" ).datepicker({
     buttonImage: "images/calendar.gif",
     buttonImageOnly: true,
     buttonText: "Выберите дату",
+    minDate: new Date(minYear, 0, 1),
+    maxDate: new Date(maxYear, 11, 1),
+    changeMonth: true,
+    changeYear: true,
     altField: "#actualDate",
     dateFormat: "dd.mm.yy",
     dayNamesMin: [ "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС" ],
@@ -91,12 +112,27 @@ document.addEventListener("DOMContentLoaded", ev => {
   }
 
   $("input").on("change", function(e) {
-    
+    //console.log("input changed", );
     //modal.querySelector("#is_tr_changed").value = 0;
-    const property = $(this).attr("id");
     const trid = modal.querySelector("#trid").value;
-    if (EMPLOYEES[trid][property] !== $(this).value) {
-      modal.querySelector("#is_tr_changed").value = 1;
+   
+    if ($(this).attr("type") === "radio") {
+      const property = $(this).attr("name");
+      var selected = $("input[type='radio'][name='" + property + "']:checked");
+      if (selected.length > 0) {
+          const inputVal = selected.val();
+          //console.log(EMPLOYEES[trid][property], inputVal);
+          //console.log(property, EMPLOYEES[trid]);
+          if (EMPLOYEES[trid][property] !== inputVal) {
+            modal.querySelector("#is_tr_changed").value = 1;
+          }
+      }
+      
+    } else {
+      const property = $(this).attr("id");
+      if (EMPLOYEES[trid][property] !== $(this).value) {
+        modal.querySelector("#is_tr_changed").value = 1;
+      }
     } 
   });
 
@@ -187,7 +223,7 @@ function createTd(fld, className) {
 }
 
 function loadEmployeeInfo(id) {
-  console.log("loadEmployeeInfo");
+  //console.log("loadEmployeeInfo");
   const url_path = base_url + '/Classificators/get_employee_byId';
   const data = {
     "trid": id
@@ -218,7 +254,10 @@ function loadEmployeeInfo(id) {
 
 function prepareModalVals(modal, id) {
   clearModalVals(modal);
-  console.log(EMPLOYEES[id]);
+  //console.log(EMPLOYEES[id]);
+  //console.log(EMPLOYEES[id].birth_date);
+  //console.log(EMPLOYEES[id].start_date);
+  //console.log(EMPLOYEES[id].fire_date);
 
   modal.querySelector("#trid").value = id;
   modal.querySelector("#surname").value = EMPLOYEES[id].surname;
@@ -228,7 +267,7 @@ function prepareModalVals(modal, id) {
   
   modal.querySelector("#telephone").value = EMPLOYEES[id].telephone;
   modal.querySelector("#email").value = EMPLOYEES[id].email;
-  if (EMPLOYEES[id].birth_date) $('#start_date').datepicker("setDate", new Date(EMPLOYEES[id].start_date) );
+  if (EMPLOYEES[id].start_date) $('#start_date').datepicker("setDate", new Date(EMPLOYEES[id].start_date) );
   
   modal.querySelector("#company").value = EMPLOYEES[id].company;
   modal.querySelector("#position").value = EMPLOYEES[id].position;
@@ -279,6 +318,7 @@ function clearModalVals(modal) {
 
 function updateEmployeeInfo(id, modal) {
   const isChanged = modal.querySelector("#is_tr_changed").value === "0" ? false : true;
+  //console.log("isChanged="+isChanged);
   if (!isChanged) {
     modal.querySelector("#closeModal").click();
     return false;
@@ -294,7 +334,7 @@ function updateEmployeeInfo(id, modal) {
     data: data,
     method: 'POST',
     success: function (result) {
-      console.log(result);
+      //console.log(result);
       modal.querySelector("#closeModal").click();
       
     },
@@ -324,14 +364,22 @@ function updateEmployeeJSON(modal, id) {
   EMPLOYEES[id].is_tax = modal.querySelector('input[name="is_tax"]:checked').value  || null;
   EMPLOYEES[id].citezenship_type = modal.querySelector('input[name="citezenship_type"]:checked').value  || null;
 
-  EMPLOYEES[id].fire_date = $('#fire_date').datepicker("getDate") || null;
-  EMPLOYEES[id].start_date = $('#start_date').datepicker("getDate") || null;
-  EMPLOYEES[id].birth_date = $('#birth_date').datepicker("getDate") || null;
+  EMPLOYEES[id].fire_date = dateToYMD($('#fire_date').datepicker("getDate")) || null;
+  EMPLOYEES[id].start_date = dateToYMD($('#start_date').datepicker("getDate"))  || null;
+  EMPLOYEES[id].birth_date = dateToYMD($('#birth_date').datepicker("getDate"))  || null;
   
 }
 
+function dateToYMD(date) {
+  if (!date) return null;
+  var d = date.getDate();
+  var m = date.getMonth() + 1; //Month from 0 to 11
+  var y = date.getFullYear();
+  return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+}
+
 function getUpdateFields(id) {
-  console.log(EMPLOYEES[id]);
+  //console.log(EMPLOYEES[id]);
   const data = 
   {
     'trid' : id,
@@ -357,4 +405,57 @@ function getUpdateFields(id) {
   }
 
   return data;
+}
+function datepickerLocaleRu() {
+  $.datepicker.setDefaults({
+    closeText: 'Закрыть',
+    prevText: 'Пред',
+    nextText: 'След',
+    currentText: 'Сегодня',
+    monthNames: [
+      'Январь',
+      'Февраль',
+      'Март',
+      'Апрель',
+      'Май',
+      'Июнь',
+      'Июль',
+      'Август',
+      'Сентябрь',
+      'Октябрь',
+      'Ноябрь',
+      'Декабрь',
+    ],
+    monthNamesShort: [
+      'Янв',
+      'Фев',
+      'Мар',
+      'Апр',
+      'Май',
+      'Июн',
+      'Июл',
+      'Авг',
+      'Сен',
+      'Окт',
+      'Ноя',
+      'Дек',
+    ],
+    dayNames: [
+      'воскресенье',
+      'понедельник',
+      'вторник',
+      'среда',
+      'четверг',
+      'пятница',
+      'суббота',
+    ],
+    dayNamesShort: ['вск', 'пнд', 'втр', 'срд', 'чтв', 'птн', 'сбт'],
+    dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+    weekHeader: 'Нед',
+    dateFormat: 'dd.mm.yy',
+    firstDay: 1,
+    isRTL: false,
+    showMonthAfterYear: false,
+    yearSuffix: '',
+  });
 }
