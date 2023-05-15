@@ -426,7 +426,7 @@ function prepareEmployeeModalInfo(trid) {
   }
 
   const salary = employee_salary_fact / working_hours_per_month * worked_hours_per_month;
-  const total_salary = salary + bonus - fines;
+  const total_salary = salary + bonus - fines - tax_osms - tax_opv - tax_ipn;
 
   const holiday_pays = isNaN(parseFloat(employee.holiday_pays)) ? 0 : parseFloat(employee.holiday_pays);
   const advances = isNaN(parseFloat(employee.advances)) ? 0 : parseFloat(employee.advances);
@@ -553,6 +553,7 @@ function createActionTd() {
 function calculateSalary(tr) {
   const tds = tr.children;
   const salary = parseFloat(EMPLOYEES[CURRENT_TR].salary);
+  const salary_fact = parseFloat(EMPLOYEES[CURRENT_TR].employee_salary_fact);
   const work_day_plan = parseInt(EMPLOYEES[CURRENT_TR].working_hours_per_month);
   const bonus = isNaN(parseFloat(EMPLOYEES[CURRENT_TR].bonus)) ? 0 : parseFloat(EMPLOYEES[CURRENT_TR].bonus);
   const fines = isNaN(parseFloat(EMPLOYEES[CURRENT_TR].fines)) ? 0 : parseFloat(EMPLOYEES[CURRENT_TR].fines);
@@ -571,13 +572,14 @@ function calculateSalary(tr) {
   EMPLOYEES[CURRENT_TR].holiday_pays = holiday_pays;
   EMPLOYEES[CURRENT_TR].advances = advances;
 
-  const current_salary = salary/work_day_plan*work_day_fact;
-  const total = current_salary + bonus - fines - parseFloat(tax_osms) - parseFloat(tax_opv) - parseFloat(tax_ipn);
+  //const current_salary = salary/work_day_plan*work_day_fact;
+  const current_salary = salary_fact/work_day_plan*work_day_fact;
+  const total = current_salary + bonus - fines - parseFloat(tax_osms) - parseFloat(tax_opv) - parseFloat(tax_ipn) - parseFloat(advances) + parseFloat(holiday_pays);
   tds[6].textContent = work_day_fact;
-  tds[8].textContent = numberWithSpaces(current_salary.toFixed(2));
-  tds[9].textContent = numberWithSpaces(bonus.toFixed(2));
-  tds[10].textContent = numberWithSpaces(fines.toFixed(2));
-  tds[11].textContent = numberWithSpaces(total.toFixed(2));
+  tds[8].textContent = numberWithSpaces(Math.round(current_salary));
+  tds[9].textContent = numberWithSpaces(Math.round(bonus));
+  tds[10].textContent = numberWithSpaces(Math.round(fines));
+  tds[11].textContent = numberWithSpaces(Math.round(total));
 }
 
 var intVal = function (i) {
