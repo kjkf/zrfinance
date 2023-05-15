@@ -116,7 +116,9 @@ if (isset($fzp) && !empty($fzp)) :?>
                   <td><span><?= $employee['working_hours_per_month'] ?></span></td>
                   <td><span><?= $employee['worked_hours_per_month'] ?></span></td>
                   <td><span><?= number_format($employee['employee_salary'], 2, '.', ' ') ?></span></td>
-                  <?php $workedSalary = $employee['employee_salary'] / $employee['working_hours_per_month'] * $employee['worked_hours_per_month'] ?>
+                  <?php $workedSalary = $employee['employee_salary'] / $employee['working_hours_per_month'] * $employee['worked_hours_per_month'];
+                  $workedSalaryFact = $employee['employee_salary_fact'] / $employee['working_hours_per_month'] * $employee['worked_hours_per_month'];
+                  ?>
                   <td><span><?= number_format($workedSalary, 2, '.', ' ') ?></span></td>
                   <td>
                     <span><?= number_format($employee['bonus'], 2, '.', ' ')?></span>
@@ -124,7 +126,7 @@ if (isset($fzp) && !empty($fzp)) :?>
                   <td>
                     <span><?=number_format($employee['fines'], 2, '.', ' ')?></span>
                   </td>
-                  <?php $resultSalary = $workedSalary + $employee['bonus'] - $employee['fines'] - $employee['tax_OSMS'] - $employee['tax_OPV'] - $employee['tax_IPN']; ?>
+                  <?php $resultSalary = $workedSalaryFact + $employee['holiday_pays'] + $employee['bonus'] - $employee['fines'] - $employee['tax_OSMS'] - $employee['tax_OPV'] - $employee['tax_IPN'] - $employee['advances']; ?>
                   <td><span><?= number_format($resultSalary, 2, '.', ' ') ?></span></td>
                 </tr>
               <?php endforeach; ?>
