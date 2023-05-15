@@ -122,7 +122,7 @@ class SalaryModel extends Model
     return $res;
   }
 
-  public function getEmployeesInfo($company_id, $fzp_id, $date)
+  public function getEmployeesInfoByCompany($company_id, $fzp_id, $date)
   {
     $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`,  bf.bonus as bonus, bf.fines as fines, `tax_OSMS`, `tax_IPN`, `tax_OPV`, employee_salary_fact,  salary_month.advances, salary_month.holiday_pays, employee.contract_type,  resident_type.citezenship_type, is_tax, salary_month.pay_per_hour,
     CASE WHEN direction.name = 'Цех' THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
@@ -141,6 +141,33 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     ORDER by employee.company asc,  `surname` ASC";
 
     $query = $this->db->query($sql, array($date, $date, $date, $date, intval($fzp_id), intval($fzp_id), intval($company_id)));
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return false;
+    }
+  }
+
+  public function getEmployeesInfo($fzp_id, $date)
+  {
+    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, employee.company as company_id, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`,  bf.bonus as bonus, bf.fines as fines, `tax_OSMS`, `tax_IPN`, `tax_OPV`, employee_salary_fact,  salary_month.advances, salary_month.holiday_pays, employee.contract_type,  resident_type.citezenship_type, is_tax, salary_month.pay_per_hour,
+    CASE WHEN direction.name = 'Цех' THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
+    ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
+END AS working_hours
+    from salary_month 
+    left JOIN employee on employee.id = salary_month.`employee_id`
+    left join position on position.id = employee.position
+    left join department on department.id = employee.`department`
+    left join direction on direction.id = employee.direction
+    left join company on company.id = employee.company
+    left join resident_type on resident_type.employee_id = salary_month.`employee_id`
+    left join (SELECT bonus_fines.`employee_id`, max(bonus_fines.`salary_fzp`) as salary_fzp, sum(`bonus`) as bonus, sum(`fines`) as fines  
+FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`employee_id`) bf on bf.employee_id = salary_month.employee_id and salary_month.salary_fzp = bf.salary_fzp
+    where salary_month.`salary_fzp`=? and employee.company in (2,3,4)
+    ORDER by `surname` ASC";
+
+    $query = $this->db->query($sql, array($date, $date, $date, $date, intval($fzp_id), intval($fzp_id)));
 
     if (!empty($sql)) {
       return $query->getResultArray();

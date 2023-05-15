@@ -632,15 +632,17 @@ function updateTotals(tableId) {
 }
 
 function updateTotalSumToPay() {
-  const pkTable = $("#salary_company_2").DataTable();
-  const tdTable = $("#salary_company_3").DataTable();
-  const montTable = $("#salary_company_4").DataTable();
+  const table = $("#salary_company").DataTable();
+  //const pkTable = $("#salary_company_2").DataTable();
+  //const tdTable = $("#salary_company_3").DataTable();
+  //const montTable = $("#salary_company_4").DataTable();
 
-  const pkSum = $(pkTable.column(11).footer()).html().replace(/ /g, "");
-  const tdSum = $(tdTable.column(11).footer()).html().replace(/ /g, "");
-  const montSum = $(montTable.column(11).footer()).html().replace(/ /g, "");
+  //const pkSum = $(pkTable.column(11).footer()).html().replace(/ /g, "");
+  //const tdSum = $(tdTable.column(11).footer()).html().replace(/ /g, "");
+  //const montSum = $(montTable.column(11).footer()).html().replace(/ /g, "");
+  const sum = $(table.column(11).footer()).html().replace(/ /g, "");
 
-  const sum = parseFloat(pkSum) + parseFloat(tdSum) + parseFloat(montSum);
+  //const sum = parseFloat(pkSum) + parseFloat(tdSum) + parseFloat(montSum);
 
   document.querySelector(".salary-total span").textContent = numberWithSpaces(sum);
 }
