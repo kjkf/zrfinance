@@ -119,6 +119,7 @@
           </div>
 
           <div class="col-4 citizenship">
+            <input type="hidden" id="citizenship_changed" value="0">
             <label for="citizenship">Гражданство:</label>
             <?php foreach($citizenship as $citizen) :?>
               <div class="form-check">
