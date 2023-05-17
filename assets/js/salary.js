@@ -220,9 +220,9 @@ function updateModalInputs(value) {
   const worked_salary_off = official_salary / parseFloat(employee.working_hours_per_month) * value + holiday_pays;
   console.log(worked_salary_off);
   //если citezenship_type === 3(студент), то налоги не расчитываются
-  const tax_osms = employee.citezenship_type === '3' ? 0 : calcOSMS(worked_salary_off);
-  const tax_opv = employee.citezenship_type === '3' ? 0 : calcTaxOVP(worked_salary_off);
-  const tax_ipn = employee.citezenship_type === '3' ? 0 : calc_IPN_taxes(worked_salary_off, employee.contract_type,employee.citezenship_type); 
+  const tax_osms = employee.contract_type === '3' ? 0 : calcOSMS(worked_salary_off);
+  const tax_opv = employee.contract_type === '3' ? 0 : calcTaxOVP(worked_salary_off);
+  const tax_ipn = employee.contract_type === '3' ? 0 : calc_IPN_taxes(worked_salary_off, employee.contract_type,employee.citezenship_type); 
 
   const taxes = employee.is_tax === "1" ? 0 : employee.is_tax === "2" ? (tax_osms + tax_opv + tax_ipn) : (tax_opv + tax_ipn);
 
