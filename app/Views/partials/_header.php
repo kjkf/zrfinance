@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css')?>">
 
 
-    <?php if(isset($page_name) && ($page_name == 'report' || $page_name == 'classificators'  || $page_name == 'salary_fond' )){ ?>
+    <?php if(isset($page_name) && ($page_name == 'report' || $page_name == 'classificators'  || $page_name == 'salary_fond' || $page_name == 'advance_month' )){ ?>
     <link rel="stylesheet" href="<?= base_url('assets/vendors/jquery/jquery-ui.min.css')?>">
     <?php } ?>
     

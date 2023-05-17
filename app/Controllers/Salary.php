@@ -24,6 +24,8 @@ class Salary extends BaseController
     $currentYearFZPs = $this->salaryModel->getMonthFZPs_by_year(date('Y-m-d H:i:s'), 1);
     $currentYearWorkingFZPs = $this->salaryModel->getMonthFZPs_by_year(date('Y-m-d H:i:s'), "0, 1, 4");
 
+    //$currentYearAdvances =  $this->salaryModel->getCurrentYearAdvances(date('Y-m-d H:i:s'));
+
     $data = [
       'title' => 'Фонд заработной платы',
       'page_name' => 'salary_fond',
@@ -44,7 +46,6 @@ class Salary extends BaseController
     $usersModel = new \App\Models\UsersModel();
     $loggedUserID = session()->get('loggedUser');
     $userInfo = $usersModel->find($loggedUserID);
-
 
     $fzp = $this->salaryModel->getCurrentMonthFZP();
 
@@ -147,6 +148,47 @@ class Salary extends BaseController
     ));
   }
 
+  public function create_advance($fzpid) {
+    $usersModel = new \App\Models\UsersModel();
+    $loggedUserID = session()->get('loggedUser');
+    $userInfo = $usersModel->find($loggedUserID);
+
+    $fzp = $this->salaryModel->getMonthFZP_by_id($fzpid);
+    d($fzp);
+    if ($fzp) {
+      $date = $fzp[0]['date_time']; 
+      $this->create_month_advances($date);
+      return  redirect()->to('salary/advance/'.$fzpid);
+    }  
+  }
+
+  public function update_advance($fzp_id) {
+    $usersModel = new \App\Models\UsersModel();
+    $loggedUserID = session()->get('loggedUser');
+    $userInfo = $usersModel->find($loggedUserID);
+    $fzp = $this->salaryModel->getMonthFZP_by_id($fzp_id);
+
+    $employeesArr = $this->prepareAdvanceEmployeesInfo($fzp_id);
+    $employees = $employeesArr['employees'];
+    $json = json_encode($employeesArr['json']);
+    
+    if ($fzp) {
+      $data = [
+        'title' => 'Авансовая ведомость',
+        'page_name' => 'advance_month',
+        'user' => $userInfo, 
+        'employees' => $employees,
+        'json' => $json,
+        'fzp_id' => $fzp_id, 
+        'fzp' => $fzp[0],
+      ];
+  
+      echo view('partials/_header', $data);
+      echo view('salary/salary_advances', $data);
+      echo view('partials/_footer', $data);
+    }
+  }
+
   private function prepareEmployeesInfoByCompany($companies, $fzp_id, $date) {
     $employees = array();
     $json = array();
@@ -191,6 +233,23 @@ class Salary extends BaseController
     );
   }
 
+  private function prepareAdvanceEmployeesInfo($fzp_id) {
+    //$employees = array();
+    $json = array();
+      $employeesInfo = $this->salaryModel->prepareAdvanceEmployeesInfo($fzp_id);
+      
+      foreach($employeesInfo as $employee) {
+        $employee['fzp_id'] = $fzp_id;
+        $employee['work_day_fact'] = 0;
+        $json[$employee['id']] = $employee;
+      }
+
+    return array(
+      'employees'=> $employeesInfo, 
+      'json' => $json
+    );
+  }
+
   private function getEmployeesCount($companies) {
     $sum = 0;
     foreach($companies as $company) {
@@ -203,6 +262,12 @@ class Salary extends BaseController
     $data = $this->salaryModel->getAllEmployeesForFZP();
 
     $this->salaryModel->create_month_salary($data);
+  }
+
+  public function create_month_advances($date) {
+    $data = $this->salaryModel->getAllEmployeesForFZP_by_date($date);
+
+    $this->salaryModel->create_month_advances($data);
   }
 
   public function create_month_salary_by_date($date) {

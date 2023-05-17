@@ -91,15 +91,43 @@ CREATE TABLE `salary_month` (
  
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
---CREATE TABLE `working_time_balance_by_year` (
--- `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `advances_month` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `employee_id` int(11) NOT NULL, 
+ `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `salary_fzp` int(11) NOT NULL, 
+ `employee_salary` double(10,2) DEFAULT null,  -- зарплата, так как может меняться, нужно сохранять для истории
+ `employee_salary_fact` double(10,2) DEFAULT null,  -- зарплата, так как может меняться, нужно сохранять для истории
+
+ `pay_per_hour` double(10, 2) not null DEFAULT 0,
+
+ `working_hours_per_month` int(11) NOT NULL, -- количество рабочих часов
+
+ PRIMARY KEY (`id`),
+ KEY `month_advances_salary_fzp_key` (`salary_fzp`),
+ KEY `month_advances_employee_id` (`employee_id`),
+
+ CONSTRAINT `month_advances_employee` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION ,
+ CONSTRAINT `month_advances_salary_fzp` FOREIGN KEY (`salary_fzp`) REFERENCES `salary_fzp` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION 
  
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
--- PRIMARY KEY (`id`),
+CREATE TABLE `advances` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `employee_id` int(11) NOT NULL, 
+  `salary_fzp` int(11) NOT NULL, 
+  `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
--- CONSTRAINT `author` FOREIGN KEY (`author`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION 
---) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+  `advances` double(10,2) DEFAULT 0,           -- авансы
+  
+  PRIMARY KEY (`id`),
+  KEY `advances_salary_fzp` (`salary_fzp`),
+  KEY `advances_employee_id` (`employee_id`),
 
+  CONSTRAINT `advances_employee` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION ,
+  CONSTRAINT `advances_salary_fzp` FOREIGN KEY (`salary_fzp`) REFERENCES `salary_fzp` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION 
+
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `working_time_balance` (
  `id` int(11) NOT NULL AUTO_INCREMENT,

@@ -57,16 +57,16 @@ if (isset($fzp) && !empty($fzp)) :?>
   <?php endif; ?>
 
   <?php
-  //d($employees);
+  d($employees);
   if (isset($employees) && !empty($employees)) : ?>
-    <div class="content salary">
+    <div class="content advances">
       <div class="salary-head d-flex justify-content-start align-items-center mr-3">
         <div class="flex-grow-1">
           <p>
             Всего <?php echo word_form('сотрудник', count($employees)) ?>
           </p>
 
-          <p> Зарплата за <?= $month ?> <?= $year ?> года</p>
+          <p> Авансовая ведомость <?//= $month ?> <?//= $year ?> года</p>
         </div>
         <div class="salary-total flex-grow-1">
           <p>Общая сумма к выплате <span></span></p>
@@ -83,7 +83,7 @@ if (isset($fzp) && !empty($fzp)) :?>
           <!--<p>Подразделение: <?php // echo $companyName ?></p>-->
           <?php //d($employees);
           ?>
-          <table class="employee_salary display compact" id="salary_company" width="100%">
+          <table class="employee_salary display compact" width="100%">
             <thead>
               <tr>
                 <th class="th_text clip" title="направление">направление</th>
@@ -92,19 +92,14 @@ if (isset($fzp) && !empty($fzp)) :?>
                 <th class="th_text th_long_text">Должность</th>
                 <th class="th_text">Компания</th>
                 <th class="th_num">Кол-во рабочих часов в мес.</th>
-                <th class="th_num">Кол-во отработаных часов</th>
                 <th class="th_money">Оклад</th>
-                <th class="th_money">Начислено по отраб. дням</th>
-                <th class="th_money">Прибавки</th>
-                <th class="th_money">Удержания</th>
-                <th class="th_money">К выдаче</th>
+                <th class="th_money">Авансы</th>
               </tr>
             </thead>
             <tbody>
               <?php 
               $count = 1;
               foreach ($employees as $employee) :
-                //$json[$employee['id']] = $employee; 
                 
               ?>
                 <tr class="trow" data-trid="<?= $employee['id'] ?>">
@@ -114,20 +109,8 @@ if (isset($fzp) && !empty($fzp)) :?>
                   <td><span><?= $employee['position'] ?></span></td>
                   <td><span><?= $employee['company'] ?></span></td>
                   <td><span><?= $employee['working_hours_per_month'] ?></span></td>
-                  <td><span><?= $employee['worked_hours_per_month'] ?></span></td>
-                  <td><span><?= number_format($employee['employee_salary'], 2, '.', ' ') ?></span></td>
-                  <?php $workedSalary = $employee['employee_salary'] / $employee['working_hours_per_month'] * $employee['worked_hours_per_month'];
-                  $workedSalaryFact = $employee['employee_salary_fact'] / $employee['working_hours_per_month'] * $employee['worked_hours_per_month'];
-                  ?>
-                  <td><span><?= number_format($workedSalary, 2, '.', ' ') ?></span></td>
-                  <td>
-                    <span><?= number_format($employee['bonus'], 2, '.', ' ')?></span>
-                  </td>
-                  <td>
-                    <span><?=number_format($employee['fines'], 2, '.', ' ')?></span>
-                  </td>
-                  <?php $resultSalary = $workedSalaryFact + $employee['holiday_pays'] + $employee['bonus'] - $employee['fines'] - $employee['tax_OSMS'] - $employee['tax_OPV'] - $employee['tax_IPN'] - $employee['advances']; ?>
-                  <td><span><?= number_format($resultSalary, 2, '.', ' ') ?></span></td>
+                  <td><span><?= $employee['salary'] ?></span></td>
+                  <td><span></span></td>
                 </tr>
               <?php endforeach; ?>
 
@@ -137,10 +120,6 @@ if (isset($fzp) && !empty($fzp)) :?>
                 <th></th>
                 <th></th>
                 <th>Итого</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -164,13 +143,7 @@ if (isset($fzp) && !empty($fzp)) :?>
 <input type="hidden" value="<?= $fzp['mrp'] ?>" id="mrp">
 <input type="hidden" value="<?= $fzp['min_zp'] ?>" id="min_zp">
 <input type="hidden" value="<?= $fzp['author'] ?>" id="fzp_author">
-<input type="hidden" value="<?= $fzp['rejection_reason'] ?>" id="fzp_rejection_reason">
-<input type="hidden" value="<?= $fzp['is_approved'] ?>" id="fzp_is_approved">
 <input type="hidden" value="<?= $user_role ?>" id="role">
-
-<input type="hidden" value="" id="old_worked_hours">
-<input type="hidden" value="" id="old_bonus">
-<input type="hidden" value="" id="old_fines">
 
 <!--<input type="hidden" value="<?php //echo $bonus_fines ?>" id="bonus_type">
 <input type="hidden" value="<?php //echo $bonus_fines["fines"]?>" id="fines_type">-->
@@ -183,25 +156,4 @@ if (isset($fzp) && !empty($fzp)) :?>
   console.log(EMPLOYEES);
 </script>
 
-<!--<template id="rejection_reason">-->
-<div class="modal fade" id="modal_Return" tabindex="-1" aria-labelledby="modal_addItemLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal_addItemLabel">Причина отказа</h5>
-        
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <textarea id="rej_reason" class="form-control" cols="30" rows="5" placeholder="Укажите причину возвращения на доработку" required></textarea>
-        </div>
-        <div class="d-flex justify-content-end buttons mt-1">
-          <button class="btn btn-info btn-sm mr-1" id="return">Отправить на доработку</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<?php echo view('partials/modals/_salary_modal', []); ?>
+<?php echo view('partials/modals/_advances_modal', []); ?>

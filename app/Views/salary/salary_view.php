@@ -46,6 +46,7 @@
   <div class="row">
     <?php if(isset($currentYearWorkingFZPs) && !empty($currentYearWorkingFZPs)) :?>
       <h3>Созданные, но ещё не утвержденные ФЗП</h3>
+      <table>
     <?php foreach($currentYearWorkingFZPs as $fzp) :
       $fzpId = $fzp['id'];
       $timestamp = strtotime($fzp['date_time']);
@@ -53,10 +54,30 @@
       $fzp_month = getMonthByNum(date("n", $timestamp) - 1);
       $fzp_year = date('Y', $timestamp);
       ?>
-      <div>
-        <a href="<?=base_url('salary/fzp/'.$fzpId)?>">Открыть ФЗП за <?=$fzp_month?> месяц  <?=$fzp_year?></a>
-      </div>
+      <tbody>
+        <tr>
+          <td><?=$fzp_month?></td>
+          <td>
+            <a href="<?=base_url('salary/fzp/'.$fzpId)?>">Открыть ФЗП за <?=$fzp_month?> месяц  <?=$fzp_year?></a>
+            <?php
+              if ($fzp['is_advance'] == 1) :
+            ?>
+            <br>
+            <a href="<?=base_url('salary/advance/'.$fzpId)?>">Открыть авансовую ведомость за <?=$fzp_month?> месяц  <?=$fzp_year?></a>            
+            <?php endif; ?>
+          </td>
+          <td>
+          <?php
+              if ($fzp['is_advance'] != 1) :
+            ?>
+            <a href="<?=base_url('salary/create_advance/'.$fzp['id'])?>" title="Создать авансовую ведомость" data-fzpid="<?=$fzp['id']?>" class="btn-icon add-btn" name="edit_item"><i class="fas fa-plus-circle"></i> </a>
+            <?php endif; ?>
+          </td>
+        </tr>
+      </tbody>
+      
     <?php endforeach;?>
+    </table>
     <?php endif;?>
   </div>
 

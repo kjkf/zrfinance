@@ -17,8 +17,7 @@ document.addEventListener("DOMContentLoaded", ev => {
     changeYear: true,
     altField: "#actualDate",
     dateFormat: "dd.mm.yy",
-    dayNamesMin: [ "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС" ],
-    monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
+    
   });
 
   minYear = d.getFullYear()- 66;
@@ -33,8 +32,7 @@ document.addEventListener("DOMContentLoaded", ev => {
     changeYear: true,
     altField: "#actualDate",
     dateFormat: "dd.mm.yy",
-    dayNamesMin: [ "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС" ],
-    monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
+    
   });
   
   minYear = d.getFullYear()- 2;
@@ -49,8 +47,7 @@ document.addEventListener("DOMContentLoaded", ev => {
     changeYear: true,
     altField: "#actualDate",
     dateFormat: "dd.mm.yy",
-    dayNamesMin: [ "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС" ],
-    monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
+    
   });
   const modal = document.getElementById("modal_employeeInfo");
   const cl_empl = document.querySelector("#nav-employees");

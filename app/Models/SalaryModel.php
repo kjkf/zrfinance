@@ -44,7 +44,7 @@ class SalaryModel extends Model
 
   public function getMonthFZPs_by_year($year, $status)
   {
-    $sql = "select * from salary_fzp where year(date_time) = year(?) and is_approved in (?) order by date_time";
+    $sql = "select *, (SELECT 1 from advances_month where salary_fzp.id = `salary_fzp` GROUP by salary_fzp) as is_advance from salary_fzp where year(date_time) = year(?) and is_approved in (?) order by date_time";
 
     $query = $this->db->query($sql, array($year, $status));
 
@@ -95,6 +95,13 @@ class SalaryModel extends Model
 
   public function create_month_salary($data) {
     $builder = $this->db->table("salary_month");
+    
+    $builder->insertBatch($data);
+    
+  }
+
+  public function create_month_advances($data) {
+    $builder = $this->db->table("advances_month");
     
     $builder->insertBatch($data);
     
@@ -176,6 +183,38 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     }
   }
 
+  //public function getCurrentYearAdvances($date)
+  //{
+  //  $sql = "SELECT id FROM `salary_fzp` where exists(SELECT id from advances_month where salary_fzp.id = `salary_fzp`) and year(?) = year(`date_time`)";
+  //  $query = $this->db->query($sql, array($date));
+  //  if (!empty($sql)) {
+  //    return $query->getResultArray();
+  //  } else {
+  //    return false;
+  //  }
+  //}
+
+  public function prepareAdvanceEmployeesInfo($fzp_id)
+  {
+    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, employee.company as company_id, `employee_salary`, `working_hours_per_month`,  employee_salary_fact
+    from advances_month 
+    left JOIN employee on employee.id = advances_month.`employee_id`
+    left join position on position.id = employee.position
+    left join department on department.id = employee.`department`
+    left join direction on direction.id = employee.direction
+    left join company on company.id = employee.company
+    where advances_month.`salary_fzp`=? and employee.company in (2,3,4)
+    ORDER by `surname` ASC";
+
+    $query = $this->db->query($sql, array(intval($fzp_id)));
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return false;
+    }
+  }
+
   public function getAllEmployeesForFZP() {
     $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(now()) and YEAR(`date_time`) = YEAR(now())) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact, pay_per_hour,
     CASE WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(now()) AND `month`= month(now()))
@@ -194,14 +233,6 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     }
   }
   public function getAllEmployeesForFZP_by_date($date) {
-    //$builder = $this->db->table('employee');
-    //$builder->select('SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(?) and YEAR(`date_time`) = YEAR(?)) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact,  
-    //CASE WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
-    //ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
-    //END AS working_hours_per_month
-    //from employee 
-    //where ((MONTH(`fire_date`) > MONTH(?) and year(`fire_date`) > year(?)) OR `fire_date` IS NULL) and employee.company in (2,3,4) and (month(`start_date`) <  month(?) and year(`start_date`) < year(?))
-    //ORDER by employee.company asc,  `surname` ASC', false);
     $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(?) and YEAR(`date_time`) = YEAR(?)) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact,  pay_per_hour, 
     CASE WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
