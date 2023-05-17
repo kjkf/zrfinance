@@ -25,7 +25,7 @@ class EmployeesModel extends Model
 
   public function get_fired_employees()
   {
-    $sql = "SELECT employee.id, concat(`surname`, ' ', `employee`.`name`) as fio, `company`.`name` as company, employee.company as companyId, `email`, `telephone`, position.name as position, department.name as department, salary, salary_fact, fire_date
+    $sql = "SELECT employee.id, concat(`surname`, ' ', `employee`.`name`) as fio, `company`.`name` as company, employee.company as companyId, `email`, `telephone`, position.name as position, department.name as department, salary, salary_fact, fire_date, pay_per_hour
               FROM `employee` 
               left join department on department.id = employee.department
               left join position on position.id = employee.position
@@ -47,7 +47,7 @@ class EmployeesModel extends Model
 
   public function getActiveEmployees()
   {
-    $sql = "SELECT employee.id, concat(`surname`, ' ', `employee`.`name`) as fio, `company`.`name` as company, employee.company as companyId, `email`, `telephone`, position.name as position, department.name as department, salary, salary_fact, is_tax 
+    $sql = "SELECT employee.id, concat(`surname`, ' ', `employee`.`name`) as fio, `company`.`name` as company, employee.company as companyId, `email`, `telephone`, position.name as position, department.name as department, salary, salary_fact, is_tax , pay_per_hour
               FROM `employee` 
               left join department on department.id = employee.department
               left join position on position.id = employee.position

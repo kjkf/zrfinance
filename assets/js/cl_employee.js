@@ -17,8 +17,6 @@ document.addEventListener("DOMContentLoaded", ev => {
     changeYear: true,
     altField: "#actualDate",
     dateFormat: "dd.mm.yy",
-    dayNamesMin: [ "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС" ],
-    monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
   });
 
   minYear = d.getFullYear()- 66;
@@ -33,8 +31,6 @@ document.addEventListener("DOMContentLoaded", ev => {
     changeYear: true,
     altField: "#actualDate",
     dateFormat: "dd.mm.yy",
-    dayNamesMin: [ "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС" ],
-    monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
   });
   
   minYear = d.getFullYear()- 2;
@@ -49,8 +45,6 @@ document.addEventListener("DOMContentLoaded", ev => {
     changeYear: true,
     altField: "#actualDate",
     dateFormat: "dd.mm.yy",
-    dayNamesMin: [ "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС" ],
-    monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
   });
   const modal = document.getElementById("modal_employeeInfo");
   const cl_empl = document.querySelector("#nav-employees");
@@ -376,6 +370,7 @@ function updateEmployeeInfo(id, modal) {
 
 function updateTableAfterSaving(id) {
   const tr = document.querySelector("table.employees tr[data-trid='" + id + "']");
+  
   if (tr) {
     const tds = tr.children;
     tds[1].textContent = EMPLOYEES[id].surname + " " + EMPLOYEES[id].name;
@@ -394,7 +389,8 @@ function updateTableAfterSaving(id) {
 
     tds[5].textContent = EMPLOYEES[id].email;
     tds[6].textContent = EMPLOYEES[id].telephone;
-    tds[7].textContent = EMPLOYEES[id].salary;
+    tds[7].textContent = parseFloat(EMPLOYEES[id].pay_per_hour) > 0 ? numberWithSpaces(EMPLOYEES[id].pay_per_hour) : numberWithSpaces(EMPLOYEES[id].salary);
+    tds[8].textContent = numberWithSpaces(EMPLOYEES[id].salary_fact);
   }
 }
 

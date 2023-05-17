@@ -20,7 +20,8 @@
           <th class="td_text">Должность</th>          
           <th class="td_text">Email</th>          
           <th class="td_text">Телефон</th>          
-          <th class="td_money">Зарплата</th>             
+          <th class="td_money">Официальная зарплата</th>             
+          <th class="td_money">Фактическая зарплата</th>             
         </tr>
       </thead>
       <tbody>
@@ -29,7 +30,7 @@
             $count = 1;
             foreach($employees as $key=>$company) :?>
               <tr class="trSpan">
-                <td colspan=8 </td><?= $key ?></td>
+                <td colspan=9 </td><?= $key ?></td>
               </tr>
               <?php foreach($company as $employee) :?>
                 <tr class="emp_info"  data-trid="<?= $employee['id'] ?>">
@@ -40,7 +41,9 @@
                   <td class="td_text"><?= $employee['position'] ?></td>
                   <td class="td_text"><?= $employee['email'] ?></td>
                   <td class="td_text"><?= $employee['telephone'] ?></td>
-                  <td class="td_money"><?=  number_format($employee['salary'], 2, '.', ' ') ?></td>
+                  <?php $salary = floatval($employee['pay_per_hour']) > 0 ? $employee['pay_per_hour'] : $employee['salary']; ?>
+                  <td class="td_money"><?=  number_format($salary, 2, '.', ' ') ?></td>
+                  <td class="td_money"><?=  number_format($employee['salary_fact'], 2, '.', ' ') ?></td>
                 </tr>
               <?php endforeach;?>
           

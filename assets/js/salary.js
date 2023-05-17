@@ -219,9 +219,10 @@ function updateModalInputs(value) {
   
   const worked_salary_off = official_salary / parseFloat(employee.working_hours_per_month) * value + holiday_pays;
   console.log(worked_salary_off);
-  const tax_osms = calcOSMS(worked_salary_off);
-  const tax_opv = calcTaxOVP(worked_salary_off);
-  const tax_ipn = calc_IPN_taxes(worked_salary_off, employee.contract_type,employee.citezenship_type); 
+  //если citezenship_type === 3(студент), то налоги не расчитываются
+  const tax_osms = employee.citezenship_type === '3' ? 0 : calcOSMS(worked_salary_off);
+  const tax_opv = employee.citezenship_type === '3' ? 0 : calcTaxOVP(worked_salary_off);
+  const tax_ipn = employee.citezenship_type === '3' ? 0 : calc_IPN_taxes(worked_salary_off, employee.contract_type,employee.citezenship_type); 
 
   const taxes = employee.is_tax === "1" ? 0 : employee.is_tax === "2" ? (tax_osms + tax_opv + tax_ipn) : (tax_opv + tax_ipn);
 
@@ -402,6 +403,7 @@ function showEditEmployeeSalaryModal(tr) {
 
 function prepareEmployeeModalInfo(trid) {
   const employee = EMPLOYEES[trid];
+  console.log(employee);
   
   const modal = document.getElementById("modal_editEmployeeSalaryInfo");
 
@@ -425,11 +427,11 @@ function prepareEmployeeModalInfo(trid) {
     official_salary = employee.pay_per_hour * employee.working_hours;
   }
 
-  const salary = employee_salary_fact / working_hours_per_month * worked_hours_per_month;
-  const total_salary = salary + bonus - fines - tax_osms - tax_opv - tax_ipn;
-
   const holiday_pays = isNaN(parseFloat(employee.holiday_pays)) ? 0 : parseFloat(employee.holiday_pays);
   const advances = isNaN(parseFloat(employee.advances)) ? 0 : parseFloat(employee.advances);
+  const salary = employee_salary_fact / working_hours_per_month * worked_hours_per_month;
+  const total_salary = salary + bonus - fines - tax_osms - tax_opv - tax_ipn + holiday_pays - advances;
+
 
   modal.querySelector("h4").textContent = employee.surname + " " + employee.name;
 
@@ -755,7 +757,7 @@ function calc_VNJ_IPN(salary) {
 }
 
 function calc_IPN_taxes(worked_salary_off, contract_type, citezenship_type) {
-  console.log(worked_salary_off, contract_type, citezenship_type);
+  //console.log(worked_salary_off, contract_type, citezenship_type);
   if (citezenship_type === "2") {
     return contract_type === '1' ? prepareCalcIPN(worked_salary_off) : calcGPH_IPN(worked_salary_off);
   } else if (citezenship_type === "4") {
