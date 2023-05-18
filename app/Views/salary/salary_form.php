@@ -126,7 +126,10 @@ if (isset($fzp) && !empty($fzp)) :?>
                   <td>
                     <span><?=number_format($employee['fines'], 2, '.', ' ')?></span>
                   </td>
-                  <?php $resultSalary = $workedSalaryFact + $employee['holiday_pays'] + $employee['bonus'] - $employee['fines'] - $employee['tax_OSMS'] - $employee['tax_OPV'] - $employee['tax_IPN'] - $employee['advances']; ?>
+                  <?php 
+                  //const taxes = EMPLOYEES[key].is_tax === "1" ? 0 : EMPLOYEES[key].is_tax === "2" ? (tax_osms + tax_opv + tax_ipn) 
+                  $taxes = $employee['is_tax'] == "1" ? 0 : ($employee['is_tax'] == "2" ? $employee['tax_OPV'] + $employee['tax_OSMS'] + $employee['tax_IPN'] : $employee['tax_OPV'] + $employee['tax_IPN']);
+                  $resultSalary = $workedSalaryFact + $employee['holiday_pays'] + $employee['bonus'] - $employee['fines'] - $taxes - $employee['advances']; ?>
                   <td><span><?= number_format($resultSalary, 2, '.', ' ') ?></span></td>
                 </tr>
               <?php endforeach; ?>

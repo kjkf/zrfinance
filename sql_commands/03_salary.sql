@@ -269,7 +269,7 @@ insert into `working_time_balance`(`year`, `month`,`calendar_days`, `working_cal
 insert into `bonus_fines_types`(`id`, `name`, `type`) VALUES
 (1,'Бонусы и проценты', 'bonus'),
 (2,'Премия', 'bonus'),
-(3,'KPI процентный', 'bonus'),
+(3,'KPI процессный', 'bonus'),
 (4,'KPI результативный', 'bonus'),
 (5,'Штрафы', 'fines'),
 (6,'Прочие удержания', 'fines'),

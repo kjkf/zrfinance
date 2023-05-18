@@ -360,3 +360,6 @@ table.time_balance td:first-child {
   background-color: #aaa;
   padding-right: 1rem;
 }
+.modal-body label{
+  font-size: 12px;
+}
