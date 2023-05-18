@@ -98,12 +98,40 @@ class EmployeesModel extends Model
     }
   }
 
+  public function save_employee() {
+    $builder = $this->db->table('employee');
+
+    $data = [
+      'surname' => empty($_POST['surname']) ? NULL : $_POST['surname'],
+      'name' => empty($_POST['name']) ? NULL : $_POST['name'],
+      'middlename' => empty($_POST['middlename']) ? NULL : $_POST['middlename'],
+      'company' => empty($_POST['company']) ? NULL : $_POST['company'],
+      'telephone' => empty($_POST['telephone']) ? NULL : $_POST['telephone'],
+      'email' => empty($_POST['email']) ? NULL : $_POST['email'],
+      'position' => empty($_POST['position']) ? NULL : $_POST['position'],
+      'direction' => empty($_POST['direction']) ? NULL : $_POST['direction'],
+      'department' => empty($_POST['department']) ? NULL : $_POST['department'],
+      'salary' => empty($_POST['salary']) ? 0 : $_POST['salary'],
+      'salary_fact' => empty($_POST['salary_fact']) ? 0 : $_POST['salary_fact'],
+      'pay_per_hour' => empty($_POST['pay_per_hour']) ? 0 : $_POST['pay_per_hour'],
+      'is_tax' => empty($_POST['is_tax']) ? NULL : $_POST['is_tax'],
+      'contract_type' => empty($_POST['contract_type']) ? NULL : $_POST['contract_type'],
+      'fire_date' => empty($_POST['fire_date']) ? NULL : $_POST['fire_date'],
+      'start_date' => empty($_POST['start_date']) ? NULL : $_POST['start_date'],
+      //$start_date = $this->getDateParam($_POST['start_date']);
+      'birth_date' => empty($_POST['birth_date']) ? NULL : $_POST['birth_date'],
+  ];
+  //$sql = $builder->set($data)->getCompiledInsert();
+  //echo $sql;
+  $builder->insert($data);
+   return $this->db->insertID();
+  }
+
   public function update_employee_byId() {
     $id = $_POST['trid'];
     $company = empty($_POST['company']) ? NULL : $_POST['company'];
     $position = empty($_POST['position']) ? NULL : $_POST['position'];
     $direction = empty($_POST['direction']) ? NULL : $_POST['direction'];
-    $department = empty($_POST['department']) ? NULL : $_POST['department'];
     $department = empty($_POST['department']) ? NULL : $_POST['department'];
     $is_tax = empty($_POST['is_tax']) ? NULL : $_POST['is_tax'];
     $contract_type = empty($_POST['contract_type']) ? NULL : $_POST['contract_type'];

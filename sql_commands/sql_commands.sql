@@ -42,7 +42,7 @@ CREATE TABLE `employee` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `name` text NOT NULL,
  `surname` text NOT NULL,
- `middlename` text NOT NULL,
+ `middlename` text default NULL,
  `email` text,
  `position` int(11) DEFAULT NULL,
  `department` int(11) DEFAULT NULL,

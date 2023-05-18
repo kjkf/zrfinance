@@ -106,6 +106,12 @@ class Classificators extends BaseController
       echo  json_encode($employee);
     }
 
+    public function save_employee() {
+      $employeeModel = new \App\Models\EmployeesModel();
+      echo $employeeModel->save_employee();
+    }
+
+
     public function update_employee_byId() {
       $employeeModel = new \App\Models\EmployeesModel();
       return $employeeModel->update_employee_byId();

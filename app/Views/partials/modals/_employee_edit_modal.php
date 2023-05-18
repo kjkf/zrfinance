@@ -161,6 +161,7 @@
 
         <div class="d-flex justify-content-end buttons mt-5">
           <button class="btn btn-info btn-sm mr-1" id="saveBtn">Сохранить</button>
+          <button class="btn btn-info btn-sm mr-1" id="updateBtn">Сохранить</button>
           <button class="btn btn-info btn-sm mr-1" id="closeModal" data-bs-dismiss="modal"
             aria-label="Close">Закрыть</button>
         </div>

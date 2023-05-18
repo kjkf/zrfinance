@@ -1,5 +1,9 @@
 <div class="container" style="margin-top:50px;">
   <div class="wrapper">
+    <div class="d-flex justify-content-end mb-3">
+      <button id="addE" class="btn btn-secondary save-em-info">Добавить сотрудника</button>
+      
+    </div>
     <table class="employees" id = "tbl_employees">
     <colgroup>
       <col style="width: 5%">
@@ -55,6 +59,7 @@
         <?php endif;?>
       </tbody>
     </table>
+    <input type="hidden" value="<?=$count ?>" id="employeeCount">
   </div>
 </div>
 
