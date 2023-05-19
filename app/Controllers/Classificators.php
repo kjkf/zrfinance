@@ -108,7 +108,9 @@ class Classificators extends BaseController
 
     public function save_employee() {
       $employeeModel = new \App\Models\EmployeesModel();
-      echo $employeeModel->save_employee();
+      $employeeId = $employeeModel->save_employee();
+      
+      echo $employeeId;
     }
 
 

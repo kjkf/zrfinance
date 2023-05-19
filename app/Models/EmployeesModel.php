@@ -124,7 +124,11 @@ class EmployeesModel extends Model
   //$sql = $builder->set($data)->getCompiledInsert();
   //echo $sql;
   $builder->insert($data);
-   return $this->db->insertID();
+   $newId = $this->db->insertID();
+   
+   $this->add_new_employee_to_existing_FZP($newId, $data['start_date'], $data['fire_date']);
+
+   return $newId;
   }
 
   public function update_employee_byId() {
@@ -137,7 +141,6 @@ class EmployeesModel extends Model
     $contract_type = empty($_POST['contract_type']) ? NULL : $_POST['contract_type'];
     $fire_date = empty($_POST['fire_date']) ? NULL : $_POST['fire_date'];
     $start_date = empty($_POST['start_date']) ? NULL : $_POST['start_date'];
-    //$start_date = $this->getDateParam($_POST['start_date']);
     $birth_date = empty($_POST['birth_date']) ? NULL : $_POST['birth_date'];
     
     $builder = $this->db->table('employee');
@@ -164,7 +167,138 @@ class EmployeesModel extends Model
     //$sql = $builder->getCompiledUpdate();
     //print_r($sql);
     $res = $builder->update();
+    $this->checkEmployeesInExistingFZP($id, $start_date, $fire_date);
    return $res; 
+  }
+
+  public function getEmployeeForFZP_byId($fzpId, $fzpDate, $id) {
+    $sql = "SELECT employee.id as employee_id, ? as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact, pay_per_hour,
+    CASE WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
+    ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
+    END AS working_hours_per_month
+    from employee 
+    where employee.id = ?"; 
+
+    $query = $this->db->query($sql, array($fzpId, $fzpDate, $fzpDate, $fzpDate, $fzpDate, $id));
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return false;
+    }
+  }
+
+  private function add_new_employee_to_existing_FZP($id, $start_date, $fire_date) {
+    $fzpIds = $this->get_existing_FZP_byDate($start_date, $fire_date);
+    if (!empty($fzpIds)) {
+      foreach($fzpIds as $fzp) {
+        $fzpId = $fzp["id"];
+        $fzpDate = $fzp["date_time"];
+        $row = $this->getEmployeeForFZP_byId($fzpId, $fzpDate, $id);
+        
+        $this->addEmployeeToFZP($row);
+      }
+    }
+  }
+  private function checkEmployeesInExistingFZP($id, $start_date, $fire_date) {
+    $fzpIds = $this->get_existing_FZP_byDate($start_date, $fire_date);
+    $employeeFZPs = $this->get_FZP_for_currentEmployee($id);  
+    print_r($id);
+    print_r($start_date);
+    print_r($fire_date);
+    echo "111";
+    print_r($fzpIds);
+    if (!empty($fzpIds)) {
+      $fzp_ids = $this->get_vals_by_field($fzpIds, "id");
+      
+      $monthFzpEmployeeIds = $this->get_vals_by_field($employeeFZPs, "salary_fzp");
+      echo "222 monthFzpEmployeeIds";
+      print_r($monthFzpEmployeeIds);
+      foreach($employeeFZPs as $employeeFZP) {
+        $employeeFzpId = $employeeFZP["salary_fzp"];
+              
+        if (!in_array($employeeFzpId, $fzp_ids)) {
+          $this->deleteEmployeeFromFZP($id, $employeeFzpId);
+        }
+      }
+
+      foreach($fzpIds as $fzp) {
+        $fzpId = $fzp["id"];
+        echo "333";
+        print_r($fzpId);   
+        if (!in_array($fzpId, $monthFzpEmployeeIds)){
+          $fzpDate = $fzp["date_time"];
+          $row = $this->getEmployeeForFZP_byId($fzpId, $fzpDate, $id);
+          echo "====";
+          print_r($row);
+        
+          $this->addEmployeeToFZP($row);
+        }
+      }
+      
+    } else {
+      if (!empty($employeeFZPs)) {
+        $this->deleteEmployeeFromAllFZP($id);
+      }
+    }    
+  }
+
+  private function deleteEmployeeFromFZP($id, $fzpIds) {
+    $sql = "delete FROM `salary_month` where `employee_id`=? and salary_fzp = ?";
+
+    $query = $this->db->query($sql, array($id, $fzpIds));
+    return $query; 
+  }
+
+  private function deleteEmployeeFromAllFZP($id) {
+    $sql = "delete FROM `salary_month` where `employee_id`=? and (select is_approved from salary_fzp where salary_fzp.id = salary_month.`salary_fzp`) <> 1";
+
+    $query = $this->db->query($sql, array($id));
+    return $query;    
+  }
+
+  private function get_vals_by_field($rows, $field) {
+    $ids = array();
+    foreach($rows as $row) {
+      array_push($ids, $row[$field]);
+    }
+
+    return $ids;
+  }
+
+  private function addEmployeeToFZP($data) {
+    $builder = $this->db->table("salary_month");
+    $builder->insertBatch($data);
+  }
+
+  private function get_existing_FZP_byDate($start_date, $fire_date) {
+    $sql = "SELECT * FROM `salary_fzp` where date(`date_time`) >= date(?)  and is_approved <> 1";
+    $args = array($start_date);
+
+    if (!empty($fire_date)) {
+      $sql = $sql." and date(`date_time`) <= date(?)";
+      $args = array($start_date, $fire_date);
+    }
+
+    $query = $this->db->query($sql, $args);
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return array();
+    }
+  }
+
+  private function get_FZP_for_currentEmployee($id) {
+    //$fzpIds = implode(",", $fzpIds);
+    $sql = "SELECT * FROM `salary_month` where `employee_id`=? "; //and `salary_fzp` in (?)
+    $query = $this->db->query($sql, array($id));
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return array();
+    }
   }
 
   public function update_citezenship_type() {
@@ -182,15 +316,6 @@ class EmployeesModel extends Model
     $res = $builder->update();
    return $res; 
   }
-
-  //private function prepareEmployeesInfoByEmpId($employees) {
-  //  $json = array();
-  //  foreach ($employees as $item) {
-  //    $json[$item['id']] = $item;
-  //  }
-
-  //  return $json;
-  //}
 
   private function prepareEmployeesInfo($employees)
   {
