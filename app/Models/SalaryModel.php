@@ -353,5 +353,20 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     
     return $builder->delete();
   }
+
+  public function update_existing_fzp_salary() {
+    $emp_id = $_POST['emp_id'];
+    $salary_fzp = $_POST['salary_fzp'];
+    $field = $_POST['field'];
+    $value = $_POST['value'];
+
+    $builder = $this->db->table('salary_month');
+    $builder->set($field, $value);
+    
+    $builder->where('employee_id', $emp_id);
+    $builder->where('salary_fzp', $salary_fzp);
+    $res = $builder->update();
+   return $res; 
+  }
   
 }

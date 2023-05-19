@@ -7,15 +7,24 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="row mb-2">
-          <div class="col-3">
-            <label for="working_hours">Официальная ЗП / ставка в час</label>
-            <input type="text" class="form-control" id="official_salary" disabled>
+        <div class="row mb-2 editable" >
+          <div class="col-3 disable-editable">
+            <label for="working_hours" >Официальная ЗП / ставка в час</label>
+            <input type="text" class="form-control" id="official_salary" disabled data-fld="employee_salary">
+            <?php 
+            $status = isset($fzp) && !empty($fzp) ? $fzp['is_approved'] : -1;
+            if ($status != 1) {?>
+              <a href="#" class="disable_edit" ><i class='fa fa-pencil'></i></a>
+            <?php }?>
           </div>
 
-          <div class="col-3">
+          <div class="col-3 disable-editable">
             <label for="worked_hours_fact">Фактическая ЗП</label>
-            <input type="text" class="form-control" id="salary_fact" disabled>
+            <input type="text" class="form-control" id="salary_fact" disabled data-fld="employee_salary_fact">
+            <?php 
+            if ($status != 1) {?>
+              <a href="#" class="disable_edit" ><i class='fa fa-pencil'></i></a>
+            <?php }?>
           </div>
 
           <div class="col-3">

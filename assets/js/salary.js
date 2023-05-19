@@ -203,7 +203,61 @@ document.addEventListener('DOMContentLoaded', ev => {
       }
     }
   });
+
+  const rowEditable = document.querySelector(".row.editable");
+  if (rowEditable) {
+    rowEditable.addEventListener("click", e => {
+      const btn = e.target.closest(".disable_edit");
+      if (!btn) return false;
+      const input = btn.previousElementSibling;
+      const icon = btn.querySelector("i");
+      
+      if (input.disabled) {
+        input.removeAttribute("disabled");
+        icon.classList.remove("fa-pencil");
+        icon.classList.add("fa-check");
+        input.focus();
+      } else {
+        input.setAttribute("disabled", true);
+        icon.classList.add("fa-pencil");
+        icon.classList.remove("fa-check");
+        update_existing_fzp_salary(input);
+      }
+    });
+  }
 });
+
+function update_existing_fzp_salary(input) {
+  const fld = input.dataset.fld;
+  const value = parseFloat(intVal(input.value)) || 0;
+  
+  if (!fld || !value) return;
+  
+  if (input.value !== EMPLOYEES[CURRENT_TR][fld]) {
+    EMPLOYEES[CURRENT_TR][fld] = value;
+    const data = {
+      "emp_id": CURRENT_TR,
+      "field": fld,
+      "salary_fzp": document.getElementById("fzp_id").value,
+      "value" : EMPLOYEES[CURRENT_TR][fld],
+
+    };
+    url_path = base_url + '/salary/update_existing_fzp_salary';
+    $.ajax({
+      url: url_path,
+      data: data,
+      method: 'POST',
+      success: function (result) {
+        const worked_hours = document.querySelector("#worked_hours_fact").value;
+        updateModalInputs(worked_hours);
+      },
+      fail: function(result) {
+        console.error(result);
+        alert("Error while status update");
+      }
+    });
+  }
+}
 
 function saveEmpInfo(modal ) {
   if (!CURRENT_TR) return false;
@@ -212,7 +266,7 @@ function saveEmpInfo(modal ) {
 }
 
 function updateModalInputs(value) {
-  console.log("updateModalInputs", value, EMPLOYEES[CURRENT_TR]);
+ // console.log("updateModalInputs", value, EMPLOYEES[CURRENT_TR]);
   if (!CURRENT_TR) return false;
   value = parseFloat(value);
   const employee = EMPLOYEES[CURRENT_TR];
