@@ -59,7 +59,7 @@
         <div class="row flex-grow-1 mt-3">
           
           <div class="col-3">
-            <label for="company">Компания:</label>
+            <label>Компания:</label>
             <select class="form-select" name="" id="company">
               <option value="-1">Выберите компанию</option>
               <?php foreach($companies as $comp) :?>
@@ -68,7 +68,7 @@
             </select>
           </div>
           <div class="col-3">
-            <label for="company">Отдел:</label>
+            <label>Отдел:</label>
             <select class="form-select" name="" id="department">
               <option value="-1">Выберите отдел</option>
               <?php foreach($department as $dep) :?>
@@ -77,7 +77,7 @@
             </select>
           </div>
           <div class="col-3">
-            <label for="position">Должность:</label>
+            <label>Должность:</label>
             <select class="form-select" name="" id="position">
               <option value="-1">Выберите должность</option>
               <?php foreach($positions as $pos) :?>
@@ -86,7 +86,7 @@
             </select>
           </div>
           <div class="col-3">
-            <label for="directions">Направление:</label>
+            <label>Направление:</label>
             <select class="form-select" name="" id="direction">
               <option value="-1">Выберите направления</option>
               <?php foreach($directions as $direct) :?>
@@ -99,7 +99,7 @@
 
         <div class="row flex-grow-1 mt-3">
           <div class="col-3">
-            <label for="contract_type">Тип договора:</label>
+            <label>Тип договора:</label>
             <?php foreach($contract_type as $contract) :?>
               <div class="form-check">
                 <input type="radio" class="form-check-input" id="contract_type<?=$contract["id"]?>" name="contract_type" value="<?=$contract["id"]?>" >
@@ -109,7 +109,7 @@
           </div>
 
           <div class="col-3">
-            <label for="tax_pay_type">Оплата налогов:</label>
+            <label>Оплата налогов:</label>
             <?php foreach($tax_pay_type as $tax_pay) :?>
               <div class="form-check">
                 <input type="radio" class="form-check-input" id="tax_pay_type<?=$tax_pay["id"]?>" name="is_tax" value="<?=$tax_pay["id"]?>" >
@@ -120,7 +120,7 @@
 
           <div class="col-4 citizenship">
             <input type="hidden" id="citizenship_changed" value="0">
-            <label for="citizenship">Гражданство:</label>
+            <label>Гражданство:</label>
             <?php foreach($citizenship as $citizen) :?>
               <div class="form-check">
                 <input type="radio" class="form-check-input" id="citizenship<?=$citizen["id"]?>" name="citezenship_type" value="<?=$citizen["id"]?>" >
@@ -161,6 +161,7 @@
 
         <div class="d-flex justify-content-end buttons mt-5">
           <button class="btn btn-info btn-sm mr-1" id="saveBtn">Сохранить</button>
+          <button class="btn btn-info btn-sm mr-1" id="updateBtn">Сохранить</button>
           <button class="btn btn-info btn-sm mr-1" id="closeModal" data-bs-dismiss="modal"
             aria-label="Close">Закрыть</button>
         </div>

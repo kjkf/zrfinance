@@ -9,7 +9,7 @@ CREATE TABLE `resident_type` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `employee_id` int(11) NOT NULL UNIQUE, 
  `citezenship_type` int(11) NOT NULL,
- `country` int(11) NOT NULL,
+ `country` int(11) DEFAULT NULL,
  
  KEY `employee_resident_id` (`employee_id`),
  KEY `country` (`country`),
@@ -196,7 +196,7 @@ CREATE TABLE `tax_pay_types` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `tax_pay_type` varchar(250) not null,
- `code` varchar(20) not null
+ `code` varchar(20) not null,
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -297,7 +297,7 @@ insert into `working_time_balance`(`year`, `month`,`calendar_days`, `working_cal
 insert into `bonus_fines_types`(`id`, `name`, `type`) VALUES
 (1,'Бонусы и проценты', 'bonus'),
 (2,'Премия', 'bonus'),
-(3,'KPI процентный', 'bonus'),
+(3,'KPI процессный', 'bonus'),
 (4,'KPI результативный', 'bonus'),
 (5,'Штрафы', 'fines'),
 (6,'Прочие удержания', 'fines'),

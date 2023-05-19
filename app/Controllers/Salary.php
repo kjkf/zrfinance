@@ -331,6 +331,9 @@ class Salary extends BaseController
     echo $res;
   }
 
-  
+  public function update_existing_fzp_salary() {
+    $res = $this->salaryModel->update_existing_fzp_salary();
+    echo $res;
+  }
 
 }

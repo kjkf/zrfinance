@@ -234,6 +234,22 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
       return false;
     }
   }
+  public function getEmployeeForFZP_byId($id) {
+    $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(now()) and YEAR(`date_time`) = YEAR(now())) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact, pay_per_hour,
+    CASE WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(now()) AND `month`= month(now()))
+    ELSE (select `w40_5d_hours` from working_time_balance where year = year(now()) AND `month`= month(now()))
+    END AS working_hours_per_month
+    from employee 
+    where employee.id = ?"; 
+
+    $query = $this->db->query($sql, array($id));
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return false;
+    }
+  }
   public function getAllEmployeesForFZP_by_date($date) {
     $sql = "SELECT employee.id as employee_id, (select id from salary_fzp where MONTH(`date_time`) = MONTH(?) and YEAR(`date_time`) = YEAR(?)) as salary_fzp, employee.salary as employee_salary, employee.salary_fact as employee_salary_fact,  pay_per_hour, 
     CASE WHEN employee.direction = 2 THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
@@ -403,6 +419,21 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     $builder->where('id', $id);
     
     return $builder->delete();
+  }
+
+  public function update_existing_fzp_salary() {
+    $emp_id = $_POST['emp_id'];
+    $salary_fzp = $_POST['salary_fzp'];
+    $field = $_POST['field'];
+    $value = $_POST['value'];
+
+    $builder = $this->db->table('salary_month');
+    $builder->set($field, $value);
+    
+    $builder->where('employee_id', $emp_id);
+    $builder->where('salary_fzp', $salary_fzp);
+    $res = $builder->update();
+   return $res; 
   }
   
 }

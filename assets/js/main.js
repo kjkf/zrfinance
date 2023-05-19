@@ -3,6 +3,10 @@ $(document).ready(function () {
   restoreTabs();
 
   $('#account_').DataTable();
+  
+  if (!localStorage.getItem("navtab")) {
+    localStorage.setItem("navtab", "tab_1");
+  }
   // =============================================================================
   // событие: выбор статьи расхода/прихода
   // =============================================================================
@@ -656,7 +660,8 @@ $('a[name="history_edition"]').on('click', function () {
 });
 
 function openCurrentTab() {
-  const navTab = localStorage.getItem('navtab');
+  const navTab = localStorage.getItem('navtab') || "tab_1";
+  
   if (navTab) {
     const tabs = document.getElementById('myTab');
     const tabsContent = document.getElementById('myTabContent');
@@ -682,7 +687,7 @@ function openCurrentTab() {
 
 function openCurrentAccordionTab() {
   const accoTab = localStorage.getItem('accoTab');
-  const navTab = localStorage.getItem('navtab');
+  const navTab = localStorage.getItem('navtab') || "tab_1";
   
   if (accoTab) {
     const tabHead = document.querySelector("[aria-controls='" + accoTab + "']");
@@ -703,7 +708,7 @@ function openCurrentAccordionTab() {
 
 function restoreTabs() {
   const isTabSaved = localStorage.getItem("savetab");
-  //console.log(isTabSaved, typeof isTabSaved, parseInt(isTabSaved));
+  //console.log(isTabSaved);
   if (parseInt(isTabSaved)) {
     openCurrentTab();
     openCurrentAccordionTab();

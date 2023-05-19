@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", ev => {
     changeYear: true,
     altField: "#actualDate",
     dateFormat: "dd.mm.yy",
-    
+
   });
 
   minYear = d.getFullYear()- 66;
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", ev => {
     changeYear: true,
     altField: "#actualDate",
     dateFormat: "dd.mm.yy",
-    
+
   });
   
   minYear = d.getFullYear()- 2;
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", ev => {
     changeYear: true,
     altField: "#actualDate",
     dateFormat: "dd.mm.yy",
-    
+
   });
   const modal = document.getElementById("modal_employeeInfo");
   const cl_empl = document.querySelector("#nav-employees");
@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", ev => {
     }
   });
 
-  const updateEmployeeInfoBtn = modal.querySelector("#saveBtn");
+  const updateEmployeeInfoBtn = modal.querySelector("#updateBtn");
   if (updateEmployeeInfoBtn) {
     updateEmployeeInfoBtn.addEventListener('click', e => {
       const id = modal.querySelector("#trid").value;
@@ -166,6 +166,23 @@ document.addEventListener("DOMContentLoaded", ev => {
     });
   }
 
+  const saveEmployeeInfoBtn = modal.querySelector("#saveBtn");
+  if (saveEmployeeInfoBtn) {
+    saveEmployeeInfoBtn.addEventListener('click', e => {
+      saveEmployeeInfo(modal);
+    });
+  }
+
+  const addEmployeeBtn = document.getElementById("addE");
+  if (addEmployeeBtn) {
+    addEmployeeBtn.addEventListener("click", e => {
+      clearModalVals(modal, 'save');    
+      EMPLOYEES["new"] = getNewEmployee();
+      console.log(EMPLOYEES);
+      modal.querySelector("#trid").value = "new";
+      $('#modal_employeeInfo').modal('show');
+    });
+  }
 });
 
 function draw_table_body(table, data) {
@@ -235,6 +252,48 @@ function createEmployeeTr(count, employee) {
   return tr;
 }
 
+function createActiveEmployeeTr(count, employee) {
+  const tr = document.createElement("tr");
+  tr.classList = "emp_info";
+  //tr.setAttribute('trid', employee.id);
+  tr.dataset.trid = employee.id;
+
+  const numTd = createTd(count, "");
+  tr.insertAdjacentElement('beforeend', numTd);
+
+  const fio = createTd(employee.surname + " " + employee.name, 'td_text');
+  tr.insertAdjacentElement('beforeend', fio);
+
+  const companySelect = document.getElementById("company");
+  const companyText = companySelect.options[employee.company] ? companySelect.options[employee.company].text : "";
+  const company = createTd(companyText, 'td_text');
+  tr.insertAdjacentElement('beforeend', company);
+
+  const departmentSelect = document.getElementById("department");
+  const departmentText = departmentSelect.options[employee.department] ? departmentSelect.options[employee.department].text : "";
+  const department = createTd(departmentText, 'td_text');
+  tr.insertAdjacentElement('beforeend', department);
+
+  const positionSelect = document.getElementById("position");
+  const positionText = positionSelect.options[employee.position] ? positionSelect.options[employee.position].text : "";
+  const position = createTd(positionText, 'td_text');
+  tr.insertAdjacentElement('beforeend', position);
+
+  const email = createTd(employee.email, 'td_text');
+  tr.insertAdjacentElement('beforeend', email);
+
+  const telephone = createTd(employee.telephone, 'td_text');
+  tr.insertAdjacentElement('beforeend', telephone);
+
+  const salary = createTd(employee.salary, 'td_money');
+  tr.insertAdjacentElement('beforeend', salary);
+
+  const salary_fact = createTd(employee.salary_fact, 'td_money');
+  tr.insertAdjacentElement('beforeend', salary_fact);
+
+  return tr;
+}
+
 function createTd(fld, className) {
   const td = document.createElement('td');
   td.textContent = fld;
@@ -274,16 +333,12 @@ function loadEmployeeInfo(id) {
 }
 
 function prepareModalVals(modal, id) {
-  clearModalVals(modal);
-  //console.log(EMPLOYEES[id]);
-  //console.log(EMPLOYEES[id].birth_date);
-  //console.log(EMPLOYEES[id].start_date);
-  //console.log(EMPLOYEES[id].fire_date);
-
+  clearModalVals(modal, 'update');
   modal.querySelector("#trid").value = id;
   modal.querySelector("#surname").value = EMPLOYEES[id].surname;
   modal.querySelector("#name").value = EMPLOYEES[id].name;
   modal.querySelector("#middlename").value = EMPLOYEES[id].middlename;
+  
   if (EMPLOYEES[id].birth_date) $('#birth_date').datepicker("setDate", new Date(EMPLOYEES[id].birth_date) );
   
   modal.querySelector("#telephone").value = EMPLOYEES[id].telephone;
@@ -309,7 +364,15 @@ function prepareModalVals(modal, id) {
   if (EMPLOYEES[id].fire_date) $('#fire_date').datepicker("setDate", new Date(EMPLOYEES[id].fire_date) );
 }
 
-function clearModalVals(modal) {
+function clearModalVals(modal, type="update") {
+  if (type === "save") {
+    modal.querySelector("#saveBtn").style.display = "block";
+    modal.querySelector("#updateBtn").style.display = "none";
+  } else {    
+    modal.querySelector("#saveBtn").style.display = "none";
+    modal.querySelector("#updateBtn").style.display = "block";
+  }
+
   modal.querySelector("#is_tr_changed").value = 0;
   modal.querySelector("#citizenship_changed").value = 0;
   modal.querySelector("#surname").value = '';
@@ -338,6 +401,40 @@ function clearModalVals(modal) {
   $('#fire_date').datepicker("setDate", '' );
 }
 
+function saveEmployeeInfo(modal) {
+  const url_path = base_url + '/Classificators/save_employee';
+  const isValidVals = isValidEmployeeVals(modal);
+  if (!isValidVals) return false;
+  updateEmployeeJSON(modal, "new");
+  const data = getUpdateFields("new");
+  
+
+  $.ajax({
+    url: url_path,
+    data: data,
+    method: 'POST',
+    success: function (result) {
+      console.log(result);
+      const id = result;
+      modal.querySelector("#closeModal").click();
+      EMPLOYEES[id] = EMPLOYEES["new"];
+      delete EMPLOYEES["new"];
+
+      location.reload(); 
+      
+      //updateTableAfterSaving(id);
+      //if (document.getElementById("citizenship_changed").value === "1") {
+      //  updateCitizenship(id);
+      //}
+      
+    },
+    fail: function(result) {
+      console.error(result);
+      alert("Error loading employee by id");
+    }
+  });
+}
+
 function updateEmployeeInfo(id, modal) {
   const isChanged = modal.querySelector("#is_tr_changed").value === "0" ? false : true;
   //console.log("isChanged="+isChanged);
@@ -358,7 +455,7 @@ function updateEmployeeInfo(id, modal) {
     success: function (result) {
       //console.log(result);
       modal.querySelector("#closeModal").click();
-      updateTableAfterSaving(id);
+      //addTableAfterSaving(id);
       if (document.getElementById("citizenship_changed").value === "1") {
         updateCitizenship(id);
       }
@@ -373,6 +470,7 @@ function updateEmployeeInfo(id, modal) {
 
 function updateTableAfterSaving(id) {
   const tr = document.querySelector("table.employees tr[data-trid='" + id + "']");
+  
   if (tr) {
     const tds = tr.children;
     tds[1].textContent = EMPLOYEES[id].surname + " " + EMPLOYEES[id].name;
@@ -391,8 +489,24 @@ function updateTableAfterSaving(id) {
 
     tds[5].textContent = EMPLOYEES[id].email;
     tds[6].textContent = EMPLOYEES[id].telephone;
-    tds[7].textContent = EMPLOYEES[id].salary;
+    tds[7].textContent = parseFloat(EMPLOYEES[id].pay_per_hour) > 0 ? numberWithSpaces(EMPLOYEES[id].pay_per_hour) : numberWithSpaces(EMPLOYEES[id].salary);
+    tds[8].textContent = numberWithSpaces(EMPLOYEES[id].salary_fact);
+  } else {
+    addEmployeeTr(id);
   }
+}
+
+function addEmployeeTr(id) {
+  //console.log(id);
+  //console.log("++++++++++++++++++++");
+  //console.log(EMPLOYEES);
+  const table = document.getElementById("tbl_employees");
+  const tbody = table.querySelector("tbody");
+
+  const count = document.getElementById("employeeCount").value;
+  document.getElementById("employeeCount").value = parseInt(count) + 1 || 1;
+  const emp_tr = createActiveEmployeeTr(count, EMPLOYEES[id]);
+  tbody.insertAdjacentElement('beforeend', emp_tr)
 }
 
 function updateCitizenship(id) {
@@ -439,6 +553,74 @@ function updateEmployeeJSON(modal, id) {
   EMPLOYEES[id].start_date = dateToYMD($('#start_date').datepicker("getDate"))  || null;
   EMPLOYEES[id].birth_date = dateToYMD($('#birth_date').datepicker("getDate"))  || null;
   
+}
+
+function isValidEmployeeVals(modal) {
+  if (modal.querySelector("#surname").value === "") {
+    alert("Укажите фамилию сотрудника");
+    modal.querySelector("#surname").focus();
+    return false;
+  } 
+  if (modal.querySelector("#name").value === "") {
+    modal.querySelector("#name").focus();
+    alert("Укажите имя сотрудника");
+    return false;
+  }  
+  if (!$('#start_date').datepicker("getDate")) {
+    modal.querySelector("#start_date").focus();
+    alert("Укажите дату принятия на работу");
+    return false;
+  }
+  if (!modal.querySelector("#company").value) {
+    modal.querySelector("#company").focus();
+    alert("Укажите компанию");
+    return false;
+  } 
+  if (!modal.querySelector("#department").value) {
+    modal.querySelector("#department").focus();
+    alert("Укажите отдел");
+    return false;
+  } 
+    if (!modal.querySelector("#direction").value) {
+    modal.querySelector("#direction").focus();
+    alert("Укажите направление");
+    return false;
+  } 
+  if (!modal.querySelector("#position").value) {
+    modal.querySelector("#position").focus();
+    alert("Укажите должность");
+    return false;
+  } 
+  if (!modal.querySelector('input[name="contract_type"]:checked')) {
+    modal.querySelector("#contract_type1 + label").focus();
+    alert("Укажите тип договора");
+    return false;
+  } 
+  if (!modal.querySelector('input[name="is_tax"]:checked')) {
+    modal.querySelector("#tax_pay_type1").focus();
+    alert("Укажите как оплачиваются налоги");
+    return false;
+  } 
+  if (!modal.querySelector('input[name="citezenship_type"]:checked')) {
+    modal.querySelector("#citizenship1").focus();
+    alert("Укажите тип резедента");
+    return false;
+  } 
+
+  if (!modal.querySelector("#salary").value && !modal.querySelector("#pay_per_hour").value ) {
+    modal.querySelector("#salary").focus();
+    alert("Укажите официальную зарплату или ставку в час");
+    return false;
+  } 
+  
+  if (!modal.querySelector("#salary_fact").value) {
+    modal.querySelector("#salary_fact").focus();
+    alert("Укажите фактическую зарплату");
+    return false;
+  } 
+  
+  
+  return true;
 }
 
 function dateToYMD(date) {
@@ -529,6 +711,31 @@ function datepickerLocaleRu() {
     showMonthAfterYear: false,
     yearSuffix: '',
   });
+}
+
+function getNewEmployee() {
+  return {
+    birth_date: "",
+    citezenship_type: "",
+    company: "",
+    contract_type: "",
+    country: null,
+    department: "",
+    direction: "",
+    email: "",
+    fire_date: null,
+    id: "",
+    is_tax: "",
+    middlename: "",
+    name: "",
+    pay_per_hour: "",
+    position: "",
+    salary: "",
+    salary_fact: "",
+    start_date: "",
+    surname: "",
+    telephone: ""
+  }
 }
 
 function numberWithSpaces(x) {

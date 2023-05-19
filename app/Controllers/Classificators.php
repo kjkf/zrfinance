@@ -106,6 +106,14 @@ class Classificators extends BaseController
       echo  json_encode($employee);
     }
 
+    public function save_employee() {
+      $employeeModel = new \App\Models\EmployeesModel();
+      $employeeId = $employeeModel->save_employee();
+      
+      echo $employeeId;
+    }
+
+
     public function update_employee_byId() {
       $employeeModel = new \App\Models\EmployeesModel();
       return $employeeModel->update_employee_byId();
@@ -113,7 +121,10 @@ class Classificators extends BaseController
 
     public function update_citezenship_type() {
       $employeeModel = new \App\Models\EmployeesModel();
-      return $employeeModel->update_citezenship_type();
+      $res = $employeeModel->update_citezenship_type();
+      //$employeeModel->update_citezenship_type();
+
+      return $res;
     }
     
     
