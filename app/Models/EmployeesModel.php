@@ -125,9 +125,12 @@ class EmployeesModel extends Model
   //echo $sql;
   $builder->insert($data);
    $newId = $this->db->insertID();
-   
-   $this->add_new_employee_to_existing_FZP($newId, $data['start_date'], $data['fire_date']);
 
+   $country = empty($_POST['country']) ? NULL : $_POST['country'];
+   $citezenship_type = empty($_POST['citezenship_type']) ? NULL : $_POST['citezenship_type'];
+   $this->add_citezenship_type($newId, $citezenship_type, $country);
+   $this->add_new_employee_to_existing_FZP($newId, $data['start_date'], $data['fire_date']);
+   
    return $newId;
   }
 
@@ -203,17 +206,12 @@ class EmployeesModel extends Model
   private function checkEmployeesInExistingFZP($id, $start_date, $fire_date) {
     $fzpIds = $this->get_existing_FZP_byDate($start_date, $fire_date);
     $employeeFZPs = $this->get_FZP_for_currentEmployee($id);  
-    print_r($id);
-    print_r($start_date);
-    print_r($fire_date);
-    echo "111";
-    print_r($fzpIds);
+
     if (!empty($fzpIds)) {
       $fzp_ids = $this->get_vals_by_field($fzpIds, "id");
       
       $monthFzpEmployeeIds = $this->get_vals_by_field($employeeFZPs, "salary_fzp");
-      echo "222 monthFzpEmployeeIds";
-      print_r($monthFzpEmployeeIds);
+      
       foreach($employeeFZPs as $employeeFZP) {
         $employeeFzpId = $employeeFZP["salary_fzp"];
               
@@ -224,14 +222,10 @@ class EmployeesModel extends Model
 
       foreach($fzpIds as $fzp) {
         $fzpId = $fzp["id"];
-        echo "333";
-        print_r($fzpId);   
         if (!in_array($fzpId, $monthFzpEmployeeIds)){
           $fzpDate = $fzp["date_time"];
           $row = $this->getEmployeeForFZP_byId($fzpId, $fzpDate, $id);
-          echo "====";
-          print_r($row);
-        
+          
           $this->addEmployeeToFZP($row);
         }
       }
@@ -301,20 +295,47 @@ class EmployeesModel extends Model
     }
   }
 
+  private function add_citezenship_type($id, $citezenship_type, $country) {
+    $builder = $this->db->table('resident_type');
+    $data = array(
+      'citezenship_type' => $citezenship_type,
+      'country' => $country,
+      'employee_id' => $id
+    );
+
+    $res = $builder->insert($data);
+    return $res;
+  }
   public function update_citezenship_type() {
     $id = $_POST['trid'];
     $country = empty($_POST['country']) ? NULL : $_POST['country'];
     $citezenship_type = empty($_POST['citezenship_type']) ? NULL : $_POST['citezenship_type'];
-    
-    $builder = $this->db->table('resident_type');
-    $builder->set('country', $country);
-    $builder->set('citezenship_type', $citezenship_type);
 
-    $builder->where('employee_id', $id);
-    //$sql = $builder->getCompiledUpdate();
-    //print_r($sql);
-    $res = $builder->update();
+    $builder = $this->db->table('resident_type');
+    if (!empty($this->get_citizenship_by_employeeId($id))) {
+      $builder->set('country', $country);
+      $builder->set('citezenship_type', $citezenship_type);
+  
+      $builder->where('employee_id', $id);
+      //$sql = $builder->getCompiledUpdate();
+      //print_r($sql);
+      $res = $builder->update();
+    } else {
+      $res = $this->add_citezenship_type($id, $citezenship_type, $country);
+    }   
+    
    return $res; 
+  }
+
+  private function get_citizenship_by_employeeId($id) {
+    $sql = "SELECT id FROM `resident_type` where `employee_id`=? "; //and `salary_fzp` in (?)
+    $query = $this->db->query($sql, array($id));
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return array();
+    }
   }
 
   private function prepareEmployeesInfo($employees)

@@ -121,7 +121,10 @@ class Classificators extends BaseController
 
     public function update_citezenship_type() {
       $employeeModel = new \App\Models\EmployeesModel();
-      return $employeeModel->update_citezenship_type();
+      $res = $employeeModel->update_citezenship_type();
+      //$employeeModel->update_citezenship_type();
+
+      return $res;
     }
     
     

@@ -416,11 +416,13 @@ function saveEmployeeInfo(modal) {
       modal.querySelector("#closeModal").click();
       EMPLOYEES[id] = EMPLOYEES["new"];
       delete EMPLOYEES["new"];
+
+      location.reload(); 
       
-      updateTableAfterSaving(id);
-      if (document.getElementById("citizenship_changed").value === "1") {
-        updateCitizenship(id);
-      }
+      //updateTableAfterSaving(id);
+      //if (document.getElementById("citizenship_changed").value === "1") {
+      //  updateCitizenship(id);
+      //}
       
     },
     fail: function(result) {
@@ -492,9 +494,9 @@ function updateTableAfterSaving(id) {
 }
 
 function addEmployeeTr(id) {
-  console.log(id);
-  console.log("++++++++++++++++++++");
-  console.log(EMPLOYEES);
+  //console.log(id);
+  //console.log("++++++++++++++++++++");
+  //console.log(EMPLOYEES);
   const table = document.getElementById("tbl_employees");
   const tbody = table.querySelector("tbody");
 
