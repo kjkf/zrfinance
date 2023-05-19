@@ -84,7 +84,7 @@ class SalaryModel extends Model
       'min_zp' => $min_zp,
     ];
     
-    $sql = $builder->set($data)->getCompiledInsert();
+ //   $sql = $builder->set($data)->getCompiledInsert();
 //    print_r($sql);
     $builder->insert($data);
     $insert_id =  $this->db->insertID();//
@@ -95,14 +95,15 @@ class SalaryModel extends Model
 
   public function create_month_salary($data) {
     $builder = $this->db->table("salary_month");
-    
     $builder->insertBatch($data);
-    
+      
   }
 
   public function create_month_advances($data) {
     $builder = $this->db->table("advances_month");
     
+    //$sql = $builder->set($data)->getCompiledInsert();
+    //print_r($sql);
     $builder->insertBatch($data);
     
   }
@@ -196,9 +197,10 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
 
   public function prepareAdvanceEmployeesInfo($fzp_id)
   {
-    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, employee.company as company_id, `employee_salary`, `working_hours_per_month`,  employee_salary_fact
+    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, employee.company as company_id, salary_month.`employee_salary`, salary_month.`working_hours_per_month`,  salary_month.employee_salary_fact
     from advances_month 
     left JOIN employee on employee.id = advances_month.`employee_id`
+    left JOIN salary_month on salary_month.id = advances_month.`employee_id` and salary_month.salary_fzp=advances_month.salary_fzp
     left join position on position.id = employee.position
     left join department on department.id = employee.`department`
     left join direction on direction.id = employee.direction
@@ -242,6 +244,20 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     ORDER by employee.company asc,  `surname` ASC";
 
     $query = $this->db->query($sql, array($date, $date, $date, $date, $date, $date, $date, $date));
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return false;
+    }
+  }
+  public function getAllEmployeesForAdvance_by_date($fzpid, $date) {
+    $sql = "SELECT employee.id as employee_id, ? as salary_fzp
+    from employee 
+    where ((date(`fire_date`) > date(?) ) OR `fire_date` IS NULL) and employee.company in (2,3,4) and (date(`start_date`) <  date(?) )
+    ORDER by employee.company asc,  `surname` ASC";
+
+    $query = $this->db->query($sql, array($fzpid, $date, $date));
 
     if (!empty($sql)) {
       return $query->getResultArray();
@@ -312,6 +328,26 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     }
   }
 
+  public function addAdvance() {
+    $employee_id = $_POST['employee_id'];
+    $salary_fzp = $_POST['salary_fzp'];
+    $date_time = $_POST['date_time'];
+    $advances = $_POST['advances'];
+    
+    $builder = $this->db->table("advances");
+    $data = [
+      'salary_fzp' => $salary_fzp,
+      'advances' => $advances,
+      'date_time' => $date_time,
+      'employee_id' => $employee_id,
+    ];
+    $builder->insert($data);
+    $insert_id =  $this->db->insertID();//$builder->insert_id();
+
+    //print_r($insert_id);
+
+    return $insert_id;
+  }
   public function add_bonus_fines() {
     $type_id = $_POST['type_id'];
     $bonus = $_POST['bonus'];

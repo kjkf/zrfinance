@@ -154,10 +154,10 @@ class Salary extends BaseController
     $userInfo = $usersModel->find($loggedUserID);
 
     $fzp = $this->salaryModel->getMonthFZP_by_id($fzpid);
-    d($fzp);
+    //d($fzp);
     if ($fzp) {
       $date = $fzp[0]['date_time']; 
-      $this->create_month_advances($date);
+      $this->create_month_advances($fzpid, $date);
       return  redirect()->to('salary/advance/'.$fzpid);
     }  
   }
@@ -264,8 +264,8 @@ class Salary extends BaseController
     $this->salaryModel->create_month_salary($data);
   }
 
-  public function create_month_advances($date) {
-    $data = $this->salaryModel->getAllEmployeesForFZP_by_date($date);
+  public function create_month_advances($fzpid, $date) {
+    $data = $this->salaryModel->getAllEmployeesForAdvance_by_date($fzpid, $date);
 
     $this->salaryModel->create_month_advances($data);
   }
@@ -306,6 +306,13 @@ class Salary extends BaseController
     );
   }
 
+  public function addAdvance() {
+    $res = $this->salaryModel->addAdvance();
+
+    //print_r($res);
+
+    echo $res;
+  }
   public function add_bonus_fines() {
     $res = $this->salaryModel->add_bonus_fines();
 

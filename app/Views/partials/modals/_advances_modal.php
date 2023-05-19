@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal_editEmployeeAdvances" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="modal_addItemLabel"></h4>
@@ -26,7 +26,7 @@
         </div>
 
         <div class="d-flex justify-content-center"">
-          <div class=" col-8">
+          <div class=" col-12">
             <table class="table table-sm caption-top bonus">
               <colgroup>
                 <col style="width: 45%">

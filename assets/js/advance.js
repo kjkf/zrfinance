@@ -126,27 +126,13 @@ function saveAdvances(modal) {
   const isValid = validateData(data);
   
   if (isValid) {
-    const url_path = base_url + '/salary/add_bonus_fines';
+    const url_path = base_url + '/salary/addAdvance';
     $.ajax({
       url: url_path,
       data: data,
       method: 'POST',
       success: function (id) {
-        data.id = id;
-        EMPLOYEES[CURRENT_TR].bonus_fines.push(data);
-        let bonus = isNaN(parseFloat(EMPLOYEES[CURRENT_TR].bonus)) ? 0 : EMPLOYEES[CURRENT_TR].bonus;
-        let fines = isNaN(parseFloat(EMPLOYEES[CURRENT_TR].fines)) ? 0 : EMPLOYEES[CURRENT_TR].fines;
-        bonus += isNaN(parseFloat(data.bonus)) ? 0 : parseFloat(data.bonus);
-        fines += isNaN(parseFloat(data.fines)) ? 0 : parseFloat(data.fines);
-        EMPLOYEES[CURRENT_TR].bonus =  bonus;
-        EMPLOYEES[CURRENT_TR].fines = fines;
-        addBonusFines_toTable(data);
-  
-        modal.querySelector("table.bonus caption span").textContent = EMPLOYEES[CURRENT_TR].bonus;
-        modal.querySelector("table.fines caption span").textContent = EMPLOYEES[CURRENT_TR].fines;
-
-        const worked_hours = modal.querySelector("#worked_hours_fact").value;
-        updateModalInputs(worked_hours);
+        
       },
     });    
   }
@@ -189,6 +175,21 @@ function prepareEmployeeModalInfo(trid) {
   
   //appendRows(employee.bonus_fines);
 }
+
+function validateData(data) {
+  
+  if (data.sum <= 0) {
+    alert("Укажите сумму аванса");
+    return false;
+  }
+  
+  if (data.date_time == "") {
+    alert("Укажите дату аванса");
+    return false;
+  }
+  return true;
+}
+
 function datepickerLocaleRu() {
   $.datepicker.setDefaults({
     closeText: 'Закрыть',
