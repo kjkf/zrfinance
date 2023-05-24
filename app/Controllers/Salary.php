@@ -167,10 +167,12 @@ class Salary extends BaseController
     $loggedUserID = session()->get('loggedUser');
     $userInfo = $usersModel->find($loggedUserID);
     $fzp = $this->salaryModel->getMonthFZP_by_id($fzp_id);
+    $fzp_date = $fzp[0]['date_time'];
 
     $employeesArr = $this->prepareAdvanceEmployeesInfo($fzp_id);
     $employees = $employeesArr['employees'];
     $json = json_encode($employeesArr['json']);
+    $timestamp = strtotime($fzp_date);
     
     if ($fzp) {
       $data = [
@@ -179,6 +181,8 @@ class Salary extends BaseController
         'user' => $userInfo, 
         'employees' => $employees,
         'json' => $json,
+        'month' => getMonthByNum(date("n", $timestamp) - 1),
+        'year' => date('Y', $timestamp),
         'fzp_id' => $fzp_id, 
         'fzp' => $fzp[0],
       ];
@@ -313,6 +317,13 @@ class Salary extends BaseController
 
     echo $res;
   }
+  public function deleteAdvance() {
+    $res = $this->salaryModel->deleteAdvance();
+
+    //print_r($res);
+
+    echo $res;
+  }
   public function add_bonus_fines() {
     $res = $this->salaryModel->add_bonus_fines();
 
@@ -334,6 +345,11 @@ class Salary extends BaseController
   public function update_existing_fzp_salary() {
     $res = $this->salaryModel->update_existing_fzp_salary();
     echo $res;
+  }
+
+  public function loadAdvances_byEmployeeId() {
+    $res = $this->salaryModel->loadAdvances_byEmployeeId();
+    echo json_encode($res);
   }
 
 }

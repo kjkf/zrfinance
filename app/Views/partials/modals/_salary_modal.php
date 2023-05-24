@@ -7,14 +7,14 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="row mb-2 editable" >
+        <div class="row mb-2 editable">
           <div class="col-3 disable-editable">
-            <label for="working_hours" >Официальная ЗП / ставка в час</label>
+            <label for="working_hours">Официальная ЗП / ставка в час</label>
             <input type="text" class="form-control" id="official_salary" disabled data-fld="employee_salary">
             <?php 
             $status = isset($fzp) && !empty($fzp) ? $fzp['is_approved'] : -1;
             if ($status != 1) {?>
-              <a href="#" class="disable_edit" ><i class='fa fa-pencil'></i></a>
+            <a href="#" class="disable_edit"><i class='fa fa-pencil'></i></a>
             <?php }?>
           </div>
 
@@ -23,16 +23,21 @@
             <input type="text" class="form-control" id="salary_fact" disabled data-fld="employee_salary_fact">
             <?php 
             if ($status != 1) {?>
-              <a href="#" class="disable_edit" ><i class='fa fa-pencil'></i></a>
+            <a href="#" class="disable_edit"><i class='fa fa-pencil'></i></a>
             <?php }?>
           </div>
 
-          <div class="col-3">
-            <label for="total">Авансы</label>
-            <input type="text" class="form-control" id="advanced_pay" placeholder="Укажите сумму выданных авансов">
+          <div class="col-2">
+            <label for="working_hours">Кол-во рабочих часов</label>
+            <input type="text" class="form-control" id="working_hours" disabled>
           </div>
 
-          <div class="col-3">
+          <div class="col-2">
+            <label for="total">Авансы</label>
+            <input type="text" class="form-control" id="advanced_pay" placeholder="0" >
+          </div>
+
+          <div class="col-2">
             <label for="total">Отпускные</label>
             <input type="text" class="form-control" id="holiday_pay" placeholder="Укажите сумму отпускных">
           </div>
@@ -40,9 +45,9 @@
         <div class="row mb-2">
           <div class="col-sm-8">
             <div class="row">
-              <div class="col-4">
-                <label for="working_hours">Кол-во рабочих часов</label>
-                <input type="text" class="form-control" id="working_hours" disabled>
+            <div class="col-4">
+                <label for="working_hours">Кол-во офиц.рабочих часов</label>
+                <input type="text" class="form-control" id="working_hours">
               </div>
               <div class="col-4">
                 <label for="worked_hours_fact">Кол-во отработанных часов</label>

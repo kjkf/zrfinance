@@ -30,7 +30,7 @@ class EmployeesModel extends Model
               left join department on department.id = employee.department
               left join position on position.id = employee.position
               left join company on company.id = employee.company
-              where `fire_date` is not null and employee.company in (2, 3, 4)
+              where `fire_date` is not null and employee.company in (1,2, 3, 4,5)
               order by employee.company asc,  `surname` ASC";
 
 
@@ -52,7 +52,7 @@ class EmployeesModel extends Model
               left join department on department.id = employee.department
               left join position on position.id = employee.position
               left join company on company.id = employee.company
-              where `fire_date` is null and employee.company in (2, 3, 4)
+              where `fire_date` is null and employee.company in (1,2, 3, 4,5)
               order by employee.company asc,  `surname` ASC";
 
 
@@ -171,7 +171,7 @@ class EmployeesModel extends Model
     //print_r($sql);
     $res = $builder->update();
     $this->checkEmployeesInExistingFZP($id, $start_date, $fire_date);
-   return $res; 
+    return $res; 
   }
 
   public function getEmployeeForFZP_byId($fzpId, $fzpDate, $id) {
@@ -206,6 +206,11 @@ class EmployeesModel extends Model
   private function checkEmployeesInExistingFZP($id, $start_date, $fire_date) {
     $fzpIds = $this->get_existing_FZP_byDate($start_date, $fire_date);
     $employeeFZPs = $this->get_FZP_for_currentEmployee($id);  
+
+    echo "1111111";
+    print_r($fzpIds);
+    echo "222222";
+    print_r($employeeFZPs);
 
     if (!empty($fzpIds)) {
       $fzp_ids = $this->get_vals_by_field($fzpIds, "id");
@@ -266,12 +271,12 @@ class EmployeesModel extends Model
   }
 
   private function get_existing_FZP_byDate($start_date, $fire_date) {
-    $sql = "SELECT * FROM `salary_fzp` where date(`date_time`) >= date(?)  and is_approved <> 1";
-    $args = array($start_date);
+    $sql = "SELECT * FROM `salary_fzp` where year(`date_time`) >= year(?)  and month(`date_time`) >= month(?) and is_approved <> 1";
+    $args = array($start_date, $start_date);
 
     if (!empty($fire_date)) {
-      $sql = $sql." and date(`date_time`) <= date(?)";
-      $args = array($start_date, $fire_date);
+      $sql = $sql." and year(`date_time`) <= year(?) and month(`date_time`) >= month(?)";
+      $args = array($start_date, $start_date, $fire_date, $fire_date);
     }
 
     $query = $this->db->query($sql, $args);

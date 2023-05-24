@@ -145,7 +145,7 @@ END AS working_hours
     left join resident_type on resident_type.employee_id = salary_month.`employee_id`
     left join (SELECT bonus_fines.`employee_id`, max(bonus_fines.`salary_fzp`) as salary_fzp, sum(`bonus`) as bonus, sum(`fines`) as fines  
 FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`employee_id`) bf on bf.employee_id = salary_month.employee_id and salary_month.salary_fzp = bf.salary_fzp
-    where salary_month.`salary_fzp`=? and employee.company in (2,3,4) and employee.company = ?
+    where salary_month.`salary_fzp`=? and employee.company in (1,2,3,4,5) and employee.company = ?
     ORDER by employee.company asc,  `surname` ASC";
 
     $query = $this->db->query($sql, array($date, $date, $date, $date, intval($fzp_id), intval($fzp_id), intval($company_id)));
@@ -160,6 +160,7 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
   public function getEmployeesInfo($fzp_id, $date)
   {
     $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, employee.company as company_id, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`,  bf.bonus as bonus, bf.fines as fines, `tax_OSMS`, `tax_IPN`, `tax_OPV`, employee_salary_fact,  salary_month.advances, salary_month.holiday_pays, employee.contract_type,  resident_type.citezenship_type, is_tax, salary_month.pay_per_hour,
+    (SELECT sum(`advances`) FROM `advances` WHERE `employee_id`=salary_month.`employee_id` and `salary_fzp`=salary_month.`salary_fzp` GROUP by `employee_id` and `salary_fzp`) as all_advances,
     CASE WHEN direction.name = 'Цех' THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
 END AS working_hours
@@ -172,8 +173,8 @@ END AS working_hours
     left join resident_type on resident_type.employee_id = salary_month.`employee_id`
     left join (SELECT bonus_fines.`employee_id`, max(bonus_fines.`salary_fzp`) as salary_fzp, sum(`bonus`) as bonus, sum(`fines`) as fines  
 FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`employee_id`) bf on bf.employee_id = salary_month.employee_id and salary_month.salary_fzp = bf.salary_fzp
-    where salary_month.`salary_fzp`=? and employee.company in (2,3,4)
-    ORDER by `surname` ASC";
+    where salary_month.`salary_fzp`=? and employee.company in (1,2,3,4,5)
+    ORDER by `surname` ASC"; //
 
     $query = $this->db->query($sql, array($date, $date, $date, $date, intval($fzp_id), intval($fzp_id)));
 
@@ -197,15 +198,19 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
 
   public function prepareAdvanceEmployeesInfo($fzp_id)
   {
-    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, employee.company as company_id, salary_month.`employee_salary`, salary_month.`working_hours_per_month`,  salary_month.employee_salary_fact
+    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, employee.`is_tax`, position.name as position, department.name as department, direction.name as direction, company.name as company, employee.company as company_id, salary_month.`employee_salary`, salary_month.`working_hours_per_month`,  salary_month.`worked_hours_per_month`, salary_month.employee_salary_fact, salary_month.holiday_pays, salary_month.tax_OSMS, salary_month.tax_IPN, salary_month.tax_OPV,
+    (SELECT sum(`advances`) FROM `advances` WHERE `employee_id`=advances_month.`employee_id` and `salary_fzp`=advances_month.`salary_fzp` GROUP by `employee_id` and `salary_fzp`) as all_advances,
+    (SELECT sum(`bonus`) FROM `bonus_fines` WHERE `employee_id`=advances_month.`employee_id` and `salary_fzp`=advances_month.`salary_fzp` GROUP by `employee_id` and `salary_fzp`) as bonus,
+    (SELECT sum(`fines`) FROM `bonus_fines` WHERE `employee_id`=advances_month.`employee_id` and `salary_fzp`=advances_month.`salary_fzp` GROUP by `employee_id` and `salary_fzp`) as fines
+    
     from advances_month 
     left JOIN employee on employee.id = advances_month.`employee_id`
-    left JOIN salary_month on salary_month.id = advances_month.`employee_id` and salary_month.salary_fzp=advances_month.salary_fzp
+    left JOIN salary_month on salary_month.employee_id = advances_month.`employee_id` and salary_month.salary_fzp=advances_month.salary_fzp
     left join position on position.id = employee.position
     left join department on department.id = employee.`department`
     left join direction on direction.id = employee.direction
     left join company on company.id = employee.company
-    where advances_month.`salary_fzp`=? and employee.company in (2,3,4)
+    where advances_month.`salary_fzp`=? and employee.company in (1,2,3,4,5)
     ORDER by `surname` ASC";
 
     $query = $this->db->query($sql, array(intval($fzp_id)));
@@ -223,7 +228,7 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(now()) AND `month`= month(now()))
     END AS working_hours_per_month
     from employee 
-    where ((date(`fire_date`) > date(now()) ) OR `fire_date` IS NULL) and employee.company in (2,3,4) and (date(`start_date`) < date(now()) ))
+    where ((date(`fire_date`) > date(now()) ) OR `fire_date` IS NULL) and employee.company in (1,2,3,4,5) and (date(`start_date`) <= date(now()) ))
     ORDER by employee.company asc,  `surname` ASC"; 
 
     $query = $this->db->query($sql);
@@ -256,7 +261,7 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))
     END AS working_hours_per_month
     from employee 
-    where ((date(`fire_date`) > date(?) ) OR `fire_date` IS NULL) and employee.company in (2,3,4) and (date(`start_date`) <  date(?) )
+    where ((date(`fire_date`) > date(?) ) OR `fire_date` IS NULL) and employee.company in (1,2,3,4,5) and (date(`start_date`) <=  date(?) )
     ORDER by employee.company asc,  `surname` ASC";
 
     $query = $this->db->query($sql, array($date, $date, $date, $date, $date, $date, $date, $date));
@@ -270,7 +275,7 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
   public function getAllEmployeesForAdvance_by_date($fzpid, $date) {
     $sql = "SELECT employee.id as employee_id, ? as salary_fzp
     from employee 
-    where ((date(`fire_date`) > date(?) ) OR `fire_date` IS NULL) and employee.company in (2,3,4) and (date(`start_date`) <  date(?) )
+    where ((date(`fire_date`) > date(?) ) OR `fire_date` IS NULL) and employee.company in (1,2,3,4,5) and (date(`start_date`) <=  date(?) )
     ORDER by employee.company asc,  `surname` ASC";
 
     $query = $this->db->query($sql, array($fzpid, $date, $date));
@@ -281,9 +286,22 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
       return false;
     }
   }
+  public function loadAdvances_byEmployeeId() {
+    $emp_id = $_POST['employee_id'];
+    $fzpid = $_POST['salary_fzp'];
+    $sql = "SELECT * FROM `advances` where `employee_id`=? and `salary_fzp`=?";
+
+    $query = $this->db->query($sql, array($emp_id, $fzpid));
+
+    if (!empty($sql)) {
+      return $query->getResultArray();
+    } else {
+      return false;
+    }
+  }
 
   public function getCompaniesInfo() {
-    $sql = "select * from company where id in (2,3,4)";
+    $sql = "select * from company where id in (1,2,3,4,5)";
     $query = $this->db->query($sql);
 
     if (!empty($sql)) {
@@ -349,7 +367,7 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     $salary_fzp = $_POST['salary_fzp'];
     $date_time = $_POST['date_time'];
     $advances = $_POST['advances'];
-    
+
     $builder = $this->db->table("advances");
     $data = [
       'salary_fzp' => $salary_fzp,
@@ -359,11 +377,23 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     ];
     $builder->insert($data);
     $insert_id =  $this->db->insertID();//$builder->insert_id();
-
+  // $sql = $builder->set($data)->getCompiledInsert();
+  //  print_r($sql);
     //print_r($insert_id);
 
     return $insert_id;
   }
+
+  public function deleteAdvance() {
+    $id = $_POST['id'];
+    $builder = $this->db->table("advances");
+    $builder->where("id", $id);
+    $builder->delete();
+
+    return true;
+  }
+
+
   public function add_bonus_fines() {
     $type_id = $_POST['type_id'];
     $bonus = $_POST['bonus'];

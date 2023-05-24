@@ -111,10 +111,44 @@ document.addEventListener('DOMContentLoaded', ev => {
   });
 });
 
+function deleteAdvances(tr) {
+  const modal = document.getElementById("modal_editEmployeeAdvances");
+  const trid = modal.querySelector("#emp_id").value;
+  const id = tr.dataset.trid;
+  const tds = tr.children;
+  const sum = tds[1].innerHTML || 0;
+  const data = {
+    id
+  };
+  const url = base_url + '/salary/deleteAdvance';
+  $.ajax({
+    url: url,
+    data: data,
+    method: 'POST',
+    success: function (id) {
+      const adv_table = modal.querySelector("table tbody");
+      EMPLOYEES[trid].all_advances = parseFloat(EMPLOYEES[trid].all_advances) -  parseFloat(intVal(sum));
+      modal.querySelector("#advanced_pay").value = numberWithSpaces(EMPLOYEES[trid].all_advances);
+
+      //console.log(typeof EMPLOYEES[trid].advances, EMPLOYEES[trid]);
+      const ids = EMPLOYEES[trid].advances.map(el => el.id);
+      const index = ids.indexOf(id); 
+      EMPLOYEES[trid].advances.splice(index, 1);
+      tr.remove();
+
+      calcAndShowRemindSalary(trid, modal);
+    },
+  });    
+}
+
 function saveAdvances(modal) {
   const trid = modal.querySelector("#emp_id").value;
-  const ddate = modal.querySelector("#advance_date").value || 0;
+  //const ddate = modal.querySelector("#advance_date").value || 0;
+  const ddate = dateToYMD($('#advance_date').datepicker("getDate"))  || null;
   const sum = modal.querySelector(".sum").value || 0;
+
+  if (sum <= 0) return false;
+  if (!ddate) return false;
 
   const data = {
     employee_id: trid,
@@ -123,7 +157,7 @@ function saveAdvances(modal) {
     advances: sum
   };
 
-  const isValid = validateData(data);
+  const isValid = validateData(data, EMPLOYEES[trid]);
   
   if (isValid) {
     const url_path = base_url + '/salary/addAdvance';
@@ -132,10 +166,42 @@ function saveAdvances(modal) {
       data: data,
       method: 'POST',
       success: function (id) {
-        
+        data.id = id;
+        const tr = createAdvanceTr(data);
+        const adv_table = modal.querySelector("table tbody");
+        adv_table.insertAdjacentElement("beforeend", tr);
+        const all_advances = parseFloat(EMPLOYEES[trid].all_advances) || 0;
+        EMPLOYEES[trid].all_advances = all_advances + parseFloat(intVal(data.advances));
+        EMPLOYEES[trid].advances.push(data);
+        modal.querySelector("#advanced_pay").value = numberWithSpaces(EMPLOYEES[trid].all_advances);
+
+        modal.querySelector(".sum").value = "";
+        $('#advance_date').datepicker("setDate", "");
+
+        calcAndShowRemindSalary(trid, modal);
       },
     });    
   }
+}
+
+function loadEmployeeAdvances(trid) {
+  const url_path = base_url + '/salary/loadAdvances_byEmployeeId';
+  const data = {
+    employee_id: trid,
+    salary_fzp: document.getElementById("fzp_id").value,
+  };
+  ;
+  $.ajax({
+    url: url_path,
+    data: data,
+    method: 'POST',
+    success: function (res) {
+      const advances = JSON.parse(res);
+      EMPLOYEES[trid].advances = advances;
+      console.log(EMPLOYEES[trid]);
+      displayEmployeeAdvances(trid);
+    },
+  });    
 }
 
 function showEditEmployeeAdvancesModal(tr) {
@@ -166,20 +232,122 @@ function prepareEmployeeModalInfo(trid) {
     official_salary = employee.pay_per_hour * employee.working_hours;
   }
 
+  if (!employee.advances) {
+    loadEmployeeAdvances(trid);
+  } else {
+    displayEmployeeAdvances(trid);
+  }
+
   modal.querySelector("h4").textContent = employee.surname + " " + employee.name;
+  modal.querySelector("#advanced_pay").value = numberWithSpaces(employee.all_advances);
 
   //modal.querySelector("#working_hours").value = working_hours_per_month;
   modal.querySelector("#official_salary").value = numberWithSpaces(Math.round(official_salary));
   modal.querySelector("#salary_fact").value = numberWithSpaces(Math.round(employee_salary_fact));
   modal.querySelector("#emp_id").value = trid;
+
+  calcAndShowRemindSalary(trid, modal);
   
   //appendRows(employee.bonus_fines);
 }
 
-function validateData(data) {
+function calcAndShowRemindSalary(trid, modal) {
+  const employee = EMPLOYEES[trid];
+  const employee_salary_fact = parseInt(employee.employee_salary_fact) || 0;
+  const working_hours =  parseInt(intVal(employee.working_hours_per_month)) || 1;
+  const worked_hours_fact =  parseInt(intVal(employee.worked_hours_per_month)) || 0;
+
+  const holiday_pay =  parseFloat(intVal(employee.holiday_pays)) || 0;
+  const bonus =  parseInt(intVal(employee.bonus)) || 0;
+  const fines =  parseInt(intVal(employee.fines)) || 0;
+
+  const tax_ipn =  parseInt(intVal(employee.tax_IPN)) || 0;
+  const tax_opv =  parseInt(intVal(employee.tax_OPV)) || 0;
+  const tax_osms =  parseInt(intVal(employee.tax_OSMS)) || 0;
+  const taxes = employee.is_tax === "1" ? 0 : employee.is_tax === "2" ? (tax_osms + tax_opv + tax_ipn) : (tax_opv + tax_ipn);
+
+  const worked_salary = Math.round(employee_salary_fact / working_hours * worked_hours_fact);
+  const worked_salary_before_tax = worked_salary + bonus - fines + holiday_pay;
+  const total = worked_salary_before_tax - taxes - employee.all_advances;
+  modal.querySelector("#working_hours").value  = working_hours;
+  modal.querySelector("#worked_hours_fact").value  = worked_hours_fact;
+  modal.querySelector("#worked_salary").value  = numberWithSpaces(worked_salary);
+  modal.querySelector("#worked_salary_before_tax").value  = numberWithSpaces(worked_salary_before_tax);
+  modal.querySelector("#total").value  = numberWithSpaces(total);
+
+  EMPLOYEES[trid].totalSalaryToPay = total;
+
+  updateTableInfo(trid);
+}
+
+function updateTableInfo(trid) {
+  const tr = document.querySelector(`.employee_salary tr[data-trid='${trid}']`)
+  if (tr) {
+    const tds = tr.children;
+    tds[7].innerHTML = numberWithSpaces(EMPLOYEES[trid].all_advances);
+  }
+
+  updateTotalsInFooter();
+}
+
+function updateTotalsInFooter() {
+  //let allAdvances = EMPLOYEES.reduce((sum, current) => sum + current, 0);
+  let advancesSum = 0;
+  for (let key in EMPLOYEES) {
+    const currentAdvance = parseFloat(EMPLOYEES[key].all_advances) || 0;
+    advancesSum += currentAdvance;
+  }
+
+  const table =$(".employee_salary").DataTable();
+  $(table.column(7).footer()).html(numberWithSpaces(advancesSum));
+
+  const sumToPay = document.querySelector(".salary-total span");
+  sumToPay.innerHTML = numberWithSpaces(advancesSum);
+}
+
+function displayEmployeeAdvances(trid) {
+  const modal = document.getElementById("modal_editEmployeeAdvances");
+  const adv_table = modal.querySelector("table tbody");
+  adv_table.innerHTML = "";
+  for (let i=0; i<EMPLOYEES[trid].advances.length; i++) {
+    const tr = createAdvanceTr(EMPLOYEES[trid].advances[i]);
+    adv_table.insertAdjacentElement("beforeend", tr);
+  }
+}
+
+function createAdvanceTr(data) {
   
-  if (data.sum <= 0) {
+  const tr = document.createElement("tr");
+  tr.dataset.trid = data.id;
+
+  const advTd = document.createElement("td");
+  advTd.innerHTML = numberWithSpaces(data.advances);
+
+  const dateTd = document.createElement("td");
+  let date = new Date(data.date_time);
+  dateTd.innerHTML = dateToDMY(date);
+
+  const deleteBtn = createBtnForTable("delete");
+  const actionTd = document.createElement("td");
+  actionTd.insertAdjacentElement('beforeend', deleteBtn);
+
+  tr.insertAdjacentElement("beforeend", dateTd);
+  tr.insertAdjacentElement("beforeend", advTd);
+  tr.insertAdjacentElement("beforeend", actionTd);
+
+  return tr;
+}
+
+function validateData(data, employee) {  
+  console.log(data);
+  if (data.advances <= 0) {
     alert("Укажите сумму аванса");
+    return false;
+  }
+
+  const rest_salary = employee.totalSalaryToPay - data.advances;
+  if (rest_salary < 0) {
+    alert("Аванс превышает остаток заработной платы!");
     return false;
   }
   
@@ -188,6 +356,22 @@ function validateData(data) {
     return false;
   }
   return true;
+}
+
+function createBtnForTable(actionType) {
+  const a = document.createElement("a");
+  a.href = "#";
+  a.classList.add("btn-icon");
+  a.classList.add(actionType+"-btn");
+
+  const i = document.createElement("i");
+  i.classList.add("fa-solid");
+  const className = actionType === 'edit' ? "fa-pen-to-square" : actionType === 'delete' ?  "fa-trash-can" : "fa-save";
+  i.classList.add(className);
+
+  a.insertAdjacentElement('afterbegin', i);
+
+  return a;
 }
 
 function datepickerLocaleRu() {
@@ -243,3 +427,24 @@ function datepickerLocaleRu() {
     yearSuffix: '',
   });
 }
+
+function dateToYMD(date) {
+  if (!date) return null;
+  var d = date.getDate();
+  var m = date.getMonth() + 1; //Month from 0 to 11
+  var y = date.getFullYear();
+  return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+}
+
+function dateToDMY(date) {
+  if (!date) return null;
+  var d = date.getDate();
+  var m = date.getMonth() + 1; //Month from 0 to 11
+  var y = date.getFullYear();
+  //return '' + y + '-' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d);
+  return '' + (d <= 9 ? '0' + d : d) + '.' + (m<=9 ? '0' + m : m) + '.' + y;
+}
+var intVal = function (i) {
+  //return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+  return typeof i === 'string' ? i.replace(/ /g, '') * 1 : typeof i === 'number' ? i : 0;
+};

@@ -277,7 +277,8 @@ function updateModalInputs(value) {
   const fines = isNaN(parseFloat(employee.fines)) ? 0 : parseFloat(employee.fines);
   
   const holiday_pays = isNaN(intVal(modal.querySelector("#holiday_pay").value)) ? 0 : parseFloat(intVal(modal.querySelector("#holiday_pay").value));
-  const advances = isNaN(intVal(modal.querySelector("#advanced_pay").value)) ? 0 : parseFloat(intVal(modal.querySelector("#advanced_pay").value));
+  //const advances = isNaN(intVal(modal.querySelector("#advanced_pay").value)) ? 0 : parseFloat(intVal(modal.querySelector("#advanced_pay").value));
+  const advances = parseFloat(employee.all_advances);
 
   let official_salary = parseFloat(employee.employee_salary) || 0;
   if (!official_salary && employee.direction === 'Цех') {
@@ -537,7 +538,7 @@ function prepareEmployeeModalInfo(trid) {
   }
 
   const holiday_pays = isNaN(parseFloat(employee.holiday_pays)) ? 0 : parseFloat(employee.holiday_pays);
-  const advances = isNaN(parseFloat(employee.advances)) ? 0 : parseFloat(employee.advances);
+  const advances = isNaN(parseFloat(employee.all_advances)) ? 0 : parseFloat(employee.all_advances);
   const salary = employee_salary_fact / working_hours_per_month * worked_hours_per_month;
   const worked_salary_before_tax = salary + bonus - fines + holiday_pays;
   const total_salary = salary + bonus - fines - taxes + holiday_pays - advances;
@@ -559,7 +560,6 @@ function prepareEmployeeModalInfo(trid) {
   modal.querySelector("#salary_fact").value = numberWithSpaces(Math.round(employee_salary_fact));
   modal.querySelector("#total").value = numberWithSpaces(Math.round(total_salary));
   modal.querySelector("#worked_salary_before_tax").value = numberWithSpaces(Math.round(worked_salary_before_tax));
-
 
   appendRows(employee.bonus_fines);
 }
@@ -670,12 +670,13 @@ function calculateSalary(tr) {
   const work_day_plan = parseInt(EMPLOYEES[CURRENT_TR].working_hours_per_month);
   const bonus = isNaN(parseFloat(EMPLOYEES[CURRENT_TR].bonus)) ? 0 : parseFloat(EMPLOYEES[CURRENT_TR].bonus);
   const fines = isNaN(parseFloat(EMPLOYEES[CURRENT_TR].fines)) ? 0 : parseFloat(EMPLOYEES[CURRENT_TR].fines);
-  
+  const advances = isNaN(parseFloat(EMPLOYEES[CURRENT_TR].all_advances)) ? 0 : parseFloat(EMPLOYEES[CURRENT_TR].all_advances);
+    
   const work_day_fact = parseInt(document.querySelector("#modal_editEmployeeSalaryInfo #worked_hours_fact").value) || 0;
   const tax_osms = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_osms").value) || 0;
   const tax_opv = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_opv").value) || 0;
   const tax_ipn = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_ipn").value) || 0;
-  const advances = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #advanced_pay").value) || 0;
+  //const advances = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #advanced_pay").value) || 0;
   const holiday_pays = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #holiday_pay").value) || 0;
    
   EMPLOYEES[CURRENT_TR].worked_hours_per_month = work_day_fact;
@@ -741,7 +742,7 @@ function calcTotals(tableId) {
 
     //}
   }
-console.log(res);
+//console.log(res);
   return res;
 }
 

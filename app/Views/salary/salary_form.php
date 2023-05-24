@@ -57,7 +57,7 @@ if (isset($fzp) && !empty($fzp)) :?>
   <?php endif; ?>
 
   <?php
-  //d($employees);
+  d($employees);
   if (isset($employees) && !empty($employees)) : ?>
     <div class="content salary">
       <div class="salary-head d-flex justify-content-start align-items-center mr-3">
@@ -115,11 +115,14 @@ if (isset($fzp) && !empty($fzp)) :?>
                   <td><span><?= $employee['company'] ?></span></td>
                   <td><span><?= $employee['working_hours_per_month'] ?></span></td>
                   <td><span><?= $employee['worked_hours_per_month'] ?></span></td>
-                  <td><span><?= number_format($employee['employee_salary'], 2, '.', ' ') ?></span></td>
+                  <?php 
+                   $salary = $employee['direction'] === 'Цех' ? $employee['pay_per_hour'] * $employee['working_hours'] : $employee['employee_salary'];
+                  ?>
+                  <td><span><?= number_format($salary, 2, '.', ' ') ?></span></td>
                   <?php $workedSalary = $employee['employee_salary'] / $employee['working_hours_per_month'] * $employee['worked_hours_per_month'];
                   $workedSalaryFact = $employee['employee_salary_fact'] / $employee['working_hours_per_month'] * $employee['worked_hours_per_month'];
                   ?>
-                  <td><span><?= number_format($workedSalary, 2, '.', ' ') ?></span></td>
+                  <td><span><?= number_format($workedSalaryFact, 2, '.', ' ') ?></span></td>
                   <td>
                     <span><?= number_format($employee['bonus'], 2, '.', ' ')?></span>
                   </td>
@@ -129,7 +132,7 @@ if (isset($fzp) && !empty($fzp)) :?>
                   <?php 
                   //const taxes = EMPLOYEES[key].is_tax === "1" ? 0 : EMPLOYEES[key].is_tax === "2" ? (tax_osms + tax_opv + tax_ipn) 
                   $taxes = $employee['is_tax'] == "1" ? 0 : ($employee['is_tax'] == "2" ? $employee['tax_OPV'] + $employee['tax_OSMS'] + $employee['tax_IPN'] : $employee['tax_OPV'] + $employee['tax_IPN']);
-                  $resultSalary = $workedSalaryFact + $employee['holiday_pays'] + $employee['bonus'] - $employee['fines'] - $taxes - $employee['advances']; ?>
+                  $resultSalary = $workedSalaryFact + $employee['holiday_pays'] + $employee['bonus'] - $employee['fines'] - $taxes - $employee['all_advances']; ?>
                   <td><span><?= number_format($resultSalary, 2, '.', ' ') ?></span></td>
                 </tr>
               <?php endforeach; ?>

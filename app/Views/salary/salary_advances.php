@@ -57,7 +57,7 @@ if (isset($fzp) && !empty($fzp)) :?>
   <?php endif; ?>
 
   <?php
-  d($employees);
+  //d($employees);
   if (isset($employees) && !empty($employees)) : ?>
     <div class="content advances">
       <div class="salary-head d-flex justify-content-start align-items-center mr-3">
@@ -66,7 +66,7 @@ if (isset($fzp) && !empty($fzp)) :?>
             Всего <?php echo word_form('сотрудник', count($employees)) ?>
           </p>
 
-          <p> Авансовая ведомость <?//= $month ?> <?//= $year ?> года</p>
+          <p> Авансовая ведомость за <?= $month ?> <?= $year ?> года</p>
         </div>
         <div class="salary-total flex-grow-1">
           <p>Общая сумма к выплате <span></span></p>
@@ -109,8 +109,8 @@ if (isset($fzp) && !empty($fzp)) :?>
                   <td><span><?= $employee['position'] ?></span></td>
                   <td><span><?= $employee['company'] ?></span></td>
                   <td><span><?= $employee['working_hours_per_month'] ?></span></td>
-                  <td><span><?= $employee['salary'] ?></span></td>
-                  <td><span></span></td>
+                  <td><span><?= number_format($employee['employee_salary'], 2, '.', ' ') ?></span></td>
+                  <td><span><?= number_format($employee['all_advances'], 2, '.', ' ') ?></span></td>
                 </tr>
               <?php endforeach; ?>
 
