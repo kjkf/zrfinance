@@ -75,6 +75,7 @@ CREATE TABLE `salary_month` (
 
  `working_hours_per_month` int(11) NOT NULL, -- количество рабочих часов
  `worked_hours_per_month` int(11) NOT NULL,  -- количество отработанных часов
+ `worked_hours_per_month_off` int(11) NOT NULL,  -- количество отработанных часов по официальному табелю(для налогов)
 
  `tax_OSMS` double(10,2) DEFAULT 0,  -- налог ОСМС
  `tax_IPN` double(10,2) DEFAULT 0,  -- налог ИПН

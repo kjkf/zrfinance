@@ -179,6 +179,15 @@ document.addEventListener('DOMContentLoaded', ev => {
     updateModalInputs(e.currentTarget.value);
   });
 
+  const setWorkedOffHoursInput = document.getElementById("worked_hours_off");
+  console.log(setWorkedOffHoursInput);
+  setWorkedOffHoursInput.addEventListener('change', e => {
+    EMPLOYEES[CURRENT_TR].worked_hours_per_month_off = e.currentTarget.value;
+    console.log("val=", e.currentTarget.value);
+    console.log("EMPLOYEES[CURRENT_TR]=", EMPLOYEES[CURRENT_TR].worked_hours_per_month_off);
+    updateModalInputs(setWorkedHoursInput.value);
+  });
+
   const advancedPay = document.getElementById("advanced_pay");
   advancedPay.addEventListener('change', e => {
     updateModalInputs(setWorkedHoursInput.value);
@@ -248,8 +257,8 @@ function update_existing_fzp_salary(input) {
       data: data,
       method: 'POST',
       success: function (result) {
-        const worked_hours = document.querySelector("#worked_hours_fact").value;
-        updateModalInputs(worked_hours);
+        
+        updateModalInputs(document.querySelector("#worked_hours_fact").value);
       },
       fail: function(result) {
         console.error(result);
@@ -259,14 +268,14 @@ function update_existing_fzp_salary(input) {
   }
 }
 
-function saveEmpInfo(modal ) {
+function saveEmpInfo(modal) {
   if (!CURRENT_TR) return false;
   save_tr();
   $('#modal_editEmployeeSalaryInfo').modal('hide');
 }
 
 function updateModalInputs(value) {
- // console.log("updateModalInputs", value, EMPLOYEES[CURRENT_TR]);
+  console.log("updateModalInputs", value, EMPLOYEES[CURRENT_TR]);
   if (!CURRENT_TR) return false;
   value = parseFloat(value);
   const employee = EMPLOYEES[CURRENT_TR];
@@ -285,7 +294,10 @@ function updateModalInputs(value) {
     official_salary = employee.pay_per_hour * employee.working_hours;
   }
   
-  const worked_salary_off = official_salary / parseFloat(employee.working_hours_per_month) * value + holiday_pays;
+  const officialWorkedTime = parseFloat(employee.worked_hours_per_month_off) ? parseFloat(employee.worked_hours_per_month_off) : 0;
+  const workedTime = officialWorkedTime > 0 ? officialWorkedTime : value;
+  const worked_salary_off = official_salary / parseFloat(employee.working_hours_per_month) * workedTime + holiday_pays;
+  //console.log("value="+value, "officialWorkedTime="+officialWorkedTime, "workedTime="+workedTime, "worked_salary_off="+worked_salary_off);
   //console.log(worked_salary_off);
   //если citezenship_type === 3(студент), то налоги не расчитываются
   const tax_osms = employee.contract_type === '3' ? 0 : calcOSMS(worked_salary_off);
@@ -368,8 +380,7 @@ function editBonusFines(type, tr) {
   input.value = intVal(oldValue);
   tds[1].insertAdjacentElement('beforeend', input);
   tds[1].insertAdjacentElement('beforeend', span);
-  tds[2].insertAdjacentElement('afterbegin', saveBtn);
-  
+  tds[2].insertAdjacentElement('afterbegin', saveBtn);  
 }
 
 function updateBonusFines(type, tr) {
@@ -526,6 +537,7 @@ function prepareEmployeeModalInfo(trid) {
 
   const working_hours_per_month = parseInt(employee.working_hours_per_month) || 0;
   const worked_hours_per_month = parseInt(employee.worked_hours_per_month) || 0;
+  const worked_hours_per_month_off = parseInt(employee.worked_hours_per_month_off) || 0;
 
   const employee_salary_fact = parseInt(employee.employee_salary_fact) || 0;
 
@@ -555,6 +567,7 @@ function prepareEmployeeModalInfo(trid) {
 
   modal.querySelector("#working_hours").value = working_hours_per_month;
   modal.querySelector("#worked_hours_fact").value = worked_hours_per_month;
+  modal.querySelector("#worked_hours_off").value = worked_hours_per_month_off;
   modal.querySelector("#worked_salary").value = numberWithSpaces(Math.round(salary));
   modal.querySelector("#official_salary").value = numberWithSpaces(Math.round(official_salary));
   modal.querySelector("#salary_fact").value = numberWithSpaces(Math.round(employee_salary_fact));
@@ -673,6 +686,7 @@ function calculateSalary(tr) {
   const advances = isNaN(parseFloat(EMPLOYEES[CURRENT_TR].all_advances)) ? 0 : parseFloat(EMPLOYEES[CURRENT_TR].all_advances);
     
   const work_day_fact = parseInt(document.querySelector("#modal_editEmployeeSalaryInfo #worked_hours_fact").value) || 0;
+  const work_day_off = parseInt(document.querySelector("#modal_editEmployeeSalaryInfo #worked_hours_off").value) || 0;
   const tax_osms = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_osms").value) || 0;
   const tax_opv = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_opv").value) || 0;
   const tax_ipn = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #tax_ipn").value) || 0;
@@ -680,6 +694,7 @@ function calculateSalary(tr) {
   const holiday_pays = intVal(document.querySelector("#modal_editEmployeeSalaryInfo #holiday_pay").value) || 0;
    
   EMPLOYEES[CURRENT_TR].worked_hours_per_month = work_day_fact;
+  EMPLOYEES[CURRENT_TR].worked_hours_per_month_off = work_day_off;
   EMPLOYEES[CURRENT_TR].tax_OSMS = tax_osms;
   EMPLOYEES[CURRENT_TR].tax_OPV = tax_opv;
   EMPLOYEES[CURRENT_TR].tax_IPN = tax_ipn;
@@ -789,6 +804,7 @@ function save_tr() {
   const data = {
     'fzp_id' : EMPLOYEES[CURRENT_TR].fzp_id,
     'worked_hours_per_month' : EMPLOYEES[CURRENT_TR].worked_hours_per_month,
+    'worked_hours_per_month_off' : EMPLOYEES[CURRENT_TR].worked_hours_per_month_off,
     'tax_OSMS' : EMPLOYEES[CURRENT_TR].tax_OSMS,
     'tax_OPV' : EMPLOYEES[CURRENT_TR].tax_OPV,
     'tax_IPN' : EMPLOYEES[CURRENT_TR].tax_IPN,

@@ -159,7 +159,7 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
 
   public function getEmployeesInfo($fzp_id, $date)
   {
-    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, employee.company as company_id, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`,  bf.bonus as bonus, bf.fines as fines, `tax_OSMS`, `tax_IPN`, `tax_OPV`, employee_salary_fact,  salary_month.advances, salary_month.holiday_pays, employee.contract_type,  resident_type.citezenship_type, is_tax, salary_month.pay_per_hour,
+    $sql = "SELECT employee.id, employee.name, employee.surname, employee.`email`, employee.`salary`, position.name as position, department.name as department, direction.name as direction, company.name as company, employee.company as company_id, `employee_salary`, `working_hours_per_month`, `worked_hours_per_month`, `worked_hours_per_month_off`,  bf.bonus as bonus, bf.fines as fines, `tax_OSMS`, `tax_IPN`, `tax_OPV`, employee_salary_fact,  salary_month.advances, salary_month.holiday_pays, employee.contract_type,  resident_type.citezenship_type, is_tax, salary_month.pay_per_hour,
     (SELECT sum(`advances`) FROM `advances` WHERE `employee_id`=salary_month.`employee_id` and `salary_fzp`=salary_month.`salary_fzp` GROUP by `employee_id` and `salary_fzp`) as all_advances,
     CASE WHEN direction.name = 'Цех' THEN (select `working_6_days`*8 from working_time_balance where year = year(?) AND `month`= month(?))
     ELSE (select `w40_5d_hours` from working_time_balance where year = year(?) AND `month`= month(?))

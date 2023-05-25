@@ -46,8 +46,8 @@
           <div class="col-sm-8">
             <div class="row">
             <div class="col-4">
-                <label for="working_hours">Кол-во офиц.рабочих часов</label>
-                <input type="text" class="form-control" id="working_hours">
+                <label for="worked_hours_off">Кол-во офиц. рабочих часов</label>
+                <input type="text" class="form-control" min=0 step=10 id="worked_hours_off" placeholder="Введите колво официально отработанных часов ">
               </div>
               <div class="col-4">
                 <label for="worked_hours_fact">Кол-во отработанных часов</label>

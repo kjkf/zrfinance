@@ -57,7 +57,7 @@ if (isset($fzp) && !empty($fzp)) :?>
   <?php endif; ?>
 
   <?php
-  d($employees);
+  // d($employees);
   if (isset($employees) && !empty($employees)) : ?>
     <div class="content salary">
       <div class="salary-head d-flex justify-content-start align-items-center mr-3">
