@@ -317,6 +317,7 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     //print_r($_POST['worked_hours_per_month']);
     $builder = $this->db->table('salary_month');
     $builder->set('worked_hours_per_month', $_POST['worked_hours_per_month']);
+    $builder->set('worked_hours_per_month_off', $_POST['worked_hours_per_month_off']);
     $builder->set('advances', $_POST['advances']);
     $builder->set('holiday_pays', $_POST['holiday_pays']);
     $builder->set('tax_OSMS', $_POST['tax_OSMS']);
