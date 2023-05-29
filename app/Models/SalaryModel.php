@@ -451,6 +451,12 @@ FROM `bonus_fines` where bonus_fines.`salary_fzp`= ?  group by bonus_fines.`empl
     
     return $builder->delete();
   }
+  public function delete_advance($id) { 
+    $sql = "delete FROM `advances_month` where salary_fzp = ?";
+
+    $query = $this->db->query($sql, array($id));
+    return $query; 
+  }
 
   public function update_existing_fzp_salary() {
     $emp_id = $_POST['emp_id'];

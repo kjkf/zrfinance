@@ -70,7 +70,9 @@
           <?php
               if ($fzp['is_advance'] != 1) :
             ?>
-            <a href="<?=base_url('salary/create_advance/'.$fzp['id'])?>" title="Создать авансовую ведомость" data-fzpid="<?=$fzp['id']?>" class="btn-icon add-btn" name="edit_item"><i class="fas fa-plus-circle"></i> </a>
+              <a href="<?=base_url('salary/create_advance/'.$fzp['id'])?>" title="Создать авансовую ведомость" data-fzpid="<?=$fzp['id']?>" class="btn-icon add-btn" name="edit_item"><i class="fas fa-plus-circle"></i> </a>
+            <?php else: ?>
+              <a href="<?=base_url('salary/delete_advance/'.$fzp['id'])?>" title="Удалить авансовую ведомость" data-fzpid="<?=$fzp['id']?>" class="btn-icon delete-btn" name="edit_item"><i class="fas fa-trash"></i> </a>
             <?php endif; ?>
           </td>
         </tr>

@@ -183,8 +183,8 @@ document.addEventListener('DOMContentLoaded', ev => {
   console.log(setWorkedOffHoursInput);
   setWorkedOffHoursInput.addEventListener('change', e => {
     EMPLOYEES[CURRENT_TR].worked_hours_per_month_off = e.currentTarget.value;
-    console.log("val=", e.currentTarget.value);
-    console.log("EMPLOYEES[CURRENT_TR]=", EMPLOYEES[CURRENT_TR].worked_hours_per_month_off);
+    //console.log("val=", e.currentTarget.value);
+    //console.log("EMPLOYEES[CURRENT_TR]=", EMPLOYEES[CURRENT_TR].worked_hours_per_month_off);
     updateModalInputs(setWorkedHoursInput.value);
   });
 
@@ -226,6 +226,11 @@ document.addEventListener('DOMContentLoaded', ev => {
         icon.classList.remove("fa-pencil");
         icon.classList.add("fa-check");
         input.focus();
+        console.log(EMPLOYEES[CURRENT_TR].employee_salary, EMPLOYEES[CURRENT_TR].direction);
+        console.log(parseInt(EMPLOYEES[CURRENT_TR].employee_salary) === 0 && EMPLOYEES[CURRENT_TR].direction === 'Цех');
+        if (parseInt(EMPLOYEES[CURRENT_TR].employee_salary) === 0 && EMPLOYEES[CURRENT_TR].direction === 'Цех') {
+          input.value = EMPLOYEES[CURRENT_TR].pay_per_hour;
+        }
       } else {
         input.setAttribute("disabled", true);
         icon.classList.add("fa-pencil");
@@ -257,7 +262,9 @@ function update_existing_fzp_salary(input) {
       data: data,
       method: 'POST',
       success: function (result) {
-        
+        if (parseInt(EMPLOYEES[CURRENT_TR].employee_salary) === 0 && EMPLOYEES[CURRENT_TR].direction === 'Цех') {
+          input.value = numberWithSpaces(EMPLOYEES[CURRENT_TR].pay_per_hour*EMPLOYEES[CURRENT_TR].working_hours);
+        }
         updateModalInputs(document.querySelector("#worked_hours_fact").value);
       },
       fail: function(result) {
@@ -302,7 +309,9 @@ function updateModalInputs(value) {
   //если citezenship_type === 3(студент), то налоги не расчитываются
   const tax_osms = employee.contract_type === '3' ? 0 : calcOSMS(worked_salary_off);
   const tax_opv = employee.contract_type === '3' ? 0 : calcTaxOVP(worked_salary_off);
-  const tax_ipn = employee.contract_type === '3' ? 0 : calc_IPN_taxes(worked_salary_off, employee.contract_type,employee.citezenship_type); 
+  let tax_ipn = employee.contract_type === '3' ? 0 : calc_IPN_taxes(worked_salary_off, employee.contract_type,employee.citezenship_type); 
+
+  tax_ipn = tax_ipn < 0 ? 0 : tax_ipn;
 
   const taxes = employee.is_tax === "1" ? 0 : employee.is_tax === "2" ? (tax_osms + tax_opv + tax_ipn) : (tax_opv + tax_ipn);
 
@@ -542,12 +551,17 @@ function prepareEmployeeModalInfo(trid) {
   const employee_salary_fact = parseInt(employee.employee_salary_fact) || 0;
 
   let official_salary = parseInt(employee.employee_salary) || 0;
+  let salaryFldType = "employee_salary";
   //console.log(official_salary, employee.direction);
   //console.log(!official_salary && employee.direction === 'Цех');
   //console.log( employee.pay_per_hour, employee.working_hours);
   if (!official_salary && employee.direction === 'Цех') {
     official_salary = employee.pay_per_hour * employee.working_hours;
+
+    salaryFldType = "pay_per_hour";
   }
+
+  modal.querySelector("#official_salary").dataset.fld = salaryFldType;
 
   const holiday_pays = isNaN(parseFloat(employee.holiday_pays)) ? 0 : parseFloat(employee.holiday_pays);
   const advances = isNaN(parseFloat(employee.all_advances)) ? 0 : parseFloat(employee.all_advances);

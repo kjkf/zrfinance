@@ -337,6 +337,11 @@ class Salary extends BaseController
     echo $res;
   }
 
+  public function delete_advance($id) {
+    $res = $this->salaryModel->delete_advance($id);
+    return  redirect()->to('salary');
+  }
+
   public function delet_bonus_fines() {
     $res = $this->salaryModel->delet_bonus_fines();
     echo $res;
