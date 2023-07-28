@@ -388,3 +388,7 @@ table.time_balance td:first-child {
 .disable_edit:hover {
   color: #212529;
 }
+
+.btn-icon-lg .fa-save:before {
+  font-size: 22px;
+}

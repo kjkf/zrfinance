@@ -201,6 +201,15 @@ CREATE TABLE `tax_pay_types` (
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE `parttime_worker` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `base_job_id` int(11) NOT NULL,
+ `part_job_id` int(11) NOT NULL,
+ 
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- ================================ ALTER TABLES ===========================
 --ALTER TABLE employee ADD COLUMN `contract_type` int(11) DEFAULT NULL;
 --ALTER TABLE employee ADD COLUMN `is_tax` int(11) DEFAULT 1;
@@ -209,6 +218,8 @@ CREATE TABLE `tax_pay_types` (
 --ALTER TABLE employee ADD COLUMN `salary` double(10, 2) not null DEFAULT 0;
 --ALTER TABLE employee ADD COLUMN `salary_fact` double(10, 2) not null DEFAULT 0;
 --ALTER TABLE employee ADD COLUMN `pay_per_hour` double(10, 2) not null DEFAULT 0;
+--ALTER TABLE employee ADD COLUMN `parttime_is_base` int(11) DEFAULT 1;
+--ALTER TABLE employee ADD COLUMN `parttime_is_deduction` int(11) DEFAULT 1;
 
 --ALTER TABLE employee ADD KEY `contract_type` (`contract_type`);
 --ALTER TABLE employee ADD KEY `department` (`department`);

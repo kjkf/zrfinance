@@ -10,7 +10,7 @@
     ?>
    
 <div class="modal fade" id="modal_employeeInfo" tabindex="-1" aria-labelledby="modal_addItemLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modal_addItemLabel">Личная карточка сотрудника</h5>
@@ -19,7 +19,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-
         <div class="row flex-grow-1">
           <div class="col-4">
             <label for="surname">Фамилия</label>
@@ -32,6 +31,18 @@
           <div class="col-4">
             <label for="middlename">Отчество</label>
             <input type="text" class="form-control" id="middlename" placeholder="Укажите отчество сотрудника">
+          </div>          
+        </div>
+        <div class="row mt-3 parttime-basejob-settings d-none">
+          <div class="col-2">
+            <label for="is_base_job">
+              <input type="checkbox" class="" id="is_base_job" name="is_base_job"> Основная работа
+            </label>
+          </div>
+          <div class="col-2">
+            <label for="is_deduction">
+              <input type="checkbox" class="" id="is_deduction" name="is_deduction"> Применить вычет
+            </label>
           </div>
         </div>
         <hr />
@@ -157,6 +168,74 @@
             <label for="fire_date">Дата увольнения:</label>
             <input type="text" class="form-control" id="fire_date" placeholder="Укажите дату увольнения">
           </div>
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+          <button class="btn btn-success btn-sm mr-1" id="addPartTimeWorker">Добавить совмещение</button>
+        </div>
+        <div class="row mt-3 parttimes d-none">
+          <table>
+            <thead>
+              <th>Основная работа</th>
+              <th>Компания</th>
+              <th>Отдел</th>
+              <th>Должность</th>
+              <th>Дата начала</th>
+              <th>Официальная зар.плата</th>
+              <th>Фактическая зар.плата</th>
+              <th>Применить вычет</th>              
+              <th>Дата окончания</th>
+              <th></th>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+              <td>
+                <input type="checkbox" class="" id="parttime_is_base">
+              </td>
+              <td>
+                <select class="form-select" name="" id="parttime_company">
+                  <option value="-1">Выберите компанию</option>
+                  <?php foreach($companies as $comp) :?>
+                    <option value="<?=$comp['id']?>"><?=$comp['name']?></option>
+                  <?php endforeach;?>
+                </select>
+              </td>
+              <td>
+                <select class="form-select" name="" id="parttime_department">
+                  <option value="-1">Выберите отдел</option>
+                  <?php foreach($department as $depart) :?>
+                    <option value="<?=$depart['id']?>"><?=$depart['name']?></option>
+                  <?php endforeach;?>
+                </select>
+              </td>
+              <td>
+                <select class="form-select" name="" id="parttime_position">
+                  <option value="-1">Выберите должность</option>
+                  <?php foreach($positions as $pos) :?>
+                    <option value="<?=$pos['id']?>"><?=$pos['name']?></option>
+                  <?php endforeach;?>
+                </select>
+              </td>
+              <td>
+                <input type="text" class="form-control" id="parttime_start">
+              </td>
+              <td>
+                <input type="text" class="form-control" id="parttime_salary_official">
+              </td>
+              <td>
+                <input type="text" class="form-control" id="parttime_salary_fact">
+              </td>
+              <td>
+                <input type="checkbox" class="" id="parttime_deduction">
+              </td>
+              <td>
+                <input type="text" class="form-control" id="parttime_end">
+              </td>
+              <td>
+                <a href="#" class="btn-icon-lg btn-icon save-btn"  id="parttime_save"><i class="fas fa-save"></i></a>
+              </td>
+            </tfoot>
+          </table>
         </div>
 
         <div class="d-flex justify-content-end buttons mt-5">

@@ -47,12 +47,13 @@ class EmployeesModel extends Model
 
   public function getActiveEmployees()
   {
-    $sql = "SELECT employee.id, concat(`surname`, ' ', `employee`.`name`) as fio, `company`.`name` as company, employee.company as companyId, `email`, `telephone`, position.name as position, department.name as department, salary, salary_fact, is_tax , pay_per_hour
+    $sql = "SELECT employee.id, concat(`surname`, ' ', `employee`.`name`) as fio, `company`.`name` as company, employee.company as companyId, `email`, `telephone`, position.name as position, department.name as department, salary, salary_fact, is_tax , pay_per_hour, parttime_is_deduction, parttime_is_base, 
+    case when parttime_is_base = 0 then (select empl.id from employee as empl where empl.parttime_is_base = 1 and concat(empl.`surname`, ' ', `empl`.`name`) = concat(employee.`surname`, ' ', `employee`.`name`)) else -1 end  as main_id
               FROM `employee` 
               left join department on department.id = employee.department
               left join position on position.id = employee.position
               left join company on company.id = employee.company
-              where `fire_date` is null and employee.company in (1,2, 3, 4,5)
+              where `fire_date` is null and employee.company in (1,2,3,4,5)
               order by employee.company asc,  `surname` ASC";
 
 
@@ -70,19 +71,54 @@ class EmployeesModel extends Model
   public function getEmployeeById()
   {
     $id = $_POST['trid'];
-    $sql = "SELECT employee.id, `surname`, `employee`.`name`, `company`.`name` as company, employee.company as company, `email`, `telephone`, position,  department, salary, salary_fact, salary, birth_date, middlename, start_date, fire_date, direction, `contract_type`, `is_tax`, `pay_per_hour`, resident_type.`citezenship_type`, resident_type.`country`
+    $sql = "SELECT employee.id, `surname`, `employee`.`name`, `company`.`name` as company, employee.company as company, `email`, `telephone`, position,  department, salary_fact, salary, birth_date, middlename, start_date, fire_date, direction, `contract_type`, `is_tax`, `pay_per_hour`, resident_type.`citezenship_type`, resident_type.`country`, parttime_is_deduction, parttime_is_base
               FROM `employee` 
               left join resident_type on resident_type.`employee_id` = employee.id
               left join department on department.id = employee.department
               left join position on position.id = employee.position
               left join company on company.id = employee.company
-              where employee.id = ?
+              where employee.id = ? 
               order by employee.id asc";
     $query = $this->db->query($sql, array($id));
 
     if (!empty($sql)) {
-      $employees = $query->getResultArray();;
+      $employees = $query->getResultArray();
       //$res = $this->prepareEmployeesInfoByEmpId($employees);
+      return $employees;
+    } else {
+      return false;
+    }
+  }
+
+  public function getPartTimeInfo() {
+    $id = $_POST['trid'];
+
+    $sql = "SELECT employee.id, position, position.name as position_name, company, company.name as company_name,  department, department.name as department_name, salary, salary_fact,  start_date, fire_date, direction, parttime_is_deduction, parttime_is_base
+            FROM `employee` 
+            left join department on department.id = employee.department
+            left join position on position.id = employee.position
+            left join company on company.id = employee.company
+            where  `parttime_is_base`=0 and employee.surname=(select surname from employee where employee.id = ?)
+            order by employee.id asc"; //
+    $query = $this->db->query($sql, array($id));
+
+    if (!empty($sql)) {
+      $employees = $query->getResultArray();
+      return $employees;
+    } else {
+      return false;
+    }
+  }
+
+  public function get_employee_byFIO() {
+    $name = $_POST['name'];
+    $surname = $_POST['surname'];
+    $middlename = $_POST['middlename'];
+    $sql = "SELECT id FROM `employee` where `name`=? and `surname`=? and (`middlename` is null or `middlename`=?) and fire_date is null";
+    $query = $this->db->query($sql, array($name, $surname, $middlename));
+
+    if (!empty($sql)) {
+      $employees = $query->getResultArray();
       return $employees;
     } else {
       return false;
@@ -118,11 +154,13 @@ class EmployeesModel extends Model
       'contract_type' => empty($_POST['contract_type']) ? NULL : $_POST['contract_type'],
       'fire_date' => empty($_POST['fire_date']) ? NULL : $_POST['fire_date'],
       'start_date' => empty($_POST['start_date']) ? NULL : $_POST['start_date'],
-      //$start_date = $this->getDateParam($_POST['start_date']);
       'birth_date' => empty($_POST['birth_date']) ? NULL : $_POST['birth_date'],
+      'parttime_is_deduction' => isset($_POST['parttime_is_deduction']) ? $_POST['parttime_is_deduction'] : 1,
+      'parttime_is_base' => isset($_POST['parttime_is_base']) ? $_POST['parttime_is_base'] : 1,
   ];
   //$sql = $builder->set($data)->getCompiledInsert();
   //echo $sql;
+  //print_r($_POST['parttime_is_base']);
   $builder->insert($data);
    $newId = $this->db->insertID();
 
@@ -345,6 +383,7 @@ class EmployeesModel extends Model
 
   private function prepareEmployeesInfo($employees)
   {
+    $ares = array();
     $pk = array();
     $td = array();
     $montaj = array();
@@ -352,6 +391,7 @@ class EmployeesModel extends Model
     $pk_key = "";
     $td_key = "";
     $mon_key = "";
+    $ares_key = "";
     foreach ($employees as $item) {
       if ($item['companyId'] == 2) {
         array_push($pk, $item);
@@ -359,6 +399,9 @@ class EmployeesModel extends Model
       } else if ($item['companyId'] == 3) {
         array_push($td, $item);
         $td_key = $item['company'];
+      }  else if ($item['companyId'] == 5) {
+        array_push($ares, $item);
+        $ares_key = $item['company'];
       } else {
         array_push($montaj, $item);
         $mon_key = $item['company'];
@@ -368,6 +411,7 @@ class EmployeesModel extends Model
       $pk_key => $pk,
       $td_key => $td,
       $mon_key => $montaj,
+      $ares_key => $ares,
     );
     return $res;
   }
@@ -473,5 +517,29 @@ class EmployeesModel extends Model
     } else {
       return false;
     }
+  }
+
+  public function update_employee_parttime_info() {
+    $id = $_POST['trid'];
+    $isParttimeDeductionChanged = $_POST['isParttimeDeductionChanged'];
+    $isBaseJobChanged = $_POST['isBaseJobChanged'];
+
+    $builder = $this->db->table('employee');
+//`parttime_is_deduction` `parttime_is_base`
+    if ($isParttimeDeductionChanged == 1) {
+      $builder->set('parttime_is_deduction', 0);  
+    }
+    
+    if ($isBaseJobChanged == 1) {
+      $builder->set('parttime_is_base', 0);  
+    }
+
+    $builder->where('id<>'+$id+' and `surname` = (select `surname` from employee where id='+$id);
+      //$sql = $builder->getCompiledUpdate();
+      //print_r($sql);
+    $res = $builder->update();
+
+    return $res;
+    
   }
 }

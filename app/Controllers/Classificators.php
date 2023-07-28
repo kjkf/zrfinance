@@ -93,7 +93,6 @@ class Classificators extends BaseController
         'department' => $department,
       );
     }
-
     public function get_fired_employees() {
       $employeesModel = new \App\Models\EmployeesModel;
       $firedEmployees = $employeesModel->get_fired_employees();
@@ -103,6 +102,16 @@ class Classificators extends BaseController
     public function get_employee_byId() {
       $employeeModel = new \App\Models\EmployeesModel();
       $employee = $employeeModel->getEmployeeById();
+      if (isset($employee) && !empty($employee)) {
+        $employee[0]["part_time_job"] = $employeeModel->getPartTimeInfo();
+      }
+      
+      echo  json_encode($employee);
+    }
+
+    public function get_employee_byFIO() {
+      $employeeModel = new \App\Models\EmployeesModel();
+      $employee = $employeeModel->get_employee_byFIO();
       echo  json_encode($employee);
     }
 
@@ -112,7 +121,6 @@ class Classificators extends BaseController
       
       echo $employeeId;
     }
-
 
     public function update_employee_byId() {
       $employeeModel = new \App\Models\EmployeesModel();
@@ -127,5 +135,9 @@ class Classificators extends BaseController
       return $res;
     }
     
+    public function update_employee_parttime_info() {
+      $employeeModel = new \App\Models\EmployeesModel();
+      return $employeeModel->update_employee_parttime_info();
+    }
     
 }

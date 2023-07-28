@@ -4,6 +4,7 @@
       <button id="addE" class="btn btn-secondary save-em-info">Добавить сотрудника</button>
       
     </div>
+    
     <table class="employees" id = "tbl_employees">
     <colgroup>
       <col style="width: 5%">
@@ -30,6 +31,7 @@
       </thead>
       <tbody>
         <?php if (isset($employees) && !empty($employees)) : ?>
+          
           <?php 
             $count = 1;
             foreach($employees as $key=>$company) :?>
@@ -37,7 +39,7 @@
                 <td colspan=9 </td><?= $key ?></td>
               </tr>
               <?php foreach($company as $employee) :?>
-                <tr class="emp_info"  data-trid="<?= $employee['id'] ?>">
+                <tr class="emp_info"  data-trid="<?= $employee['id'] ?>" data-main="<?= $employee['main_id']?>">
                   <td class=""><?=$count++;?></td>
                   <td class="td_text"><?= $employee['fio'] ?></td>
                   <td class="td_text"><?= $employee['company'] ?></td>
