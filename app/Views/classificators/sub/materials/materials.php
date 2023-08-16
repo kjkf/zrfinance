@@ -3,7 +3,8 @@
 <div class="agreements-content">
 
   <div class="card card-body">
-  <search-dropdown nid="materialsList" ntitle="Выберите материал"></search-dropdown>
+    
+    <search-dropdown nid="materialsList" ntitle="Выберите материал"></search-dropdown>
     <div class="d-flex justify-content-end buttons mt-2">
       <button id="arrivalMaterial" class="btn btn-secondary btn-sm mr-1">Приход материала</button>
       <button id="consumptionMaterial" class="btn btn-secondary btn-sm mr-1">Расход материала</button>

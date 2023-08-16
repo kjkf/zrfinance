@@ -2,12 +2,7 @@ class SearchDropdown extends HTMLElement {
   constructor() {
     super();
     this.title = "Выберите";
-    // элемент создан
-  }
 
-  connectedCallback() {
-    // браузер вызывает этот метод при добавлении элемента в документ
-    // (может вызываться много раз, если элемент многократно добавляется/удаляется)
     const nid = this.getAttribute('nid');
     const items = OBJ[nid];
     
@@ -17,24 +12,32 @@ class SearchDropdown extends HTMLElement {
     let lis = "";
     if (items) {      
       items.forEach(item => {
-        lis += `<a href="#about">${item.material}</a>`;
+        lis += `<div class="dropdown-item">${item.material}</div>`;
       });
     }
 
-    this.innerHTML = `<div class="dropdown dropdown--search">
+    // элемент создан
+    const shadow = this.attachShadow({mode: 'open'});
+    const elemHTML = `
+    <link rel="stylesheet" href="http://zrfinance/assets/css/webcomponents.css">
+    <div class="dropdown dropdown--search">
     <button class="dropbtn"> ${this.title} </button>
-    <div id="myDropdown" class="dropdown-content">
+    <div class="dropdown-content">
       <input type="text" placeholder="Поиск.." class="search-input">
       <div class="dropdown-items"> ${lis} </div>
     </div>
   </div>`;
 
-  
-  this.querySelector("button.dropbtn").addEventListener('click', this._onClick.bind(this));
-  this.querySelector("input.search-input").addEventListener('keyup', this._filter.bind(this));
+  shadow.innerHTML = elemHTML;
+
+  shadow.querySelector("button.dropbtn").addEventListener('click', this._onClick.bind(this));
+  shadow.querySelector("input.search-input").addEventListener('keyup', this._filter.bind(this));
   document.addEventListener('keyup', this._hide.bind(this));
-  this.querySelector(".dropdown-content").addEventListener('click', this._setValue.bind(this));
-  
+  shadow.querySelector(".dropdown-content").addEventListener('click', this._setValue.bind(this));
+  }
+
+  connectedCallback() {
+    
   }
 
   disconnectedCallback() {
@@ -58,62 +61,68 @@ class SearchDropdown extends HTMLElement {
   // у элемента могут быть ещё другие методы и свойства
 
   _onClick() {
-    this.querySelector("#myDropdown").classList.toggle("show");
-    this.querySelector(".dropdown").classList.toggle("open");
+    let shadow = this.shadowRoot;
+    shadow.querySelector(".dropdown-content").classList.toggle("show");
+    shadow.querySelector(".dropdown").classList.toggle("open");
   }
   
   _filter() {
-    let input, filter, ul, li, a, i;
-    input = this.querySelector(".search-input");
+    let input, filter, ul, li, item, i;
+    let shadow = this.shadowRoot; 
+    input = shadow.querySelector(".search-input");
     
     filter = input.value.toUpperCase();
     const div = input.closest(".dropdown-content");
-    a = div.getElementsByTagName("a");
-    for (i = 0; i < a.length; i++) {
-      let txtValue = a[i].textContent || a[i].innerText;
+    item = div.querySelectorAll(".dropdown-item");
+    for (i = 0; i < item.length; i++) {
+      let txtValue = item[i].textContent || item[i].innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        a[i].style.display = "";
+        item[i].style.display = "";
       } else {
-        a[i].style.display = "none";
+        item[i].style.display = "none";
       }
     }
   }
 
   _showAllItems() {
-    let input, filter, ul, li, a, i;
-    input = this.querySelector(".search-input");
+    let input, filter, ul, li, item, i;
+    
+    let shadow = this.shadowRoot;
+    input = shadow.querySelector(".search-input");
     
     filter = input.value.toUpperCase();
     const div = input.closest(".dropdown-content");
-    a = div.getElementsByTagName("a");
-    for (i = 0; i < a.length; i++) {
-      a[i].style.display = "";
+    item = div.querySelectorAll(".dropdown-item");
+    for (i = 0; i < item.length; i++) {
+      item[i].style.display = "";
     }
   }
 
   _hide(event) {
+    let shadow = this.shadowRoot;
     if (event.key==='Escape') {
-      this.querySelector("#myDropdown").classList.remove("show");
-      this.querySelector(".dropdown").classList.remove ("open");
-      this.querySelector("button.dropbtn").textContent = this.title;
-      this.querySelector("input.search-input").value = "";
+      shadow.querySelector(".dropdown-content").classList.remove("show");
+      shadow.querySelector(".dropdown").classList.remove ("open");
+      shadow.querySelector("button.dropbtn").textContent = this.title;
+      shadow.querySelector("input.search-input").value = "";
       this._showAllItems();
     }
     
   }
 
   _setValue(event) {
-    const target = event.target.closest("a");
+    let shadow = this.shadowRoot;
+    const target = event.target.closest(".dropdown-item");
     if (!target) {
       return false;
     }
     
     this.title = target.textContent || target.innerText;
-    this.querySelector("button.dropbtn").textContent = this.title;
+    shadow.querySelector("button.dropbtn").textContent = this.title;
 
-    this.querySelector("#myDropdown").classList.remove("show");
-    this.querySelector(".dropdown").classList.remove ("open");
-    this.querySelector("input.search-input").value = "";
+    shadow.querySelector(".dropdown-content").classList.remove("show");
+    shadow.querySelector(".dropdown").classList.remove ("open");
+    shadow.querySelector("input.search-input").value = "";
     this._showAllItems();
   }
 }
