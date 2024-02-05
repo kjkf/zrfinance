@@ -428,5 +428,13 @@ if(isset($page_name) && $page_name == "finance_movements"){ ?>
   <script src="<?= base_url('assets/js/salary_view.js')?>"></script>
 <?php }?>
 
+<?php if(isset($page_name) && $page_name == 'funds'){ ?>
+  <script src="<?= base_url('assets/vendors/jquery/jquery-ui.min.js')?>"></script>
+  <script src="<?= base_url('assets/vendors/datatables/datatables.min.js')?>" ></script>
+  <script src="<?= base_url('assets/vendors/datatables/dataTables.fixedColumns.min.js')?>"></script>
+  <script src="<?= base_url('assets/js/helper.js')?>"></script>
+  <script src="<?= base_url('assets/js/analytics_report.js')?>"></script>
+<?php }?>
+
 </body>
 </html>

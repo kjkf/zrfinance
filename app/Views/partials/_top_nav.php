@@ -18,6 +18,7 @@
       <ul class="dropdown-menu">
         <?php if ($is_admin || $is_chief) :?>
         <li><a class="dropdown-item" href="<?php echo base_url('dashboard')?>">Движение</a></li>
+        <li><a class="dropdown-item" href="<?php echo base_url('analytics')?>">Аналитика</a></li>
         <li><a class="dropdown-item" href="<?php echo base_url('report')?>">Отчёты</a></li>
         
         <?php endif; ?>
