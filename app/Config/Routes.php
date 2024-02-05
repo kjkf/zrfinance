@@ -48,6 +48,9 @@ $routes->group('', ['filter' => 'authCheck'], function($routes){
   $routes->get('/salary/delete_advance/(:any)', 'Salary::delete_advance/$1');
   $routes->get('/salary/advance/(:any)', 'Salary::update_advance/$1');
   $routes->get('/report', 'Report::index');
+  $routes->get('/analytics', 'Funds::index');
+  //$routes->get('/importCsvToDb', 'Funds::importCsvToDb');
+  $routes->match(['get', 'post'], 'Funds/importCsvToDb', 'Funds::importCsvToDb');
 });
 
 $routes->group('', ['filter' => 'alreadyLoggedIn'], function($routes){
