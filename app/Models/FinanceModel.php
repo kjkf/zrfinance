@@ -77,13 +77,13 @@ class FinanceModel extends Model
       $sql = "SELECT
                 receipt.*,
                 receipt_item.name as item_name,
-                agreement_forZR.agreement_num as agreement_name,
+                agreement_forzr.agreement_num as agreement_name,
                 employee.name as emp_surname,
                 employee.surname as emp_name,
                 receipt_change.new_value as sum_new_value
               FROM receipt
               LEFT JOIN receipt_item ON receipt_item.id = receipt.item
-              LEFT JOIN agreement_forZR ON agreement_forZR.id = receipt.agreement_forzr
+              LEFT JOIN agreement_forzr ON agreement_forzr.id = receipt.agreement_forzr
               LEFT JOIN employee ON employee.id = receipt.employee
               LEFT JOIN (SELECT * FROM receipt_change WHERE receipt_change.new_status in (3,6)) as receipt_change ON receipt_change.record_id = receipt.id
               WHERE DATE(receipt.date_time) = ? AND status <> 5
@@ -132,15 +132,15 @@ class FinanceModel extends Model
       $sql = "SELECT
                   expense.*,
                   expense_item.name as item_name,
-                  agreement_forZR.agreement_num as agreement_forZR_name,
-                  agreement_fromZR.agreement_num as agreement_fromZR_name,
+                  agreement_forzr.agreement_num as agreement_forzr_name,
+                  agreement_fromzr.agreement_num as agreement_fromzr_name,
                   employee.name as emp_surname,
                   employee.surname as emp_name,
                   expense_change.new_value as sum_new_value
               FROM expense
               LEFT JOIN expense_item ON expense_item.id = expense.item
-              LEFT JOIN agreement_forZR ON agreement_forZR.id = expense.agreement_forzr
-              LEFT JOIN agreement_fromZR ON agreement_fromZR.id = expense.agreement_fromzr
+              LEFT JOIN agreement_forzr ON agreement_forzr.id = expense.agreement_forzr
+              LEFT JOIN agreement_fromzr ON agreement_fromzr.id = expense.agreement_fromzr
               LEFT JOIN employee ON employee.id = expense.employee
               LEFT JOIN (SELECT * FROM expense_change WHERE expense_change.new_status in (3,6)) as expense_change ON expense_change.record_id = expense.id
               WHERE DATE(expense.date_time) = ? AND status <> 5
@@ -205,22 +205,22 @@ class FinanceModel extends Model
     public function get_contractors($company_id, $item_type){
 
       $sql = "SELECT
-                COUNT(agreement_forZR.id),
-                agreement_forZR.executer as contractor_id,
+                COUNT(agreement_forzr.id),
+                agreement_forzr.executer as contractor_id,
                 contractor.short_name  as contractor_name
-              FROM agreement_forZR
-              LEFT JOIN contractor ON contractor.id = agreement_forZR.executer
+              FROM agreement_forzr
+              LEFT JOIN contractor ON contractor.id = agreement_forzr.executer
 			        WHERE company = ?
               GROUP BY contractor_id
 
               UNION ALL
 
               SELECT
-              	COUNT(agreement_fromZR.id),
-                agreement_fromZR.customer as contractor_id,
+              	COUNT(agreement_fromzr.id),
+                agreement_fromzr.customer as contractor_id,
                 contractor.short_name as contractor_name
-              FROM agreement_fromZR
-              LEFT JOIN contractor ON contractor.id = agreement_fromZR.customer
+              FROM agreement_fromzr
+              LEFT JOIN contractor ON contractor.id = agreement_fromzr.customer
               WHERE company = ?
               GROUP BY contractor_id";
       $query = $this->db->query($sql, [intval($company_id),intval($company_id)]);
@@ -252,35 +252,35 @@ class FinanceModel extends Model
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------//
     //gets agreements
     public function get_agreements($company_id, $contractor=null){
-      $condition_exp = (!empty($contractor))?  "agreement_fromZR.company = ? AND agreement_fromZR.customer = ?": " agreement_fromZR.company = ?";
-      $condition_rec = (!empty($contractor))?  "agreement_forZR.company = ? AND agreement_forZR.executer = ?": " agreement_forZR.company = ?";
+      $condition_exp = (!empty($contractor))?  "agreement_fromzr.company = ? AND agreement_fromzr.customer = ?": " agreement_fromzr.company = ?";
+      $condition_rec = (!empty($contractor))?  "agreement_forzr.company = ? AND agreement_forzr.executer = ?": " agreement_forzr.company = ?";
       $sql = "SELECT
-                agreement_forZR.id,
-                agreement_forZR.company,
-                agreement_forZR.agreement_num,
-                agreement_forZR.agreement_date,
-                agreement_forZR.agreement_sum,
-                agreement_forZR.short_name,
+                agreement_forzr.id,
+                agreement_forzr.company,
+                agreement_forzr.agreement_num,
+                agreement_forzr.agreement_date,
+                agreement_forzr.agreement_sum,
+                agreement_forzr.short_name,
                 contractor.short_name as contractor_name,
                 '-' as manager,
                 'forZR' as type
-              FROM agreement_forZR
-              LEFT JOIN contractor ON contractor.id = agreement_forZR.executer
+              FROM agreement_forzr
+              LEFT JOIN contractor ON contractor.id = agreement_forzr.executer
               WHERE " . $condition_rec .
               " UNION ALL
               SELECT
-                agreement_fromZR.id,
-                agreement_fromZR.company,
-                agreement_fromZR.agreement_num,
-                agreement_fromZR.agreement_date,
-                agreement_fromZR.agreement_sum,
-                agreement_fromZR.short_name,
+                agreement_fromzr.id,
+                agreement_fromzr.company,
+                agreement_fromzr.agreement_num,
+                agreement_fromzr.agreement_date,
+                agreement_fromzr.agreement_sum,
+                agreement_fromzr.short_name,
                 contractor.short_name as contractor_name,
                 employee.surname as manager,
                 'fromZR' as type
-              FROM agreement_fromZR
-              LEFT JOIN contractor ON contractor.id = agreement_fromZR.customer
-              LEFT JOIN employee ON employee.id = agreement_fromZR.manager
+              FROM agreement_fromzr
+              LEFT JOIN contractor ON contractor.id = agreement_fromzr.customer
+              LEFT JOIN employee ON employee.id = agreement_fromzr.manager
               WHERE ".$condition_exp;
 
       $query_attr = [];
@@ -468,8 +468,8 @@ class FinanceModel extends Model
               LEFT JOIN users ON users.id = item.author
               LEFT JOIN employee ON employee.id = users.employee
               LEFT JOIN ".$table_name."_item as item_table ON item_table.id = item.item
-              LEFT JOIN agreement_forZR as forzr ON forzr.id = item.agreement_forzr
-              LEFT JOIN agreement_fromZR as fromzr ON fromzr.id = item.agreement_fromzr
+              LEFT JOIN agreement_forzr as forzr ON forzr.id = item.agreement_forzr
+              LEFT JOIN agreement_fromzr as fromzr ON fromzr.id = item.agreement_fromzr
               WHERE item.id = ? AND status=3";
 
       $query = $this->db->query($sql, [$record_id]);
@@ -508,8 +508,8 @@ class FinanceModel extends Model
               LEFT JOIN employee ON employee.id = users.employee
               LEFT JOIN ".$table_name."_item as item_table ON item_table.id = item.item
               LEFT JOIN (SELECT * FROM ".$table_name."_change WHERE ".$table_name."_change.record_id = ? ORDER BY ".$table_name."_change.id DESC LIMIT 1) as change_table ON change_table.record_id = item.id
-              LEFT JOIN agreement_forZR as forzr ON forzr.id = item.agreement_forzr
-              LEFT JOIN agreement_fromZR as fromzr ON fromzr.id = item.agreement_fromzr
+              LEFT JOIN agreement_forzr as forzr ON forzr.id = item.agreement_forzr
+              LEFT JOIN agreement_fromzr as fromzr ON fromzr.id = item.agreement_fromzr
               WHERE item.id = ? AND status=6";
 
       $query = $this->db->query($sql, [$record_id, $record_id]);
