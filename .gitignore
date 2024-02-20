@@ -19,3 +19,4 @@ debug*
 ci_session*
 uploads
 writable
+public/csvfile

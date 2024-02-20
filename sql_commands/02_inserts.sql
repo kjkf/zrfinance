@@ -100,7 +100,7 @@ INSERT INTO `contractor` (`full_name`, `short_name`, `address`, `bin`, `bik`, `i
 ('ТОО "ПК Златарь"', 'ПК Златарь', null, null, null, null, null),
 ('ТОО "ТД Златарь"', 'ТД Златарь', null, null, null, null, null);
 
-INSERT INTO `agreement_forZR` (`executer`, `agreement_date`, `agreement_num`, `short_name`, `agreement_sum`, `company`) VALUES 
+INSERT INTO `agreement_forzr` (`executer`, `agreement_date`, `agreement_num`, `short_name`, `agreement_sum`, `company`) VALUES 
 (8,	'2022-02-15',	'KCZ/СБП/4YB-2/318',     'Многоквартирный жилой комплекс "4 YOU Business", 2ая очередь',		 19365000.00,   3),
 (8,	'2022-03-05',	'KCZ/Пос/KG/469',        'Многоквартирный жилой комплекс "Amir - 1"',									       17965932.00,  	3),
 (8,	'2022-03-05',	'KCZ/Пос/KG/470',        'Многоквартирный жилой комплекс "Amir - 1"',								         31297513.00,  	3),
@@ -144,7 +144,7 @@ INSERT INTO `agreement_forZR` (`executer`, `agreement_date`, `agreement_num`, `s
 
 --=============================================================================================================================================
 --=============================================================================================================================================
-INSERT INTO `agreement_forZR` (`executer`, `agreement_date`, `agreement_num`, `short_name`, `agreement_sum`, `company`) VALUES 
+INSERT INTO `agreement_forzr` (`executer`, `agreement_date`, `agreement_num`, `short_name`, `agreement_sum`, `company`) VALUES 
 (4,  '2023-01-04', '2',                   'Экспедитор обязуется по поручению заказчика осуществлять экспедиторское обслуживание заказчика', null, 3),
 (5,  '2023-02-27', 'GP-R-01',             'Поставщик предоставляет Реализатору продукцию', null, 3),
 (6,  '2023-03-28', 'GP-R-02',             'Поставщик предоставляет Реализатору продукцию', null, 3),

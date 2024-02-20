@@ -19,8 +19,8 @@
         <?php if ($is_admin || $is_chief) :?>
         <li><a class="dropdown-item" href="<?php echo base_url('dashboard')?>">Движение</a></li>
         <li><a class="dropdown-item" href="<?php echo base_url('analytics')?>">Аналитика</a></li>
-        <li><a class="dropdown-item" href="<?php echo base_url('report')?>">Отчёты</a></li>
-        
+        <li><a class="dropdown-item" href="<?php echo base_url('requests')?>">Заявки на закуп</a></li>
+        <li><a class="dropdown-item" href="<?php echo base_url('report')?>">Отчёты</a></li>        
         <?php endif; ?>
         <?php if ($is_access_to_classif) :?>
           <li><a class="dropdown-item" href="<?php echo base_url('salary')?>">Заработная плата</a></li>

@@ -37,6 +37,19 @@ class MaterialsModel extends Model
         return false;
       }
     } 
+
+    function getFromAnotherDB() {
+      $sql = "select  name, email, phone from phonebook ";  
+  
+      $query = $this->db->query($sql);
+  
+      if (!empty($sql)) {
+        $res =  $query->getResultArray();
+        return $res;
+      } else {
+        return false;
+      }
+    } 
     
     
 }

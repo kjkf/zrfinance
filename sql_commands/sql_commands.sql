@@ -75,6 +75,7 @@ CREATE TABLE `position` (
 CREATE TABLE `status` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `name` varchar(250) NOT NULL,
+ `title` varchar(250) NOT NULL,
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
@@ -106,7 +107,7 @@ CREATE TABLE `receipt` (
  KEY `approved_by` (`approved_by`),
  KEY `agreement_fromzr` (`agreement_fromzr`),
  CONSTRAINT `receipt_related_agreement_fromzr` FOREIGN KEY (`agreement_fromzr`) REFERENCES `agreement_fromZR` (`id`),
- CONSTRAINT `receipt_related_agreemnt` FOREIGN KEY (`agreement_forzr`) REFERENCES `agreement_forZR` (`id`),
+ CONSTRAINT `receipt_related_agreemnt` FOREIGN KEY (`agreement_forzr`) REFERENCES `agreement_forzr` (`id`),
  CONSTRAINT `receipt_related_company` FOREIGN KEY (`company_account`) REFERENCES `account` (`id`),
  CONSTRAINT `receipt_related_employee` FOREIGN KEY (`employee`) REFERENCES `employee` (`id`),
  CONSTRAINT `receipt_related_goods` FOREIGN KEY (`goods`) REFERENCES `goods` (`id`),
@@ -158,7 +159,7 @@ CREATE TABLE `expense` (
  KEY `item` (`item`),
  KEY `status` (`status`),
  KEY `approved_by` (`approved_by`),
- CONSTRAINT `expense_related_agreement_forzr` FOREIGN KEY (`agreement_forzr`) REFERENCES `agreement_forZR` (`id`),
+ CONSTRAINT `expense_related_agreement_forzr` FOREIGN KEY (`agreement_forzr`) REFERENCES `agreement_forzr` (`id`),
  CONSTRAINT `expense_related_agreement_fromzr` FOREIGN KEY (`agreement_fromzr`) REFERENCES `agreement_fromZR` (`id`),
  CONSTRAINT `expense_related_company` FOREIGN KEY (`company_account`) REFERENCES `account` (`id`),
  CONSTRAINT `expense_related_employee` FOREIGN KEY (`employee`) REFERENCES `employee` (`id`),
@@ -253,12 +254,15 @@ INSERT INTO `roles`(`id`, `role`) VALUES
 (4,'accountant'),
 (5,'hr');
 
-INSERT INTO `status`(`id`, `name`) VALUES
-(1, 'new'),
-(2, 'edited'),
-(3, 'revision'),
-(4, 'approved'),
-(5, 'deleted');
+INSERT INTO `status`(`id`, `name`, `title`) VALUES
+(1, 'new', "Новый"),
+(2, 'edited', "Отредактирован"),
+(3, 'revision', "На рассмотрении"),
+(4, 'approved', "Утвержден"),
+(5, 'deleted', "Удален"),
+(6, 'revision_edit', ""),
+(7, 'revision_deleted', ""),
+(8, 'not_approved', "Отклонен");
 
 INSERT INTO `company`(`id`, `name`) VALUES
 (1,'Златарь'),
@@ -458,7 +462,7 @@ INSERT INTO `receipt_item`(`name`, `need_agreement`, `need_goods`) VALUES
 ('Оплата товаров (оптово-розничная продажа, аренда)', null, 1);
 
 
-INSERT INTO `agreement_forZR`(`company`, `executer`, `agreement_num`, `agreement_date`, `agreement_sum`)
+INSERT INTO `agreement_forzr`(`company`, `executer`, `agreement_num`, `agreement_date`, `agreement_sum`)
 VALUES (1,'ТОО Чистые воды','202009-0034','2020-09-15',45000);
 
 INSERT INTO `receipt`

@@ -49,8 +49,12 @@ $routes->group('', ['filter' => 'authCheck'], function($routes){
   $routes->get('/salary/advance/(:any)', 'Salary::update_advance/$1');
   $routes->get('/report', 'Report::index');
   $routes->get('/analytics', 'Funds::index');
+  $routes->get('/funds/save_new_contractors', 'Funds::save_new_contractors');
+  $routes->get('/requests', 'PurchaseRequest::index');
+  $routes->get('/request/create', 'PurchaseRequest::create');
   //$routes->get('/importCsvToDb', 'Funds::importCsvToDb');
   $routes->match(['get', 'post'], 'Funds/importCsvToDb', 'Funds::importCsvToDb');
+  //$routes->match(['get', 'post'], 'Funds/save_new_contractors', 'Funds::save_new_contractors');
 });
 
 $routes->group('', ['filter' => 'alreadyLoggedIn'], function($routes){
