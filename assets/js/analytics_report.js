@@ -29,6 +29,34 @@ document.addEventListener('DOMContentLoaded', (e) => {
     });
   }
 
+  const showNewContractorsBtn = document.querySelector("#showNewContractors");
+  if (showNewContractorsBtn) {
+    showNewContractorsBtn.addEventListener("click", e => {
+      const contractorsList = document.getElementById("newContractorsList").value;
+      if (!contractorsList) return false;
+      const newContractors = contractorsList.split(",");
+      createNewContractorsTable(newContractors);
+    });
+  }
+
+  const addNewContractorsBtn = document.querySelector("#addNewContractors");
+  if (addNewContractorsBtn) {
+    addNewContractorsBtn.addEventListener("click", e => {
+      addNewContractors();
+    });
+  }
+
+  const choose_all = document.querySelector("#choose_all");
+  if (choose_all) {
+    choose_all.addEventListener('click', e => {
+      const allCheckbox = document.querySelectorAll("input.ch_box_select_contractor");
+      if (!allCheckbox || allCheckbox.length === 0) return false;
+      for (let i = 0; i < allCheckbox.length; i++) {
+        allCheckbox[i].checked = choose_all.checked;
+      }      
+    });
+  }
+
   const table = document.querySelector("#analytic_table");
   if (table) {
    table.addEventListener("click", e => {
@@ -65,10 +93,125 @@ document.addEventListener('DOMContentLoaded', (e) => {
         
       }
     }
-
    }); 
   }
 });
+
+function addNewContractors() {
+  console.log("!!addNewContractors!!");
+  const modal = document.getElementById("modal_newContractors");
+  const checkboxes = modal.querySelectorAll("input.ch_box_select_contractor:checked");
+  console.log(checkboxes);
+
+  const data = Array.from(checkboxes).map(item => { 
+    const tr = item.closest("tr");
+    const index = tr.dataset.index;
+    console.log(`#id_short_${index}`, tr.querySelector(`#id_short_${index}`));
+    return {
+      full_name: tr.getElementsByTagName("td")[2].innerHTML, 
+      short_name: tr.querySelector(`#id_short_${index}`).value,
+      expense_type: tr.querySelector(`#id_select_${index}`).value,
+    }
+  })
+  const post_data = {
+    data
+  }
+  url_path = base_url + '/funds/save_new_contractors';
+  $.ajax({
+    url: url_path,
+    data: post_data,
+    method: 'POST',
+    success: function (result) {
+      //location.href = base_url + "/analytics";
+      console.log(result);
+    },
+    fail: function(result) {
+      console.error(result);
+      alert("Error while status update");
+    }
+  });
+
+  
+}
+
+function createNewContractorsTable(newContractors) {
+  console.log("!!createNewContractorsTable!!");
+  const modal = document.getElementById("modal_newContractors");
+  const table = modal.querySelector("#newContractorsTable");
+  const tbody = table.querySelector("tbody");
+  tbody.innerHTML = "";
+  const choose_all = table.querySelector("#choose_all");
+  choose_all.checked = false;
+  newContractors.forEach((contractor, index) => {
+    const tr = create_contractors_row(contractor, index);
+    tbody.insertAdjacentElement("beforeend", tr);
+  });
+}
+
+function create_contractors_row(data, index) {
+  const row = document.createElement('tr');
+  row.dataset.index = ++index;
+  
+  const td_num = create_td('num', index);
+  const td_checkbox = create_td_checkbox(`id_checkbox_${index}`, "ch_box_select_contractor");
+  const td_title = create_td('text', data);
+  const td_short = create_td_field(`id_short_${index}`);
+  const td_expense = create_td_select(`id_select_${index}`, EXPENSE_TYPES, "expense_type");
+
+  row.insertAdjacentElement('beforeend', td_num);
+  row.insertAdjacentElement('beforeend', td_checkbox);
+  row.insertAdjacentElement('beforeend', td_title);
+  row.insertAdjacentElement('beforeend', td_short);
+  row.insertAdjacentElement('beforeend', td_expense);
+
+  return row;
+}
+
+function create_td_checkbox(id, className) {
+  const td = document.createElement("td");
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.id = id;
+  if (className) checkbox.classList.add(className);
+  //checkbox.value = false;
+  td.insertAdjacentElement("beforeend", checkbox);
+
+  return td;
+}
+
+function create_td_field(id, className) {
+  const td = document.createElement("td");
+  const input = document.createElement("input");
+  input.type = "text";
+  input.id = id;
+  if (className) input.classList.add(className);
+  input.value = "";
+  td.insertAdjacentElement("beforeend", input);
+
+  return td;
+}
+
+function create_td_select(id, data, key, className) {
+  const td = document.createElement("td");
+  const select = document.createElement("select");
+  select.id = id;
+  if (className) select.classList.add(className);
+  const empty_option = document.createElement("option");
+  empty_option.value = "-";
+  empty_option.textContent = "";
+  select.insertAdjacentElement("beforeend", empty_option);
+  data.forEach(item => {
+    const option = document.createElement("option");
+    option.value = item.id;
+    option.textContent = item[key];
+
+    select.insertAdjacentElement("beforeend", option);
+  });
+  td.insertAdjacentElement("beforeend", select);
+
+  return td;
+}
+
 
 function create_report() {
   console.log('create_report!!!!');

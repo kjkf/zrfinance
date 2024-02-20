@@ -25,6 +25,8 @@ class FundsModel extends Model
     }
 
     private function insertRowsToTemporaryTable($data) {
+      //print_r($data);
+      //d($data);
       $builder = $this->db->table("funds_operations_supporting");
       $builder->insertBatch($data);
     }
@@ -134,5 +136,34 @@ class FundsModel extends Model
       
       $query = $this->db->query($sql, array($id, $start, $end));
       return $query->getResult();
+    }
+
+    public function getExpenseTypes() {
+      $sql = "select id, expense_type FROM `expense_type` ";
+
+      $query = $this->db->query($sql, array());
+      return $query->getResultArray();
+    }
+
+    public function save_new_contractors($data) {
+      //print_r($data);
+      //full_name: tr.getElementsByTagName("td")[2].innerHTML, 
+      //short_name: tr.querySelector(`#id_short_${index}`).value,
+      //expense_type
+      $data = [
+        [
+            'full_name' => 'My title',
+            'short_name'  => 'My Name',
+            'expense_type'  => 'My date',
+        ],
+        [
+            'full_name' => 'Another title',
+            'short_name'  => 'Another Name',
+            'expense_type'  => 'Another date',
+        ], 
+    ];
+      d($data);
+      $builder = $this->db->table("contractor");
+      $builder->insertBatch($data);
     }
 }

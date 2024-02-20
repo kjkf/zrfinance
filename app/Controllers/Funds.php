@@ -1,14 +1,13 @@
 <?php 
 namespace App\Controllers;
 use App\Models\FundsModel;
-use CodeIgniter\I18n\Time;
 
 class Funds extends BaseController
 {
   var $userInfo;
   public function __construct()
   {
-    helper(['url', 'form', 'file', 'date']);
+    helper(['url', 'form', 'file', 'date', 'number']);
     $usersModel = new \App\Models\UsersModel();
     $loggedUserID = session()->get('loggedUser');
     $this->fundsModel = new FundsModel();
@@ -20,10 +19,13 @@ class Funds extends BaseController
       $usersModel = new \App\Models\UsersModel();
       $loggedUserID = session()->get('loggedUser');
       $userInfo = $usersModel->find($loggedUserID);
+      //$json = json_encode($employeesArr['json']);
+      $expense_types = json_encode($this->fundsModel->getExpenseTypes());
       $data = [
         'title' => 'Аналитика',
         'page_name' => 'funds',
-        'user' => $userInfo
+        'user' => $userInfo,
+        'expense_types' => $expense_types
   
       ];
         //return view('index');
@@ -64,10 +66,13 @@ class Funds extends BaseController
                 $numberOfFields = 7;
                 $csvArr = array();
                 
-                $filedata = fgetcsv($file, 1000, ",");
+                $filedata = fgetcsv($file, 1000, ";");
+                //d($filedata);
+                //print_r($filedata);
                 $contractorsNotFound = array();
                 
-                while (($filedata = fgetcsv($file, 1000, ",")) !== FALSE) {
+                while (($filedata = fgetcsv($file, 1000, ";")) !== FALSE) {
+                    //print_r($filedata);
                     $num = count($filedata);
                     $contractor = $this->prepareContractorName($filedata[4]);
                     $contractorInfo = $this->fundsModel->get_contractor_info($contractor);
@@ -81,7 +86,7 @@ class Funds extends BaseController
                         $csvArr[$i]['date'] = $timestamp->format('Y-m-d');
                         $csvArr[$i]['number'] = $filedata[1];
                         $csvArr[$i]['operation_type'] = $filedata[2];
-                        $csvArr[$i]['sum'] = $filedata[3];
+                        $csvArr[$i]['sum'] = excelNumberToDbFormat($filedata[3]);
                         $csvArr[$i]['contractor'] = $current_contr->id;
                         $csvArr[$i]['expense_type'] = $current_contr->expense_type;
                         $csvArr[$i]['author'] = $filedata[5];
@@ -151,5 +156,12 @@ class Funds extends BaseController
       $data = $this->fundsModel->load_expense_info($id, $timestamp_start->format('Y-m-d'), $timestamp_end->format('Y-m-d'));
 
       echo json_encode($data);
+    }
+
+    public function save_new_contractors() {
+      $data = $_POST['data'];
+      $result = $this->fundsModel->save_new_contractors();
+
+      return $result;
     }
 }

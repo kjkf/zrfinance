@@ -19,6 +19,9 @@ if (isset($validation)) : ?>
       <p style="padding-left:20px">Не найдеры поставщики:</p>
       <div class="alert alert-danger">
         <?= session()->getFlashData('contractorsNotFound') ?>
+        <input type="hidden" id="newContractorsList" value="<?= session()->getFlashData('contractorsNotFound') ?>">
+        <br />
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_newContractors" id="showNewContractors">Добавить новых контрагентов</button>
       </div>
     <?php } ?>
 
@@ -43,3 +46,10 @@ if (isset($validation)) : ?>
   </div>
 
 </div>
+
+<script>
+  const EXPENSE_TYPES = JSON.parse(<?php echo json_encode($expense_types); ?>)
+  console.log(EXPENSE_TYPES);
+</script>
+
+<?php echo view('partials/modals/_newContractors.php'); ?>
