@@ -425,5 +425,9 @@
   <script src="<?= base_url('assets/js/salary_view.js')?>"></script>
 <?php }?>
 
+<?php if(isset($page_name) && $page_name == 'cars'){ ?>
+  <script src="<?= base_url('assets/js/cars.js')?>"></script>
+<?php }?>
+
 </body>
 </html>

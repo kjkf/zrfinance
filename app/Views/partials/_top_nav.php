@@ -19,12 +19,14 @@
         <?php if ($is_admin || $is_chief) :?>
         <li><a class="dropdown-item" href="<?php echo base_url('dashboard')?>">Движение</a></li>
         <li><a class="dropdown-item" href="<?php echo base_url('report')?>">Отчёты</a></li>
+        <li><a class="dropdown-item" href="<?php echo base_url('cars')?>">Добавить машину для отчетов</a></li>
         
         <?php endif; ?>
         <?php if ($is_access_to_classif) :?>
           <li><a class="dropdown-item" href="<?php echo base_url('salary')?>">Заработная плата</a></li>
           <li><a class="dropdown-item" href="<?php echo base_url('classificators')?>">Классификаторы</a></li>
         <?php endif; ?>
+        <li><a class="dropdown-item" href="<?php echo base_url('indication')?>">Показания машин</a></li>
         <li><a href="<?php echo  site_url('auth/logout')?>" class="dropdown-item">Выйти</a></li>
       </ul>
     </div>

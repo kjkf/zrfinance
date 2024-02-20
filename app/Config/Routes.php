@@ -41,6 +41,7 @@ $routes->get('/', 'Home::index');
 
 $routes->group('', ['filter' => 'authCheck'], function($routes){
   $routes->get('/dashboard', 'Dashboard::index');
+  $routes->get('/wecomepage', 'Dashboard::welcomepage');
   $routes->get('/salary', 'Salary::index');
   $routes->get('/salary/fzp', 'Salary::create_fzp');
   $routes->get('/salary/fzp/(:any)', 'Salary::update_fzp/$1');
@@ -48,6 +49,8 @@ $routes->group('', ['filter' => 'authCheck'], function($routes){
   $routes->get('/salary/delete_advance/(:any)', 'Salary::delete_advance/$1');
   $routes->get('/salary/advance/(:any)', 'Salary::update_advance/$1');
   $routes->get('/report', 'Report::index');
+  $routes->get('/cars', 'Cars::index');
+  $routes->get('/cars/save_car', 'Cars::save_car');
 });
 
 $routes->group('', ['filter' => 'alreadyLoggedIn'], function($routes){

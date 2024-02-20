@@ -130,6 +130,8 @@ class Auth extends BaseController
           session()->set('loggedUser', $user_id);
           if ($user_info['role'] === "5") {
             return redirect()->to('salary')->with('success', 'Вы вошли в систему!');
+          } else if ($user_info['role'] === "6") {
+            return redirect()->to('wecomepage')->with('success', 'Вы вошли в систему!');
           } else {
             return redirect()->to('dashboard')->with('success', 'Вы вошли в систему!');
           }

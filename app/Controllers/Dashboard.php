@@ -36,6 +36,25 @@ class Dashboard extends BaseController
     echo view('dashboard/finance_movements', $data);
     echo view('partials/_footer', $data);
   }
+
+  public function welcomepage()
+  {
+    $usersModel = new \App\Models\UsersModel();
+    $loggedUserID = session()->get('loggedUser');
+    $userInfo = $usersModel->find($loggedUserID);
+
+    $data = [
+      'title' => 'Добро пожаловать!',
+      'page_name' => 'welcomepage',
+      'user' => $userInfo,
+      'user_id' => $loggedUserID,
+      'user_role' => $userInfo['role']
+    ];
+    //echo json_encode($data['receipts_all']);
+    echo view('partials/_header', $data);
+    echo view('dashboard/welcomepage', $data);
+    echo view('partials/_footer', $data);
+  }
   // ---------------------------------------------------------------------------------------------------------------------------------------------------------------//
   //gets all receipt items
   public function get_receipt_items()
