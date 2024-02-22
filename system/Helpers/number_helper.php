@@ -210,4 +210,12 @@ if (! function_exists('number_to_roman')) {
 
         return $result;
     }
+
+    if (!function_exists('excelNumberToDbFormat')) {
+      function excelNumberToDbFormat(string $excelnum) {
+        $result=str_replace(",",'.',$excelnum);
+        $result=preg_replace("/[^x\d|*\.]/","",$result); 
+        return $result;
+      }
+    }
 }

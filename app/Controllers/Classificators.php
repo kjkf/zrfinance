@@ -15,6 +15,7 @@ class Classificators extends BaseController
     {
       $usersModel = new \App\Models\UsersModel();
       $employeesModel = new \App\Models\EmployeesModel;
+      $materialsModel = new \App\Models\MaterialsModel;
       $financeModel = new \App\Models\FinanceModel();
       $loggedUserID = session()->get('loggedUser');
       $userInfo = $usersModel->find($loggedUserID);
@@ -36,6 +37,9 @@ class Classificators extends BaseController
         'balance_for_current_year' => $time_balance,
         'balance_year' => $balance_year,
         'employees' => $employeesModel->getActiveEmployees(),
+        'materials' => $materialsModel->getAllMaterials(),
+        'json_materials' => json_encode($materialsModel->getAllMaterials()),
+        //'units' => $materialsModel->getAllUnits(),
         'clasificData' => $this->get_classificators_data()
       ];
 
