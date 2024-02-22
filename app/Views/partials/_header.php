@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ZR|<?php echo isset($title)?$title:'Homepage'?></title>
     <link rel="stylesheet" href="<?= base_url('assets/vendors/bootstrap/bootstrap.min.css')?>">
     <link rel="stylesheet" href="<?= base_url('assets/vendors/datatables/datatables.min.css')?>">

@@ -42,6 +42,49 @@ class Cars extends BaseController
       $result = $carsModel->save_car($user, $car_name, $consumption);
       return json_encode($result);
     }
+    public function save_indication(){
+      $carsModel = new \App\Models\CarsModel();
+      $car_id = $_POST['car_id'];
+      $indication = $_POST['indication'];
+      $date = $_POST['date'];
 
+      $result = $carsModel->save_indication($date, $car_id, $indication);
+      return json_encode($result);
+    }
+
+    public function indication()
+    {
+      $usersModel = new \App\Models\UsersModel();
+      //$financeModel = new \App\Models\FinanceModel();
+      $loggedUserID = session()->get('loggedUser');
+      $userInfo = $usersModel->find($loggedUserID);
+
+      $carsModel = new \App\Models\CarsModel();
+      
+      if ($userInfo['role'] == '3') {
+        $indications = $carsModel->getIndications();
+        $carInfo = Array();
+        $prev_indication = Array();
+      } else {
+        $indications = $carsModel->getIndicationsByUser($loggedUserID);
+        $carInfo = $carsModel->getCarInfo($loggedUserID);
+        $prev_indication = $carsModel->getPrevIndication($loggedUserID);
+        $prev_indication = count($prev_indication) > 0 ? $prev_indication[0] : "";
+      }
+
+      $data=[
+        'title' => 'Показания',
+        'page_name' => 'indication',
+        'indications' => $indications,
+        'car_info' => $carInfo[0],
+        'prev_indication' => $prev_indication,
+        'user' => $userInfo,
+        'user_id' => $loggedUserID,
+        'user_role' => $userInfo['role']
+      ];
+      echo view('partials/_header', $data);
+      echo view('cars_indication/indication', $data);
+      echo view('partials/_footer', $data);
+    }
 
 }

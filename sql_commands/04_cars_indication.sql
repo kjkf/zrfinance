@@ -14,8 +14,9 @@ CREATE TABLE `cars` (
 CREATE TABLE `indication` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `car` int(11) NOT NULL,
- `car_name` varchar(250) NOT NULL,
- `consumption` smallint NOT NULL,
+ `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `indication` smallint NOT NULL,
+ `pic` blob NOT NULL,
  
  PRIMARY KEY (`id`),
  KEY `car` (`car`),

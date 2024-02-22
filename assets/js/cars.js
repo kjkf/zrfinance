@@ -1,55 +1,167 @@
-document.addEventListener("DOMContentLoaded", ev => {
-  const saveCarBtn = document.getElementById("saveCar");
+document.addEventListener('DOMContentLoaded', (ev) => {
+  const saveCarBtn = document.getElementById('saveCar');
   if (saveCarBtn) {
-    saveCarBtn.addEventListener("click", e => {
-      if (!validityState()) return false;
-      const modal = document.getElementById("modal_addCar");
-      const data = {
-        user: modal.querySelector("#driver").value,
-        car_name: modal.querySelector("#car_name").value,
-        consumption: modal.querySelector("#consumption").value,
-      }
-
-      url_path = base_url + '/save_car';
-      console.log(url_path);
-
-      $.ajax({
-      url: url_path,
-      data: data,
-      method: 'POST',
-      success: function (result) {
-        console.log(result)
-      },
-      fail: function(result) {
-        console.error(result);
-        alert("Error while status update");
-      }
-    });
+    saveCarBtn.addEventListener('click', (e) => {
+      save_car();
     });
   }
+
+  const saveIndicationBtn = document.getElementById('saveIndication');
+  if (saveIndicationBtn) {
+    saveIndicationBtn.addEventListener('click', (e) => {
+      save_indication();
+    });
+  }
+
+  datepickerInit();
 });
 
+function datepickerInit() {
+  const indicationDate = document.getElementById('indication_date');
+  console.log($('#indication_date'));
+  if (!indicationDate) return false;
+  const date = new Date();
+
+  const time =
+    (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) +
+    ':' +
+    (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+  indicationDate.value = date.toLocaleDateString('ru-RU') + ' ' + time;
+}
+
 function validityState() {
-  const modal = document.getElementById("modal_addCar");
-  const select = modal.querySelector("#driver");
+  const modal = document.getElementById('modal_addCar');
+  const select = modal.querySelector('#driver');
   if (!select.value) {
-    alert("Выберите водителя!");
+    alert('Выберите водителя!');
     select.focus();
     return false;
   }
 
-  const car = modal.querySelector("#car_name");
+  const car = modal.querySelector('#car_name');
   if (!car.value) {
-    alert("Введите номер машины!");
+    alert('Введите номер машины!');
     car.focus();
     return false;
   }
 
-  const consumption = modal.querySelector("#consumption");
+  const consumption = modal.querySelector('#consumption');
   if (!consumption.value) {
-    alert("Введите расход на 100км!");
+    alert('Введите расход на 100км!');
     consumption.focus();
     return false;
   }
-return true;
+  return true;
+}
+
+function save_car() {
+  if (!validityState()) return false;
+  const modal = document.getElementById('modal_addCar');
+  let collection = modal.querySelector('#driver').selectedOptions;
+  let driver = collection[0].label;
+  const data = {
+    user: modal.querySelector('#driver').value,
+    driver: driver,
+    car_name: modal.querySelector('#car_name').value,
+    consumption: modal.querySelector('#consumption').value,
+  };
+
+  url_path = base_url + '/cars/save_car';
+  
+  $.ajax({
+    url: url_path,
+    data: data,
+    method: 'POST',
+    success: function (result) {
+      console.log(result);
+      $('#modal_addCar').modal('hide');
+      addRow(data);
+    },
+    fail: function (result) {
+      console.error(result);
+      alert('Error while status update');
+    },
+  });
+}
+function save_indication() {
+  const modal = document.getElementById('modal_addIndication');
+  const indication = modal.querySelector("#indication");
+  if (!indication.value) {
+    alert('Введите показания на текущую дату и время!');
+    indication.focus();
+    return false;
+  }
+  const prev_indication_input = document.getElementById('prev_indication'); 
+  const prev_indication = parseFloat(prev_indication_input.value);
+  if (prev_indication >= parseFloat(indication.value)) {
+    alert('Текущие показания не могут быть меньше предыдущих!');
+    indication.focus();
+    return false;
+  }
+  
+  let date = new Date();
+  
+  const data = {
+    indication: indication.value,
+    date: date,
+    car_id: modal.querySelector('#car_id').value,
+  };
+
+  url_path = base_url + '/cars/save_indication';
+  console.log(url_path, data);
+  
+  $.ajax({
+    url: url_path,
+    data: data,
+    method: 'POST',
+    success: function (result) {
+      console.log(result);
+      $('#modal_addIndication').modal('hide');
+      //addIndicationRow(data);
+    },
+    fail: function (result) {
+      console.error(result);
+      alert('Error while status update');
+    },
+  });
+}
+
+function addRow(data) {
+  const table = document.querySelector('#cars');
+  const emptyRow = table.querySelector('.empty-row');
+  if (emptyRow) emptyRow.remove();
+
+  const tbody = table.querySelector('tbody');
+  const trs = tbody.querySelector('tr');
+  const num = trs && trs.length > 0 ? trs.length : 1;
+
+  const tr = createRow(num, data);
+
+  tbody.insertAdjacentElement('beforeend', tr);
+}
+
+function createRow(num, data) {
+  console.log(num, data);
+  const tr = document.createElement('tr');
+
+  const td1 = createTd(num);
+  const td2 = createTd(data.driver);
+  const td3 = createTd(data.car_name);
+  const td4 = createTd(data.consumption);
+  const td5 = createTd('');
+
+  tr.insertAdjacentElement('beforeend', td1);
+  tr.insertAdjacentElement('beforeend', td2);
+  tr.insertAdjacentElement('beforeend', td3);
+  tr.insertAdjacentElement('beforeend', td4);
+  tr.insertAdjacentElement('beforeend', td5);
+
+  return tr;
+}
+
+function createTd(value) {
+  const td = document.createElement('td');
+  td.textContent = value;
+
+  return td;
 }
