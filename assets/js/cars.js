@@ -16,17 +16,22 @@ document.addEventListener('DOMContentLoaded', (ev) => {
   datepickerInit();
 });
 
+function formatDateTime(date) {
+  const time =
+    (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) +
+    ':' +
+    (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+
+  return date.toLocaleDateString('ru-RU') + ' ' + time;
+}
+
 function datepickerInit() {
   const indicationDate = document.getElementById('indication_date');
   console.log($('#indication_date'));
   if (!indicationDate) return false;
   const date = new Date();
 
-  const time =
-    (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) +
-    ':' +
-    (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
-  indicationDate.value = date.toLocaleDateString('ru-RU') + ' ' + time;
+  indicationDate.value = formatDateTime(date);
 }
 
 function validityState() {
@@ -66,6 +71,8 @@ function save_car() {
     consumption: modal.querySelector('#consumption').value,
   };
 
+  const array_data = [driver, modal.querySelector('#car_name').value, modal.querySelector('#consumption').value, ""];
+
   url_path = base_url + '/cars/save_car';
   
   $.ajax({
@@ -75,7 +82,7 @@ function save_car() {
     success: function (result) {
       console.log(result);
       $('#modal_addCar').modal('hide');
-      addRow(data);
+      addRow(array_data, 'cars');
     },
     fail: function (result) {
       console.error(result);
@@ -106,18 +113,17 @@ function save_indication() {
     date: date,
     car_id: modal.querySelector('#car_id').value,
   };
+  const array_data = [formatDateTime(date), modal.querySelector('#car_name').value, indication.value, ""];
 
   url_path = base_url + '/cars/save_indication';
-  console.log(url_path, data);
   
   $.ajax({
     url: url_path,
     data: data,
     method: 'POST',
     success: function (result) {
-      console.log(result);
       $('#modal_addIndication').modal('hide');
-      //addIndicationRow(data);
+      addRow(array_data, "tableIndication");
     },
     fail: function (result) {
       console.error(result);
@@ -126,8 +132,8 @@ function save_indication() {
   });
 }
 
-function addRow(data) {
-  const table = document.querySelector('#cars');
+function addRow(data, tableId) {
+  const table = document.querySelector(`#${tableId}`);
   const emptyRow = table.querySelector('.empty-row');
   if (emptyRow) emptyRow.remove();
 
@@ -145,16 +151,20 @@ function createRow(num, data) {
   const tr = document.createElement('tr');
 
   const td1 = createTd(num);
-  const td2 = createTd(data.driver);
-  const td3 = createTd(data.car_name);
-  const td4 = createTd(data.consumption);
-  const td5 = createTd('');
-
   tr.insertAdjacentElement('beforeend', td1);
-  tr.insertAdjacentElement('beforeend', td2);
-  tr.insertAdjacentElement('beforeend', td3);
-  tr.insertAdjacentElement('beforeend', td4);
-  tr.insertAdjacentElement('beforeend', td5);
+  data.forEach(item => {
+    const td = createTd(item);
+    tr.insertAdjacentElement('beforeend', td);
+  });
+  //const td2 = createTd(data.driver);
+  //const td3 = createTd(data.car_name);
+  //const td4 = createTd(data.consumption);
+  //const td5 = createTd('');
+
+  //tr.insertAdjacentElement('beforeend', td2);
+  //tr.insertAdjacentElement('beforeend', td3);
+  //tr.insertAdjacentElement('beforeend', td4);
+  //tr.insertAdjacentElement('beforeend', td5);
 
   return tr;
 }

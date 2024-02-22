@@ -8,6 +8,7 @@ use CodeIgniter\I18n;
 class CarsModel extends Model
 {
     protected $table = 'cars';
+    protected $cars_indication_table = 'cars_indication';
     protected $primaryKey = 'id';
     protected $allowedFields = [ 'name'];
     //$db = db_connect();
@@ -26,8 +27,8 @@ class CarsModel extends Model
       $insert_id =  $this->db->insertID();
       return $insert_id;
     }
-    public function save_indication($date, $car_id, $indication){
-      $builder = $this->db->table("indication");
+    public function save_indication($date, $car_id, $indication) {
+      $builder = $this->db->table("cars_indication");
       $data = [
         //'date' => $date,
         'car' => $car_id,
@@ -51,7 +52,7 @@ class CarsModel extends Model
       }
     }
     public function getIndications(){
-      $sql = " SELECT * from indication";
+      $sql = " SELECT * from cars_indication";
 
       $query = $this->db->query($sql);
 
@@ -62,10 +63,10 @@ class CarsModel extends Model
       }
     }
     public function getIndicationsByUser($user){
-      $sql = "SELECT car, date, indication, pic, employee.name, employee.surname, cars.car_name, cars.consumption
-      from indication 
+      $sql = "SELECT car, date_time, indication, pic, employee.name, employee.surname, cars.car_name, cars.consumption
+      from cars_indication 
       left join employee on employee.id = (select employee from users where id = ?)
-      left join cars on cars.id=indication.car
+      left join cars on cars.id=cars_indication.car
       where car in (select id from cars where user = ?)";
 
       $query = $this->db->query($sql, array($user, $user));
@@ -89,7 +90,7 @@ class CarsModel extends Model
     } 
 
     public function getPrevIndication($user) {
-      $sql = "select date, id, indication from indication where car in (select id from cars where user = ?) order by date desc  limit 1";
+      $sql = "select date_time, id, indication from cars_indication where car in (select id from cars where user = ?) order by date_time desc  limit 1";
       $query = $this->db->query($sql, array($user));
 
       if (!empty($sql)) {

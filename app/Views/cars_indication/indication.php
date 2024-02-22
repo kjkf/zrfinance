@@ -15,7 +15,7 @@
     </div>
     <div class="row report-content">
       <div class="col-md-12 col-md-offset-12" id = "" >
-        <table id = "cars" style = "width:100%">
+        <table id = "tableIndication" style = "width:100%">
           <thead>
             <tr>
               <td width = "10%">№ п/п</td>
@@ -31,7 +31,7 @@
               <?php foreach($indications as $item) :?>
                 <tr>
                   <td><?=$count++; ?></td>
-                  <td><?php echo date("d.m.Y H:i", strtotime($item["date"]) );?></td>
+                  <td><?php echo date("d.m.Y H:i", strtotime($item["date_time"]) );?></td>
                   <td><?=$item["car_name"]?></td>
                   <td><?=$item["indication"]?></td>
                   <td></td>
