@@ -51,12 +51,13 @@ class CarsModel extends Model
         return false;
       }
     }
-    public function getIndications(){
-      $sql = " SELECT `car`, `date_time`, `indication`, `pic`, cars.user, cars.car_name, cars.consumption, users.name
+    public function getIndications() {
+      $sql = "SELECT `car`, `date_time`, `indication`, `pic`, cars.user, cars.car_name, cars.consumption, concat(temp.name, ' ', temp.surname) as driver
       from cars_indication 
       left join cars on cars.id = cars_indication.car
-      left join users on cars.user = users.id
-      order by date_time DESC";
+      left join (SELECT users.id, employee.name, employee.surname from employee
+             left join users on users.employee = employee.id) as temp on cars.user = temp.id
+      order by date_time DESC;";
 
       $query = $this->db->query($sql);
 

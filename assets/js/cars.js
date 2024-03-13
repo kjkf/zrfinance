@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', (ev) => {
     });
   }
 
+  enlargePicHandler();
+
   datepickerInit();
   if ($("#tableIndication") && $("#tableIndication").length > 0) {
     $("#tableIndication").DataTable({
@@ -176,4 +178,22 @@ function createTd(value) {
   td.textContent = value;
 
   return td;
+}
+
+function enlargePicHandler() {
+  const tbody = document.querySelector("#tableIndication tbody");
+  if (!tbody) return;
+  const modal = document.querySelector("#enlarge_pic_modal");
+
+  tbody.addEventListener("click", e => {
+    const target = e.target.closest(".indication-pic");
+    if (!target) return;
+    const modalImg = modal.querySelector(".modal-body img");
+    const modalTitle = modal.querySelector(".modal-title");
+    modalImg.src = target.src;
+    modalImg.alt = target.alt;
+    modalTitle.textContent = target.alt;
+    $('#enlarge_pic_modal').modal('show')
+
+  });
 }

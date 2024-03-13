@@ -92,11 +92,13 @@ class Cars extends BaseController
         $carInfo = Array();
         $carInfo[0] = null;
         $prev_indication = Array();
+        $filter="all";
       } else {
         $indications = $carsModel->getIndicationsByUser($loggedUserID);
         $carInfo = $carsModel->getCarInfo($loggedUserID);
         $prev_indication = $carsModel->getPrevIndication($loggedUserID);
         $prev_indication = count($prev_indication) > 0 ? $prev_indication[0] : "";
+        $filter="byUser";
       }
 
       $data=[
@@ -107,7 +109,8 @@ class Cars extends BaseController
         'prev_indication' => $prev_indication,
         'user' => $userInfo,
         'user_id' => $loggedUserID,
-        'user_role' => $userInfo['role']
+        'user_role' => $userInfo['role'],
+        'filter' => $filter
       ];
       echo view('partials/_header', $data);
       echo view('cars_indication/indication', $data);
