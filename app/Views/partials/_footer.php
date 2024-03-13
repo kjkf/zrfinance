@@ -438,6 +438,8 @@ if(isset($page_name) && $page_name == "finance_movements"){ ?>
 
 <?php if(isset($page_name) && ($page_name == 'cars' || $page_name == 'indication')){ ?>
   <script src="<?= base_url('assets/vendors/jquery/jquery-ui.min.js')?>"></script>
+  <script src="<?= base_url('assets/vendors/datatables/datatables.min.js')?>" ></script>
+  <script src="<?= base_url('assets/vendors/datatables/dataTables.fixedColumns.min.js')?>"></script>
   <script src="<?= base_url('assets/js/cars.js')?>"></script>
 <?php }?>
 

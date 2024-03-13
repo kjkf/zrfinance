@@ -42,14 +42,40 @@ class Cars extends BaseController
       $result = $carsModel->save_car($user, $car_name, $consumption);
       return json_encode($result);
     }
-    public function save_indication(){
+    public function save_indication_to_db($data){
       $carsModel = new \App\Models\CarsModel();
-      $car_id = $_POST['car_id'];
-      $indication = $_POST['indication'];
-      $date = $_POST['date'];
+      //$car_id = $_POST['car_id'];
+      //$indication = $_POST['indication'];
+      //$date = $_POST['date'];
 
-      $result = $carsModel->save_indication($date, $car_id, $indication);
+      $result = $carsModel->save_indication($data);
       return json_encode($result);
+    }
+    public function save_indication() {
+    
+      if ($this->request->getMethod() == "post") {
+        $formData = $this->request->getVar();
+        $fileInfo = $this->request->getFile("pic");
+
+        if (!empty($fileInfo)) {
+          $fileName = $fileInfo->getName();
+          $nameArray = explode('.', $fileName);
+
+          $newFileName = time().end($nameArray);
+
+          if ($fileInfo->move("public/uploads/images", $newFileName)) {
+            echo "File uploaded";
+            $formData['pic'] = $newFileName;
+            $this->save_indication_to_db($formData);
+          } else {
+            echo "Failed to upload";
+          }
+        }
+
+        return redirect()->to("cars/indication");
+
+        
+      }
     }
 
     public function indication()
@@ -64,6 +90,7 @@ class Cars extends BaseController
       if ($userInfo['role'] == '3') {
         $indications = $carsModel->getIndications();
         $carInfo = Array();
+        $carInfo[0] = null;
         $prev_indication = Array();
       } else {
         $indications = $carsModel->getIndicationsByUser($loggedUserID);

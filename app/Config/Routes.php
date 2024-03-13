@@ -59,7 +59,7 @@ $routes->group('', ['filter' => 'authCheck'], function($routes){
   $routes->get('/cars', 'Cars::index');
   $routes->get('/cars/save_car', 'Cars::save_car');
   $routes->get('/cars/indication', 'Cars::indication');
-  $routes->get('/cars/save_indication', 'Cars::save_indication');
+  $routes->post('/cars/save_indication', 'Cars::save_indication');
   //$routes->match(['get', 'post'], 'Cars/save_car', 'Cars::save_car');
   $routes->match(['get', 'post'], 'Funds/importCsvToDb', 'Funds::importCsvToDb');
 });

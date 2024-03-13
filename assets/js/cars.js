@@ -14,6 +14,23 @@ document.addEventListener('DOMContentLoaded', (ev) => {
   }
 
   datepickerInit();
+  if ($("#tableIndication") && $("#tableIndication").length > 0) {
+    $("#tableIndication").DataTable({
+      //info: false,
+      columnDefs: [
+        { "orderable": false, "targets": [ 0, 4 ] }
+      ],
+      language: {
+        info: 'Страница _PAGE_ из _PAGES_',
+        infoEmpty: 'Нет записей!',
+        infoFiltered: '(filtered from _MAX_ total records)',
+        lengthMenu: 'Показывать _MENU_ записей на странице',
+        zeroRecords: 'Nothing found - sorry',
+        search: 'Искать:'
+    }
+    });
+  }
+  
 });
 
 function formatDateTime(date) {
@@ -93,9 +110,15 @@ function save_car() {
 function save_indication() {
   const modal = document.getElementById('modal_addIndication');
   const indication = modal.querySelector("#indication");
+  const pic = modal.querySelector("#pic");
   if (!indication.value) {
     alert('Введите показания на текущую дату и время!');
     indication.focus();
+    return false;
+  }
+  if (!pic.value) {
+    alert('Прикрепите фото спидометра!');
+    pic.focus();
     return false;
   }
   const prev_indication_input = document.getElementById('prev_indication'); 
@@ -105,31 +128,10 @@ function save_indication() {
     indication.focus();
     return false;
   }
-  
-  let date = new Date();
-  
-  const data = {
-    indication: indication.value,
-    date: date,
-    car_id: modal.querySelector('#car_id').value,
-  };
-  const array_data = [formatDateTime(date), modal.querySelector('#car_name').value, indication.value, ""];
 
-  url_path = base_url + '/cars/save_indication';
+  const form = document.querySelector("#indication-form");
+  form.submit();
   
-  $.ajax({
-    url: url_path,
-    data: data,
-    method: 'POST',
-    success: function (result) {
-      $('#modal_addIndication').modal('hide');
-      addRow(array_data, "tableIndication");
-    },
-    fail: function (result) {
-      console.error(result);
-      alert('Error while status update');
-    },
-  });
 }
 
 function addRow(data, tableId) {

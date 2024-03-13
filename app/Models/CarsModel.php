@@ -27,13 +27,13 @@ class CarsModel extends Model
       $insert_id =  $this->db->insertID();
       return $insert_id;
     }
-    public function save_indication($date, $car_id, $indication) {
+    public function save_indication($data) {
       $builder = $this->db->table("cars_indication");
-      $data = [
-        //'date' => $date,
-        'car' => $car_id,
-        'indication' => $indication,
-      ];
+      //$data = [
+      //  'pic' => $fileName,
+      //  'car' => $car_id,
+      //  'indication' => $indication,
+      //];
 
       $builder->insert($data);
       $insert_id =  $this->db->insertID();
@@ -52,7 +52,11 @@ class CarsModel extends Model
       }
     }
     public function getIndications(){
-      $sql = " SELECT * from cars_indication";
+      $sql = " SELECT `car`, `date_time`, `indication`, `pic`, cars.user, cars.car_name, cars.consumption, users.name
+      from cars_indication 
+      left join cars on cars.id = cars_indication.car
+      left join users on cars.user = users.id
+      order by date_time DESC";
 
       $query = $this->db->query($sql);
 
@@ -67,7 +71,8 @@ class CarsModel extends Model
       from cars_indication 
       left join employee on employee.id = (select employee from users where id = ?)
       left join cars on cars.id=cars_indication.car
-      where car in (select id from cars where user = ?)";
+      where car in (select id from cars where user = ?)
+      order by date_time DESC";
 
       $query = $this->db->query($sql, array($user, $user));
 
@@ -77,6 +82,22 @@ class CarsModel extends Model
         return false;
       }
     }
+    //public function getIndicationsByUser($user){
+    //  $sql = "SELECT `car`, `date_time`, `indication`, `pic`, cars.user, cars.car_name, cars.consumption, users.name
+    //  from cars_indication 
+    //  left join cars on cars.id = cars_indication.car
+    //  left join users on cars.user = users.id
+    //  where cars.user = ?
+    //  order by date_time DESC";
+
+    //  $query = $this->db->query($sql, array($user));
+
+    //  if (!empty($sql)) {
+    //    return $query->getResultArray();
+    //  } else {
+    //    return false;
+    //  }
+    //}
 
     public function getCarInfo($user) {
       $sql = "select id, user, car_name from cars where user = ?";

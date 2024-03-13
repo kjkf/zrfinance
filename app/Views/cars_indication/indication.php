@@ -8,21 +8,23 @@
         <h4>Расход бензина</h4>
       </div>
     </div>
+    <?php if (isset($car_info) && !empty($car_info)) {?>
     <div class="row ">
       <div class="d-flex justify-content-end mb-3" >
         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_addIndication" id="addIndicationBtn">Добавить расход</button>
       </div>
     </div>
+    <?php }?>
     <div class="row report-content">
       <div class="col-md-12 col-md-offset-12" id = "" >
         <table id = "tableIndication" style = "width:100%">
           <thead>
             <tr>
-              <td width = "10%">№ п/п</td>
+              <td  class="no-sort" width = "10%">№ п/п</td>
               <td width = "30%">Дата</td>
               <td width = "30%">Машина</td>
               <td width = "20%">Показание</td>
-              <td width = "auto">Фото</td>
+              <td  class="no-sort" width = "auto">Фото</td>
             </tr>
           </thead>
           <tbody>
@@ -34,7 +36,7 @@
                   <td><?php echo date("d.m.Y H:i", strtotime($item["date_time"]) );?></td>
                   <td><?=$item["car_name"]?></td>
                   <td><?=$item["indication"]?></td>
-                  <td></td>
+                  <td><img class="indication-pic" src="<?=base_url("public/uploads/images/".$item["pic"])?>"></td>
                 </tr>
               <?php endforeach?>
             <?php else :?>
@@ -51,4 +53,15 @@
   </div>
 
  </div>
- <?php echo view('partials/modals/_add_indication_modal.php'); ?>
+ <?php
+ if (isset($car_info) && !empty($car_info)) {
+  echo view('partials/modals/_add_indication_modal.php');
+ }
+ ?>
+
+ <style>
+  .indication-pic {
+    max-height: 100px;
+    width: auto;
+  }
+ </style>
