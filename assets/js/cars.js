@@ -17,20 +17,20 @@ document.addEventListener('DOMContentLoaded', (ev) => {
 
   datepickerInit();
   if ($("#tableIndication") && $("#tableIndication").length > 0) {
-    $("#tableIndication").DataTable({
-      //info: false,
-      columnDefs: [
-        { "orderable": false, "targets": [ 0, 4 ] }
-      ],
-      language: {
-        info: 'Страница _PAGE_ из _PAGES_',
-        infoEmpty: 'Нет записей!',
-        infoFiltered: '(filtered from _MAX_ total records)',
-        lengthMenu: 'Показывать _MENU_ записей на странице',
-        zeroRecords: 'Nothing found - sorry',
-        search: 'Искать:'
-    }
-    });
+    //$("#tableIndication").DataTable({
+    //  //info: false,
+    //  columnDefs: [
+    //    { "orderable": false, "targets": [ 0, 4 ] }
+    //  ],
+    //  language: {
+    //    info: 'Страница _PAGE_ из _PAGES_',
+    //    infoEmpty: 'Нет записей!',
+    //    infoFiltered: '(filtered from _MAX_ total records)',
+    //    lengthMenu: 'Показывать _MENU_ записей на странице',
+    //    zeroRecords: 'Nothing found - sorry',
+    //    search: 'Искать:'
+    //}
+    //});
   }
   
 });
@@ -126,12 +126,13 @@ function save_indication() {
   const prev_indication_input = document.getElementById('prev_indication'); 
   const prev_indication = parseFloat(prev_indication_input.value);
   if (prev_indication >= parseFloat(indication.value)) {
-    alert('Текущие показания не могут быть меньше предыдущих!');
+    alert('Текущие показания не могут быть меньше или равно предыдущим!');
     indication.focus();
     return false;
   }
 
   const form = document.querySelector("#indication-form");
+  console.log(form);
   form.submit();
   
 }
@@ -188,11 +189,12 @@ function enlargePicHandler() {
   tbody.addEventListener("click", e => {
     const target = e.target.closest(".indication-pic");
     if (!target) return;
+    e.preventDefault();
     const modalImg = modal.querySelector(".modal-body img");
     const modalTitle = modal.querySelector(".modal-title");
-    modalImg.src = target.src;
-    modalImg.alt = target.alt;
-    modalTitle.textContent = target.alt;
+    modalImg.src = target.dataset.src;
+    modalImg.alt = target.dataset.alt;
+    modalTitle.textContent = target.dataset.alt;
     $('#enlarge_pic_modal').modal('show')
 
   });

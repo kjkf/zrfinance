@@ -16,9 +16,23 @@ CREATE TABLE `cars_indication` (
  `car` int(11) NOT NULL,
  `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  `indication` smallint NOT NULL,
- `pic` blob NOT NULL,
+ `pic` varchar(50) NOT NULL,
+ `date_key` varchar(50) not null,
  
  PRIMARY KEY (`id`),
  KEY `car` (`car`),
  CONSTRAINT `car` FOREIGN KEY (`car`) REFERENCES `cars` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `cars_indication_end` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `car` int(11) NOT NULL,
+ `date_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ `indication` smallint NOT NULL,
+ `pic` varchar(50) NOT NULL,
+ `date_key` varchar(50) not null,
+ 
+ PRIMARY KEY (`id`),
+ KEY `car` (`car`),
+ CONSTRAINT `car_end` FOREIGN KEY (`car`) REFERENCES `cars` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

@@ -23,34 +23,65 @@
         <table id = "tableIndication" style = "width:100%">
           <thead>
             <tr>
-              <td  class="no-sort" width = "10%">№ п/п</td>
-              <td width = "20%">Дата</td>
+              <td rowspan=2 class="no-sort" width = "10%">№ п/п</td>
+              <td rowspan=2 width = "20%">Дата</td>
               <?php if (isset($filter) && $filter == 'all') {?>
-                <td width = "20%">Водитель</td>
+                <td rowspan=2 width = "20%">Водитель</td>
               <?php }?>  
-              <td width = "20%">Машина</td>
-              <td width = "20%">Показание</td>
-              <td  class="no-sort" width = "auto">Фото</td>
+              <td colspan=2 width = "30%">Показание</td>
+              <td rowspan=2 width = "10%">Км</td>
+              <td rowspan=2 width = "10%">Расход</td>
+              <td rowspan=2 width = "10%">Выданные талоны</td>
+            </tr>
+            <tr>
+                <td>Начало дня</td>
+                <td>Конец дня</td>
             </tr>
           </thead>
           <tbody>
-            <?php if ($indications && count($indications) > 0) :
+          <input type="hidden" value="<?=$car_info["consumption"]?>" />
+            <?php 
+            //print_r($indications);
+            
+            if ($indications && count($indications) > 0) :
               $count = 1;?>
               <?php foreach($indications as $item) :?>
                 <tr>
                   <td><?=$count++; ?></td>
-                  <td><?php echo date("d.m.Y H:i", strtotime($item["date_time"]) );?></td>
+                  <td>
+                    <?php echo date("d.m.Y H:i", strtotime($item["date_time"]) );?>
+                    <?php if (isset($item["date_time_end"])) {
+                      echo "<br />";
+                      echo date("d.m.Y H:i", strtotime($item["date_time_end"]) );
+                    } ?>
+                  </td>
                   <?php if (isset($filter) && $filter == 'all') {?>
                   <td><?=$item["driver"]?></td>
                   <?php }?>
-                  <td><?=$item["car_name"]?></td>
-                  <td><?=$item["indication"]?></td>
-                  <td><img class="indication-pic" src="<?=base_url("public/uploads/images/".$item["pic"])?>" alt="Показания <?=$item["car_name"]?> за <?php echo date("d.m.Y H:i", strtotime($item["date_time"]) );?>"></td>
+                  <td>
+                    <?=$item["indication"]?>
+                    <a href="#" class="indication-pic" data-src="<?=base_url("public/uploads/images/".$item["pic"])?>" data-alt="Показания <?=$item["car_name"]?> за <?php echo date("d.m.Y H:i", strtotime($item["date_time"]) );?>">Фото</a>
+                  </td>
+                  <td>
+                    <?php 
+                    $km = "-";
+                    $consumption = "-";
+                    if (isset($item["indication_end"]) && !empty($item["indication_end"]) && $item["indication_end"] > 0) {
+                      $km = $item["indication_end"] - $item["indication"];
+                      $consumption = $km * $car_info["consumption"] / 100;
+                      ?>
+                    <?=$item["indication_end"]?>
+                    <a href="#" class="indication-pic" data-src="<?=base_url("public/uploads/images/".$item["pic_end"])?>" data-alt="Показания <?=$item["car_name"]?> за <?php echo date("d.m.Y H:i", strtotime($item["date_time"]) );?>">Фото</a>
+                    <?php }?>
+                  </td>
+                  <td><?=$km?></td>
+                  <td><?=$consumption?></td>
+                  <td></td>
                 </tr>
               <?php endforeach?>
             <?php else :?>
               <tr class="empty-row">
-                <td colspan="5">
+                <td colspan="7">
                   Нет записей!
                 </td>
               </tr>
@@ -74,10 +105,6 @@
   .indication-pic {
     max-height: 100px;
     width: auto;
-  }
-
-  .indication-pic:hover {
-    cursor: zoom-in;
   }
 
   .modal-body img {

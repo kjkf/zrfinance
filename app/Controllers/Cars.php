@@ -44,30 +44,33 @@ class Cars extends BaseController
     }
     public function save_indication_to_db($data){
       $carsModel = new \App\Models\CarsModel();
-      //$car_id = $_POST['car_id'];
-      //$indication = $_POST['indication'];
-      //$date = $_POST['date'];
+      $tablename = $data['tablename'];
+      unset($data["tablename"]);
 
-      $result = $carsModel->save_indication($data);
+      $result = $carsModel->save_indication($data, $tablename);
       return json_encode($result);
     }
     public function save_indication() {
-    
+    //echo "!!!save_indication";
       if ($this->request->getMethod() == "post") {
+        //echo "1111111";
         $formData = $this->request->getVar();
         $fileInfo = $this->request->getFile("pic");
 
         if (!empty($fileInfo)) {
+          //echo "2222222222";
           $fileName = $fileInfo->getName();
           $nameArray = explode('.', $fileName);
 
-          $newFileName = time().end($nameArray);
+          $newFileName = time().".".end($nameArray);
 
           if ($fileInfo->move("public/uploads/images", $newFileName)) {
-            echo "File uploaded";
+            //echo "3333333333";
+            //echo "File uploaded";
             $formData['pic'] = $newFileName;
             $this->save_indication_to_db($formData);
           } else {
+            //echo "4444444444";
             echo "Failed to upload";
           }
         }
@@ -98,6 +101,7 @@ class Cars extends BaseController
         $carInfo = $carsModel->getCarInfo($loggedUserID);
         $prev_indication = $carsModel->getPrevIndication($loggedUserID);
         $prev_indication = count($prev_indication) > 0 ? $prev_indication[0] : "";
+        
         $filter="byUser";
       }
 

@@ -27,14 +27,9 @@ class CarsModel extends Model
       $insert_id =  $this->db->insertID();
       return $insert_id;
     }
-    public function save_indication($data) {
-      $builder = $this->db->table("cars_indication");
-      //$data = [
-      //  'pic' => $fileName,
-      //  'car' => $car_id,
-      //  'indication' => $indication,
-      //];
-
+    public function save_indication($data, $tablename) {
+      $builder = $this->db->table($tablename);
+      
       $builder->insert($data);
       $insert_id =  $this->db->insertID();
       return $insert_id;
@@ -45,19 +40,22 @@ class CarsModel extends Model
 
       $query = $this->db->query($sql);
 
-      if (!empty($sql)) {
+      if (!empty($sql)){
         return $query->getResultArray();
       } else {
         return false;
       }
     }
     public function getIndications() {
-      $sql = "SELECT `car`, `date_time`, `indication`, `pic`, cars.user, cars.car_name, cars.consumption, concat(temp.name, ' ', temp.surname) as driver
-      from cars_indication 
-      left join cars on cars.id = cars_indication.car
-      left join (SELECT users.id, employee.name, employee.surname from employee
-             left join users on users.employee = employee.id) as temp on cars.user = temp.id
-      order by date_time DESC;";
+      $sql = "SELECT cars_indication.`car`, cars_indication.`date_time`, cars_indication.`indication`,cars_indication.`pic`, 
+      cars_indication_end.`car`, cars_indication_end.`date_time` as date_time_end, cars_indication_end.`indication` as indication_end,cars_indication_end.`pic` as pic_end, 
+      cars.user, cars.car_name, cars.consumption, concat(temp.name, ' ', temp.surname) as driver
+            from cars_indication 
+            left join cars_indication_end on cars_indication_end.date_key = cars_indication.date_key
+            left join cars on cars.id = cars_indication.car
+            left join (SELECT users.id, employee.name, employee.surname from employee
+                   left join users on users.employee = employee.id) as temp on cars.user = temp.id
+            order by cars_indication.date_time DESC;";
 
       $query = $this->db->query($sql);
 
@@ -68,11 +66,14 @@ class CarsModel extends Model
       }
     }
     public function getIndicationsByUser($user){
-      $sql = "SELECT car, date_time, indication, pic, employee.name, employee.surname, cars.car_name, cars.consumption
+      $sql = "SELECT cars_indication.`car`, cars_indication.`date_time`, cars_indication.`indication`,cars_indication.`pic`, cars_indication.date_key,
+      cars_indication_end.`car`, cars_indication_end.`date_time` as date_time_end, cars_indication_end.`indication` as 	   indication_end,cars_indication_end.`pic` as pic_end, 
+	  employee.name, employee.surname, cars.car_name, cars.consumption
       from cars_indication 
+      left join cars_indication_end on cars_indication_end.date_key = cars_indication.date_key
       left join employee on employee.id = (select employee from users where id = ?)
       left join cars on cars.id=cars_indication.car
-      where car in (select id from cars where user = ?)
+      where cars_indication.car in (select id from cars where user = ?)
       order by date_time DESC";
 
       $query = $this->db->query($sql, array($user, $user));
@@ -83,36 +84,9 @@ class CarsModel extends Model
         return false;
       }
     }
-    //public function getIndicationsByUser($user){
-    //  $sql = "SELECT `car`, `date_time`, `indication`, `pic`, cars.user, cars.car_name, cars.consumption, users.name
-    //  from cars_indication 
-    //  left join cars on cars.id = cars_indication.car
-    //  left join users on cars.user = users.id
-    //  where cars.user = ?
-    //  order by date_time DESC";
-
-    //  $query = $this->db->query($sql, array($user));
-
-    //  if (!empty($sql)) {
-    //    return $query->getResultArray();
-    //  } else {
-    //    return false;
-    //  }
-    //}
 
     public function getCarInfo($user) {
-      $sql = "select id, user, car_name from cars where user = ?";
-      $query = $this->db->query($sql, array($user));
-
-      if (!empty($sql)) {
-        return $query->getResultArray();
-      } else {
-        return false;
-      }
-    } 
-
-    public function getPrevIndication($user) {
-      $sql = "select date_time, id, indication from cars_indication where car in (select id from cars where user = ?) order by date_time desc  limit 1";
+      $sql = "select id, user, car_name, consumption from cars where user = ?";
       $query = $this->db->query($sql, array($user));
 
       if (!empty($sql)) {
@@ -122,9 +96,21 @@ class CarsModel extends Model
       }
     }
 
+    public function getPrevIndication($user) {
+      $sql = "select cars_indication.date_time, cars_indication.date_key, cars_indication.id, cars_indication.indication as indication_start, 
+      cars_indication_end.date_time, cars_indication_end.id, cars_indication_end.indication as indication_end
+      from cars_indication 
+      left JOIN cars_indication_end on cars_indication.date_key = cars_indication_end.date_key
+      where cars_indication.car in (select id from cars where user = ?) order by cars_indication.date_time desc  limit 1";
+      $query = $this->db->query($sql, array($user));
 
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------------------//
-    //gets array of accounts
+      if (!empty($sql)) {
+        return $query->getResultArray();
+      } else {
+        return false;
+      }
+    }
+
     
 }
 
