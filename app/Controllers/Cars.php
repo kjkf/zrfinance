@@ -90,18 +90,23 @@ class Cars extends BaseController
 
       $carsModel = new \App\Models\CarsModel();
       
-      if ($userInfo['role'] == '3') {
+      if ($userInfo['role'] == '3' || $userInfo['role'] == '4') {
         $indications = $carsModel->getIndications();
         $carInfo = Array();
         $carInfo[0] = null;
         $prev_indication = Array();
         $filter="all";
+        $coupons = Array();
+        $total_coupons = Array();
+        $total_consuption = Array();
       } else {
         $indications = $carsModel->getIndicationsByUser($loggedUserID);
         $carInfo = $carsModel->getCarInfo($loggedUserID);
         $prev_indication = $carsModel->getPrevIndication($loggedUserID);
         $prev_indication = count($prev_indication) > 0 ? $prev_indication[0] : "";
-        
+        $coupons = $carsModel->getCouponsByUser($loggedUserID); 
+        $total_coupons = $carsModel->getTotalCouponsByUser($loggedUserID); 
+        $total_consuption = $carsModel->getTotalConsuptionByUser($loggedUserID); 
         $filter="byUser";
       }
 
@@ -114,7 +119,10 @@ class Cars extends BaseController
         'user' => $userInfo,
         'user_id' => $loggedUserID,
         'user_role' => $userInfo['role'],
-        'filter' => $filter
+        'filter' => $filter,
+        'coupons' => $coupons,
+        'total_coupons' => $total_coupons,
+        'total_consuption' => $total_consuption
       ];
       echo view('partials/_header', $data);
       echo view('cars_indication/indication', $data);

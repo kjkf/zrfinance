@@ -1,6 +1,7 @@
 <?php
     $user_role = isset($user_role) ? $user_role : $user['role'];
     $is_chief = (isset($user_role) && $user_role == 3) ? true : false;
+    $is_buch = (isset($user_role) && $user_role == 4) ? true : false;
     $is_admin = (isset($user_role) && $user_role == 1) ? true : false;
     $is_access_to_classif = (isset($user_role) && ($user_role == 1 || $user_role == 3 || $user_role == 5)) ? true : false;
 ?>
@@ -20,14 +21,16 @@
         <li><a class="dropdown-item" href="<?php echo base_url('dashboard')?>">Движение</a></li>
         <li><a class="dropdown-item" href="<?php echo base_url('analytics')?>">Аналитика</a></li>
         <li><a class="dropdown-item" href="<?php echo base_url('requests')?>">Заявки на закуп</a></li>
-        <li><a class="dropdown-item" href="<?php echo base_url('report')?>">Отчёты</a></li>        
-        <li><a class="dropdown-item" href="<?php echo base_url('report')?>">Отчёты</a></li>
+        <li><a class="dropdown-item" href="<?php echo base_url('report')?>">Отчёты</a></li> 
         <li><a class="dropdown-item" href="<?php echo base_url('cars')?>">Добавить машину для отчетов</a></li>
         
         <?php endif; ?>
         <?php if ($is_access_to_classif) :?>
           <li><a class="dropdown-item" href="<?php echo base_url('salary')?>">Заработная плата</a></li>
           <li><a class="dropdown-item" href="<?php echo base_url('classificators')?>">Классификаторы</a></li>
+        <?php endif; ?>
+        <?php if ($is_buch) :?>
+          <li><a class="dropdown-item" href="<?php echo base_url('coupons')?>">Талоны на бензин</a></li>
         <?php endif; ?>
         <li><a class="dropdown-item" href="<?php echo base_url('cars/indication')?>">Показания машин</a></li>
         <li><a href="<?php echo  site_url('auth/logout')?>" class="dropdown-item">Выйти</a></li>

@@ -111,7 +111,53 @@ class CarsModel extends Model
       }
     }
 
-    
+    public function getCouponsByUser($user) {
+      $sql = "SELECT base, date_time, quantity, money
+      FROM `coupons` where base = (select employee from users where id=?)";
+      $query = $this->db->query($sql, array($user));
+
+      if (!empty($sql)) {
+        return $query->getResultArray();
+      } else {
+        return false;
+      }
+    }
+
+    public function getTotalCouponsByUser($user) {
+      $sql = "SELECT `base`, sum(quantity) as quantity, sum(money) as money FROM `coupons` where base = (select employee from users where id = 10) group by base ";
+      $query = $this->db->query($sql, array($user));
+
+      if (!empty($sql)) {
+        return $query->getResultArray();
+      } else {
+        return false;
+      }
+    }
+
+    public function getTotalConsuptionByUser($user) {
+      $sql = "SELECT  t_cars.consumption, t1.car, sum(t2.indication-t1.indication), sum(t2.indication-t1.indication)*t_cars.consumption/100 as total_consumption
+      FROM
+      (
+            SELECT car, indication, date_key 
+            FROM cars_indication
+      ) AS t1
+      LEFT JOIN
+      (
+            SELECT indication, date_key
+            FROM cars_indication_end
+      ) AS t2
+      ON t1.date_key=t2.date_key
+      left join (select id, consumption, user from cars where user=?) as t_cars on t_cars.id = t1.car
+      group by t1.car
+      ";
+      $query = $this->db->query($sql, array($user));
+
+      if (!empty($sql)) {
+        return $query->getResultArray();
+      } else {
+        return false;
+      }
+    }
 }
 
-?>
+

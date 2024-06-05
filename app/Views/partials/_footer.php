@@ -443,5 +443,12 @@ if(isset($page_name) && $page_name == "finance_movements"){ ?>
   <script src="<?= base_url('assets/js/cars.js')?>"></script>
 <?php }?>
 
+<?php if(isset($page_name) && ($page_name == 'coupons')){ ?>
+  <script src="<?= base_url('assets/vendors/jquery/jquery-ui.min.js')?>"></script>
+  <script src="<?= base_url('assets/vendors/datatables/datatables.min.js')?>" ></script>
+  <script src="<?= base_url('assets/vendors/datatables/dataTables.fixedColumns.min.js')?>"></script>
+  <script src="<?= base_url('assets/js/coupons.js')?>"></script>
+<?php }?>
+
 </body>
 </html>

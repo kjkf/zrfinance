@@ -17,20 +17,26 @@ document.addEventListener('DOMContentLoaded', (ev) => {
 
   datepickerInit();
   if ($("#tableIndication") && $("#tableIndication").length > 0) {
-    //$("#tableIndication").DataTable({
-    //  //info: false,
-    //  columnDefs: [
-    //    { "orderable": false, "targets": [ 0, 4 ] }
-    //  ],
-    //  language: {
-    //    info: 'Страница _PAGE_ из _PAGES_',
-    //    infoEmpty: 'Нет записей!',
-    //    infoFiltered: '(filtered from _MAX_ total records)',
-    //    lengthMenu: 'Показывать _MENU_ записей на странице',
-    //    zeroRecords: 'Nothing found - sorry',
-    //    search: 'Искать:'
-    //}
-    //});
+    $("#tableIndication").DataTable({
+      //info: false,
+      columnDefs: [
+        { "orderable": false, "targets": [ 0, 4 ] },
+        { width: '5%', targets: 0 },
+        { width: '15%', targets: 1 },
+        { width: '20%', targets: 2 },
+        { width: '30%', targets: 3 },
+        { width: '10%', targets: 4 },
+        { width: '10%', targets: 5 },
+      ],
+      language: {
+        info: 'Страница _PAGE_ из _PAGES_',
+        infoEmpty: 'Нет записей!',
+        infoFiltered: '(filtered from _MAX_ total records)',
+        lengthMenu: 'Показывать _MENU_ записей на странице',
+        zeroRecords: 'Nothing found - sorry',
+        search: 'Искать:'
+    }
+    });
   }
   
 });

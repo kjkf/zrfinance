@@ -19,32 +19,45 @@
     <?php //print_r($indications);?>
 
     <div class="row report-content">
-      <div class="col-md-12 col-md-offset-12" id = "" >
+    <?php if (isset($total_consuption) && count($total_consuption) > 0) :?>
+          <div class="totals">
+            Итого израсходавано:  <?php echo number_format($total_consuption[0]["total_consumption"], 2)." л."?>
+          </div>
+      <?php endif;?>
+      <?php if (isset($total_coupons) && count($total_coupons) > 0) :?>
+        <div class="totals">
+          Итого выдано:  <?php echo $total_coupons[0]["quantity"]." л. -  ".$total_coupons[0]["money"]."тг ."?>
+        </div>
+      <?php endif;?>
+      <div class="col-md-12 col-md-offset-12 table-flex" id = "" >
+
         <table id = "tableIndication" style = "width:100%">
           <thead>
             <tr>
-              <td rowspan=2 class="no-sort" width = "10%">№ п/п</td>
-              <td rowspan=2 width = "20%">Дата</td>
+              <td rowspan=2 class="no-sort" width = "5%">№ п/п</td>
+              <td rowspan=2 width = "15%">Дата</td>
               <?php if (isset($filter) && $filter == 'all') {?>
                 <td rowspan=2 width = "20%">Водитель</td>
               <?php }?>  
               <td colspan=2 width = "30%">Показание</td>
               <td rowspan=2 width = "10%">Км</td>
               <td rowspan=2 width = "10%">Расход</td>
-              <td rowspan=2 width = "10%">Выданные талоны</td>
+              
             </tr>
             <tr>
                 <td>Начало дня</td>
                 <td>Конец дня</td>
             </tr>
           </thead>
+          
           <tbody>
-          <input type="hidden" value="<?=$car_info["consumption"]?>" />
+         
             <?php 
             //print_r($indications);
             
             if ($indications && count($indications) > 0) :
               $count = 1;?>
+              
               <?php foreach($indications as $item) :?>
                 <tr>
                   <td><?=$count++; ?></td>
@@ -68,7 +81,7 @@
                     $consumption = "-";
                     if (isset($item["indication_end"]) && !empty($item["indication_end"]) && $item["indication_end"] > 0) {
                       $km = $item["indication_end"] - $item["indication"];
-                      $consumption = $km * $car_info["consumption"] / 100;
+                      $consumption = $km * $item["consumption"] / 100;
                       ?>
                     <?=$item["indication_end"]?>
                     <a href="#" class="indication-pic" data-src="<?=base_url("public/uploads/images/".$item["pic_end"])?>" data-alt="Показания <?=$item["car_name"]?> за <?php echo date("d.m.Y H:i", strtotime($item["date_time"]) );?>">Фото</a>
@@ -76,7 +89,6 @@
                   </td>
                   <td><?=$km?></td>
                   <td><?=$consumption?></td>
-                  <td></td>
                 </tr>
               <?php endforeach?>
             <?php else :?>
@@ -88,6 +100,34 @@
             <?php endif?>
           </tbody>
         </table>
+        <?php if (isset($filter) && $filter !== 'all') {?>
+        <table id="coupons_table">
+          <thead>
+            <tr>
+              <td rowspan=2 width = "10%">Выданные талоны</td>
+            </tr>
+          </thead>
+          <tbody>
+          <?php if (isset($coupons) && count($coupons) > 0) :
+              $count = 1;?>
+              
+              <?php foreach($coupons as $item) :?>
+                <tr>
+                  <td>
+                    <? echo date("d.m.Y", strtotime($item["date_time"]))." - ".$item["quantity"].'л';?>
+                  </td>
+                </tr>
+              <?php endforeach?>
+          <?php else :?>
+              <tr class="empty-row">
+                <td colspan="7">
+                  Нет записей!
+                </td>
+              </tr>
+            <?php endif?>
+          </tbody>
+        </table>
+        <?php }?>
       </div>
     </div>
   </div>
@@ -109,5 +149,23 @@
 
   .modal-body img {
     width: 100%;
+  }
+  .table-flex {
+    display: flex;
+  }
+
+  #tableIndication thead tr {
+    height: 35px;
+  }
+  #coupons_table thead tr {
+    height: 70px;
+  }
+  #tableIndication_wrapper {
+    width: 100%;
+  }
+  .totals {
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 16px;
   }
  </style>
