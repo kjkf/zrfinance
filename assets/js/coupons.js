@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", ev => {
 
   issuingGas();
   addGas();
+  addCouponsBase();
   
   $('#modal_issuingCoupons').on('hide.bs.modal', function () {
     resetIssuingType();
@@ -40,6 +41,13 @@ document.addEventListener("DOMContentLoaded", ev => {
     });
   }
 });
+
+function addCouponsBase() {
+  const addCouponsBaseBtn = document.getElementById("addCouponsBaseBtn");
+  if (addCouponsBaseBtn) {
+    
+  }
+}
 
 function addGas() {
   const addGasBtn = document.getElementById("addGas");
@@ -188,3 +196,4 @@ function blockCouponsIfNoMore() {
     
   }
 }
+

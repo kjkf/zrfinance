@@ -44,7 +44,7 @@
       <td class="td-align-right">
         <?php if($is_edit_allowed  && $is_author): ?>
           <input type="hidden" id="item_name_<?php echo $item['id']?>" value="<?php echo $item['item_name']?>">
-          <input type="hidden" id="agreement_name_<?php echo $item['id']?>" value="<?php echo !empty($item['agreement_forZR_name'])?$item['agreement_forZR_name']:$item['agreement_fromZR_name']?>">
+          <input type="hidden" id="agreement_name_<?php echo $item['id']?>" value="<?php echo !empty($item['agreement_forZR_name']) ? $item['agreement_forZR_name'] : (!empty($item['agreement_fromZR_name']) ? $item['agreement_fromZR_name'] : "-1")?>">
           <input type="hidden" id="descr_<?php echo $item['id']?>" value="<?php echo $item['description']?>">
           <input type="hidden" id="sum_<?php echo $item['id']?>" value="<?php echo $item['sum']?>">
           <input type="hidden" id="company_id_<?php echo $item['id']?>" value="<?php echo $account['company']?>">

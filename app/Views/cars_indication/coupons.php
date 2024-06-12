@@ -46,12 +46,6 @@
                   echo $reciept_total[0]["quantity"];
                 }?></td>
               </tr>
-            <?php else :?>
-              <tr class="empty-row">
-                <td colspan="5">
-                  Нет записей!
-                </td>
-              </tr>
             <?php endif?>
             
           </tbody>
@@ -84,12 +78,6 @@
                   echo $issuing_total[0]["quantity"].'л<br>'.$issuing_total[0]["money"]."тг";
                 }?></td>
               </tr>
-            <?php else :?>
-              <tr class="empty-row">
-                <td colspan="5">
-                  Нет записей!
-                </td>
-              </tr>
             <?php endif?>
            
           </tbody>
@@ -103,6 +91,7 @@
  <?php
   echo view('partials/modals/_gas_receipt_modal.php');
   echo view('partials/modals/_coupons_issuing_modal.php');
+  echo view('partials/modals/_add_coupons_base.php');
  ?>
 
 <style>
