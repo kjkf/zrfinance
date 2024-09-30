@@ -1,5 +1,5 @@
 <!-- Modal: create receipt/expense item -->
-<?php 
+<?php
 if(isset($page_name) && $page_name == "finance_movements"){ ?>
 <div class="modal fade" id="modal_addItem" tabindex="-1" aria-labelledby="modal_addItemLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -254,13 +254,13 @@ if(isset($page_name) && $page_name == "finance_movements"){ ?>
               <span id="modal_editItem_Description"><?php echo (isset($description)) ? $description : "" ?></span>
               <input type="hidden" name="edit_itemDescription" id="edit_itemDescription" value="<?php echo (isset($description)) ? $description : "" ?>">
             </div>
-            
+
             <div class="mb-3">
               <label for="old_value" class="col-form-label">Сумма, старое значение:</label>
               <span id="modal_editItem_Sum"><?php echo (isset($old_value)) ? number_format($old_value, 2, ',', ' ') : "" ?></span>
               <input type="hidden" name="old_value" id="old_value" value="<?php echo (isset($old_value)) ? $old_value : "" ?>">
             </div>
-            
+
             <div class="mb-3">
               <label for="new_value" class="col-form-label">Сумма, новое значение:</label>
               <input type="text" required class="form-control" id="new_value" name="new_value" value="<?php echo (isset($old_value) && !empty($old_value))?$old_value:''?>">
@@ -392,12 +392,14 @@ if(isset($page_name) && $page_name == "finance_movements"){ ?>
       crossorigin="anonymous"
     ></script>
 <?php if(isset($page_name) && $page_name == "finance_movements"){  ?>
+<script src="<?= base_url('assets/vendors/jquery/jquery-ui.min.js')?>"></script>
 <script src="<?= base_url('assets/vendors/datatables/datatables.min.js')?>"></script>
 <script src="<?= base_url('assets/js/main.js')?>"></script>
 <!-- End Scripts -->
 <?php } ?>
 <?php if(isset($page_name) && $page_name == 'report'){ ?>
 <script src="<?= base_url('assets/vendors/jquery/jquery-ui.min.js')?>"></script>
+<script src="<?= base_url('assets/js/main.js')?>"></script>
 <script src="<?= base_url('assets/js/report_page.js')?>"></script>
 <?php } ?>
 <?php if(isset($page_name) && $page_name == 'classificators'){ ?>

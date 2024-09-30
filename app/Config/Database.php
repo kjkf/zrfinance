@@ -35,7 +35,7 @@ class Database extends Config
         'hostname' => 'localhost',
         'username' => 'root',
         'password' => 'root',
-        'database' => 'zr_finance',
+        'database' => 'zr_finance_24',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,

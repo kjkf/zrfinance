@@ -15,7 +15,8 @@ class FinanceModel extends Model
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------//
     //gets array of companies
     public function get_all_companies(){
-      return $this->findAll();
+      // return $this->findAll();
+      return $this->where('show_dashboard', 1)->findAll();
     }
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------//
     //gets array of accounts
@@ -68,7 +69,7 @@ class FinanceModel extends Model
         if ($dif >=15)
           break;
       }
-      
+
       return $result;
     }
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -122,7 +123,7 @@ class FinanceModel extends Model
 
         $account_prev = $item['company_account'];
       }
-      
+
       // echo json_encode($receipts_by_account) . "<br><br>";
       return $receipts_by_account;
     }
@@ -347,7 +348,7 @@ class FinanceModel extends Model
 
       $builder->insert($data);
       $insert_id =  $db->insertID();//$builder->insert_id();
-      
+
       return  $insert_id;
     }
     // ---------------------------------------------------------------------------------------------------------------------------------------------------------------//

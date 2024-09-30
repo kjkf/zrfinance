@@ -45,7 +45,8 @@
     </div>
   </div>
 
-  <div class="report-content">
+
+    <!-- <div class="report-content">
     <div class="row">
       <div class="col-md-12 col-md-offset-12" id = "report_resultByGoods_title" style="display:none; ">
         <h4> Отчёт: приход по товарам</h4>
@@ -69,7 +70,7 @@
         </table>
       </div>
     </div>
-  </div>
+  </div> -->
 
 </div>
 

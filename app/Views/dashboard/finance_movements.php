@@ -1,8 +1,8 @@
     <?php //defined('BASEPATH') OR exit('No direct script access allowed'); ?>
     <?php echo view('partials/_top_nav.php'); ?>
     <div class="container">
-      
-      <?php       
+
+      <?php
       if(isset($validation)) :?>
         <div class="have-errors">
           <?= $validation->listErrors() ?>
@@ -16,12 +16,27 @@
       }
       $session_activeTab = (session()->has('active_tab'))? session()->get('active_tab') : "";
       $show = "";
+      $is_chief = (isset($user_role) && $user_role == 3) ? true : false;
       ?>
       <input type="hidden" name="show_item_modal" id="show_item_modal" value="<?php echo (isset($show_item_modal) && !empty($show_item_modal)) ? "1" : ""?>">
       <input type="hidden" name="show_item_modal_edit" id="show_item_modal_edit" value="<?php echo (isset($show_item_modal_edit) && !empty($show_item_modal_edit)) ? "1" : ""?>">
       <input type="hidden" name="show_item_modal_delete" id="show_item_modal_delete" value="<?php echo (isset($show_item_modal_delete) && !empty($show_item_modal_delete)) ? "1" : ""?>">
       <input type="hidden" name="show_modal_history" id="show_modal_history" value="<?php echo (isset($show_modal_history) && !empty($show_modal_history)) ? "1" : ""?>">
+      <!-- строка выбора даты-->
+      <?php if($is_chief){?>
+      <div class="row">
+        <div class="col-md-12 col-md-offset-12" style="padding-left: 0; padding-right:0;">
+          <p class="report-datebar_formfiled">
+            <label for="reportDate_start">Выберите дату: </label>
+            <input type="text" id="showDate" class="report-datebar_field">
+          </p>
+          <button class = "btn btn-primary" type="button" name="button" id="getDate">
+            Сгенерировать
+          </button>
+        </div>
 
+      </div>
+    <?php }?>
       <div class="row" style = "">
         <div class="col-md-12 col-md-offset-12" style="padding-left: 0; padding-right:0;">
           <?php if(!empty(session()->getFlashData('fail'))){ ?>

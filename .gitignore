@@ -17,9 +17,8 @@ package.json
 debug*
 *log*
 ci_session*
-uploads
+public/uploads/*.*
 writable
-public/csvfile
 .env
 app/Config/Database.php
 app/Config/App.php

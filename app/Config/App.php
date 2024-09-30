@@ -27,7 +27,7 @@ class App extends BaseConfig
     // $root .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
     // $config['base_url'] = $root;
     //public $baseURL = 'http://localhost/zlatar_finance/';
-    public $baseURL = 'http://zrfinance/';
+    public $baseURL = 'http://localhost/zlatar_finance_24';
     /**
      * --------------------------------------------------------------------------
      * Index File
