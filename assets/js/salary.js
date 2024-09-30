@@ -1,5 +1,6 @@
 let CURRENT_TR = null;
 let api = null;
+console.log("!!!");
 document.addEventListener('DOMContentLoaded', ev => {
   //console.log(bonusTypes, finesTypes);
 
