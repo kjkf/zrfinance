@@ -11,12 +11,12 @@ class Dbs extends BaseController
        $db1 = db_connect();
        $model = new MaterialsModel($db1);
 
-       $db2 = db_connect("db_class");
+       $db2 = db_connect("db_class", true, true);
        $model2 = new MaterialsModel($db2);
 
-       echo '<pre>';
-       print_r($model->getAllUnits());
-       echo '<pre><hr>';
+       // echo '<pre>';
+       // print_r($model->getAllUnits());
+       // echo '<pre><hr>';
 
        echo '<pre>';
        print_r($model2->getFromAnotherDB());

@@ -55,7 +55,7 @@ class Database extends Config
       'hostname' => 'localhost',
       'username' => 'root',
       'password' => 'root',
-      'database' => 'ci4_mini',
+      'database' => 'zlatar_hr',
       'DBDriver' => 'MySQLi',
       'DBPrefix' => '',
       'pConnect' => false,
@@ -69,6 +69,8 @@ class Database extends Config
       'failover' => [],
       'port'     => 3306,
   ];
+
+    //there is no any
 
     /**
      * This database connection is used when

@@ -1,29 +1,34 @@
 $(document).ready(function () {
-  $( "#reportDate_start, #reportDate_end, #showDate" ).datepicker({
-    buttonImage: "images/calendar.gif",
-    buttonImageOnly: true,
-    buttonText: "Выберите дату",
-    altField: "#actualDate",
-    dateFormat: "dd.mm.yy",
-    dayNamesMin: [ "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС" ],
-    monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
-    onSelect: function(date, datepicker) {
-                      if (datepicker.id == "reportDate_start") {
-                          d = new Date();
-                          $('#reportDate_end').datepicker("setDate", d)
-                              .datepicker("enable").datepicker("option", "minDate", date)
-                      }
+  // console.log('here is date 00');
+  // $( "#reportDate_start, #reportDate_end, #showDate, #attendanceDate_start" ).datepicker({
+  //   buttonImage: "images/calendar.gif",
+  //   buttonImageOnly: true,
+  //   buttonText: "Выберите дату",
+  //   altField: "#actualDate",
+  //   dateFormat: "dd.mm.yy",
+  //   dayNamesMin: [ "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС" ],
+  //   monthNames: [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ],
+  //   onSelect: function(date, datepicker) {
+  //                     if (datepicker.id == "reportDate_start") {
+  //                         d = new Date();
+  //                         $('#reportDate_end').datepicker("setDate", d)
+  //                             .datepicker("enable").datepicker("option", "minDate", date)
+  //                     }
+  //
+  //                     if (!$('#reportDate_end').datepicker("isDisabled")) {
+  //                         var startDate = $('#reportDate_end').datepicker("getDate");
+  //                         var endDate = $('#reportDate_end').datepicker("getDate");
+  //                         var diff = endDate.getDate() - startDate.getDate();
+  //                         //$('#dayCount').text(diff).parent().show();
+  //                     }
+  //             }
+  // }).filter("#reportDate_end").datepicker("disable");
+  // d = new Date();
+  // $( "#showDate" ).datepicker( "setDate", d);
+  // console.log('here is date');
+  // console.log(d);
+  // $( "#attendanceDate_start" ).datepicker( "setDate", d);
 
-                      if (!$('#reportDate_end').datepicker("isDisabled")) {
-                          var startDate = $('#reportDate_end').datepicker("getDate");
-                          var endDate = $('#reportDate_end').datepicker("getDate");
-                          var diff = endDate.getDate() - startDate.getDate();
-                          //$('#dayCount').text(diff).parent().show();
-                      }
-              }
-  }).filter("#reportDate_end").datepicker("disable");
-  d = new Date();
-  $( "#showDate" ).datepicker( "setDate", d);
 
   rememberTab();
   restoreTabs();

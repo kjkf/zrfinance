@@ -11,10 +11,10 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css')?>">
 
 
-    <?php if(isset($page_name) && ($page_name == 'report' || $page_name == 'classificators'  || $page_name == 'salary_fond' || $page_name == 'advance_month' || $page_name == 'funds' )){ ?>
+    <?php //if(isset($page_name) && ($page_name == 'report' || $page_name == 'classificators'  || $page_name == 'salary_fond' || $page_name == 'advance_month' || $page_name == 'funds' )){ ?>
     <link rel="stylesheet" href="<?= base_url('assets/vendors/jquery/jquery-ui.min.css')?>">
-    <?php } ?>
-    
+    <?php // } ?>
+
     <script>
     var base_url = "<?php echo base_url();?>";
     </script>

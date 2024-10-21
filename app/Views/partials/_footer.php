@@ -390,16 +390,17 @@ if(isset($page_name) && $page_name == "finance_movements"){ ?>
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
-    ></script>
+></script>
 <?php if(isset($page_name) && $page_name == "finance_movements"){  ?>
 <script src="<?= base_url('assets/vendors/jquery/jquery-ui.min.js')?>"></script>
 <script src="<?= base_url('assets/vendors/datatables/datatables.min.js')?>"></script>
 <script src="<?= base_url('assets/js/main.js')?>"></script>
+<script src="<?= base_url('assets/js/datepicker_config.js')?>"></script>
 <!-- End Scripts -->
 <?php } ?>
 <?php if(isset($page_name) && $page_name == 'report'){ ?>
 <script src="<?= base_url('assets/vendors/jquery/jquery-ui.min.js')?>"></script>
-<script src="<?= base_url('assets/js/main.js')?>"></script>
+<script src="<?= base_url('assets/js/datepicker_config.js')?>"></script>
 <script src="<?= base_url('assets/js/report_page.js')?>"></script>
 <?php } ?>
 <?php if(isset($page_name) && $page_name == 'classificators'){ ?>
@@ -410,6 +411,13 @@ if(isset($page_name) && $page_name == "finance_movements"){ ?>
 <script src="<?= base_url('assets/js/classificators.js')?>"></script>
 <script src="<?= base_url('assets/js/cl_employee.js')?>"></script>
 <script src="<?= base_url('assets/js/cl_materials.js')?>"></script>
+<?php } ?>
+<?php if(isset($page_name) && $page_name == 'attendance'){ ?>
+<script src="<?= base_url('assets/vendors/jquery/jquery-ui.min.js')?>"></script>
+<script src="<?= base_url('assets/js/attendance_page.js')?>"></script>
+<script src="<?= base_url('assets/js/datepicker_config.js')?>"></script>
+<script src="<?= base_url('assets/vendors/datatables/datatables.min.js')?>"></script>
+<script src="<?= base_url('assets/vendors/datatables/dataTables.fixedColumns.min.js')?>"></script>
 <?php } ?>
 
 <?php if(isset($page_name) && $page_name == 'salary_month'){ ?>
